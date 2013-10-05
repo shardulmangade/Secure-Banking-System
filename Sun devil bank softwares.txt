@@ -1,0 +1,7 @@
+Installed softwares:
+
+1) ECLIPSE
+2) SPRING in eclipse
+3) MAVEN in eclipse
+4) GIT HUB for windows
+5) Pivotal Tracker
