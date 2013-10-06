@@ -1,4 +1,4 @@
-package asu.edu.sbs;
+package asu.edu.sbs.web.trial;
 
 import java.text.DateFormat;
 import java.util.Date;
