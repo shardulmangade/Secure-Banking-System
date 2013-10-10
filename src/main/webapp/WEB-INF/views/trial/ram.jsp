@@ -1,15 +1,14 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <html>
-<head>
-	<title>Home</title>
-</head>
-<body>
-<h1>
-	Hi guys !
-</h1>
-
-<P>  This is a test page.... </P>
-<c:if test="${not empty User }">Hellooooooooo from db. The name fetched from db is <c:out value="${User.name}"></c:out></c:if>
-</body>
+<BODY>
+<%
+    // This is a scriptlet.  Notice that the "date"
+    // variable we declare here is available in the
+    // embedded expression later on.
+    System.out.println( "Evaluating date now" );
+    java.util.Date date = new java.util.Date();
+%>
+Hello!  The time is now <%= date %>
+</BODY>
 </html>
