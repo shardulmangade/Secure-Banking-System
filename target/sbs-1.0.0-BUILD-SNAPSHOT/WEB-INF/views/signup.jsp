@@ -7,12 +7,11 @@
 color: #ff0000;
 font-style: italic;
 }
-</style>
 
 </head>
 <body>
 <P>  Registration Form </P>
-<form:form method="POST" action="signup"  commandName = "signup">
+<form:form method="POST" action="saveData">
 
  <table>
     <tr>
@@ -56,9 +55,9 @@ First Name <INPUT TYPE=TEXT NAME=firstName SIZE=20> <BR>
 Last Name <INPUT TYPE=TEXT NAME=lastName SIZE=20>  <BR>
 UserName <INPUT TYPE=TEXT NAME=userName SIZE=20>   <BR>
 Email Id <INPUT TYPE=TEXT NAME=emailId SIZE=20>   <BR>
-DateOfBirth <INPUT TYPE=TEXT NAME=dateOfBirth SIZE=20>  
+DateOfBirth <INPUT TYPE=TEXT NAME=dateOfBirth SIZE=20>  -->
 
 <P><INPUT TYPE=SUBMIT>
 </FORM>
 </body>
-</html>-->
+</html>
