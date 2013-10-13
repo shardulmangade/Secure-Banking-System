@@ -1,7 +1,8 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <html>
 <head>
-<title>Registration Form</title>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Employee Signup Page</title>
 <style>
 .error {
 color: #ff0000;
@@ -11,8 +12,8 @@ font-style: italic;
 
 </head>
 <body>
-<P>  Registration Form </P>
-<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/signupuser/signupPost.html" >
+<P>  Employee Registration Form </P>
+<form:form method="POST"  commandName="signupuser"  action="${pageContext.request.contextPath}/signupuser/SignupEmployeePost.html" >
 
  <table>
     <tr>
@@ -35,10 +36,14 @@ font-style: italic;
         <td><form:input path="emailId" /></td>
         <td><form:errors path="emailId" cssClass="error" /></td>
     </tr>
-    <tr>
-   	    <td><form:label path="dateOfBirth">dateOfBirth</form:label></td>
-        <td><form:input path="dateOfBirth" /></td>
-        <td><form:errors path="dateOfBirth" cssClass="error" /></td>
+    <tr>   	    
+   	    <td> Department : </td>
+   	    <td> <form:select path = "department">
+   	     <form:option value="NONE" label="--- Select ---" />
+   	     <form:options items="${departmentList}"/>
+   	     </form:select>  	    
+   	     <td><form:errors path="department" cssClass="error" /></td>
+        </td>
     </tr>
    
     <tr>
@@ -48,17 +53,3 @@ font-style: italic;
     </tr>
 </table>  
 </form:form>
-    
-<!--
-
-<FORM METHOD=POST ACTION="saveData"> 
-First Name <INPUT TYPE=TEXT NAME=firstName SIZE=20> <BR>
-Last Name <INPUT TYPE=TEXT NAME=lastName SIZE=20>  <BR>
-UserName <INPUT TYPE=TEXT NAME=userName SIZE=20>   <BR>
-Email Id <INPUT TYPE=TEXT NAME=emailId SIZE=20>   <BR>
-DateOfBirth <INPUT TYPE=TEXT NAME=dateOfBirth SIZE=20>  
-
-<P><INPUT TYPE=SUBMIT>
-</FORM>
-</body>
-</html>-->

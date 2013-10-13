@@ -1,17 +1,19 @@
 package asu.edu.sbs.service;
 
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import asu.edu.sbs.domain.SignUpUser;
 
+@Component
 public class SignUpValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> arg0) {
-		SignUpUser.class.isAssignableFrom(arg0);
-		return false;
+		return (SignUpUser.class.isAssignableFrom(arg0));
+		
 	}
 
 	@Override

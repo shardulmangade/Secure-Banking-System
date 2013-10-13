@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<A HREF="NextPage.jsp">Continue</A>
+<P> Your request has been submitted for approval.</P>
 
 </body>
 </html>
