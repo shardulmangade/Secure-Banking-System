@@ -95,14 +95,14 @@ public class SignUpController {
 	}
 		
 	@RequestMapping(value = "/saveData" ,method = RequestMethod.POST)
-	public String saveData(Locale locale , Model model)
+	public String saveDataPost(Locale locale , Model model)
 	{
 		System.out.println("\n Inside savedata post controller");
 		return "saveData";
 	}
 	
 	@RequestMapping(value = "/saveData" ,method = RequestMethod.GET)
-	public String saveDataPost(Locale locale , Model model)
+	public String saveData(Locale locale , Model model)
 	{
 		System.out.println("\n Inside savedata Get controller");
 		return "saveData";
