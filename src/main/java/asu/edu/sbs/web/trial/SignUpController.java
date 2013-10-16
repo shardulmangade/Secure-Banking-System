@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,7 +45,7 @@ public class SignUpController {
 	}
 	
 	@RequestMapping(value = "/signupPost" ,method = RequestMethod.POST)
-	public ModelAndView getDataPost(@ModelAttribute @Valid SignUpUser user, BindingResult result, final RedirectAttributes attributes)
+	public ModelAndView getDataPost(@Validated @ModelAttribute SignUpUser user, BindingResult result, final RedirectAttributes attributes)
 	{
 		System.out.println("\n Inside signup post controller");
 		if(result.hasErrors())
