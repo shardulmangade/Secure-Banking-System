@@ -4,13 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>HR Employee Page</title>
+<title>Insert title here</title>
 </head>
-<h4>
-	HR Regular Employee
-</h4>
 <body>
-	
-	<a href="signup/signup.jsp">Add a new employee</a>
+
 </body>
 </html>
