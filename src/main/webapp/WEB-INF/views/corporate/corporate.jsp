@@ -10,6 +10,7 @@
 <body>
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
+<script src="/sundevilbank/resources/js/custom.js"></script>
 <div class="container">
 	<header class="page-header"><!-- We can add navigation bar here--><h1>Welcome Manager</h1>	</header>
 	<!-- End of header -->
@@ -20,17 +21,20 @@
     				<div class="sidebar-nav-fixed">
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
-								<li><a href= "#" class= "active"> Add </a></li>
-								<li><a href= "#"> Delete </a></li>
-								<li><a href= "#"> Transfer </a></li>
+								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '/sundevilbank/corporate/test1')"> Add </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/test2')"> Delete </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/test3')"> Transfer </a></li>
 							</ul>
 						</div>
 					</div>
     			</td>
     			<td width = "15%"></td>
     			<td  width="70%">
-	   				<div class="hero-unit">
-						<h4> Main content to be displayed </h4>
+	   				<div class="hero-unit" id= "1">
+					</div>
+					<div class="hero-unit" id= "2">						
+					</div>
+					<div class="hero-unit" id= "3">
 					</div>
     			</td>
     		</tr>
