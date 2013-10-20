@@ -71,7 +71,7 @@ public class SignupController {
 	}
 
 	
-	@RequestMapping(value = "/signupemployee" ,method = RequestMethod.GET)
+	@RequestMapping(value = "/signupemployee/op1" ,method = RequestMethod.POST)
 	public ModelAndView getDataEmployee(Locale locale , Model model)
 	{
 		System.out.println("\n Inside Employee signup controller");		
@@ -133,7 +133,7 @@ public class SignupController {
 		return "signup/saveData";
 	}
 	
-	@RequestMapping(value = "/saveData" ,method = RequestMethod.GET)
+	@RequestMapping(value = "/saveData/op1" ,method = RequestMethod.POST)
 	public String saveDataPost(Locale locale , Model model)
 	{
 		System.out.println("\n Inside savedata Get controller");
@@ -150,7 +150,7 @@ public class SignupController {
 	
 	
 	
-	@RequestMapping(value = "/deleteemployee" ,method = RequestMethod.GET)
+	@RequestMapping(value = "/deleteemployee/op1" ,method = RequestMethod.POST)
 	public String deleteEmployee(Model model)
 	{
 		System.out.println("\n Inside delete empployee Get controller");

@@ -32,10 +32,6 @@
     			<td  width="70%">
 	   				<div class="hero-unit" id= "1">
 					</div>
-					<div class="hero-unit" id= "2">						
-					</div>
-					<div class="hero-unit" id= "3">
-					</div>
     			</td>
     		</tr>
     		
