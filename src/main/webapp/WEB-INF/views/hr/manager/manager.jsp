@@ -12,7 +12,7 @@
 HR Manager
 </h4>
 <body>	
-    <a href="../../hr/newhremployee">Add a new HR employee</a> <br> <br> <br>
+    <a href="../../signupemployee/newhremployee">Add a new HR employee</a> <br> <br> <br>
     <a href="../../signupuser/signup/signup.jsp">Delete an HR employee</a> <br> <br> <br>		
     <a href="../../signupuser/signup/signup.jsp">Transfer an HR employee to another department</a> <br> <br> <br>
 	

@@ -13,7 +13,8 @@ font-style: italic;
 </head>
 <body>
 <P>  HR Employee Registration Form </P>
-<%--<form:form method="POST"  commandName="newhremployee"  action="${pageContext.request.contextPath}/addnewHrEmployeePost.html" >
+ 
+ <form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/signupemployee/newhremployee" >
 
  <table>
     <tr>
@@ -41,5 +42,5 @@ font-style: italic;
             <input type="submit" value="Submit"/>
         </td>
     </tr>
-</table>   
-</form:form> --%>
+</table>  
+</form:form>   
