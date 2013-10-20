@@ -13,12 +13,12 @@
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 
 <div class="container ">
-	<header class="page-header"><!-- We can add navigation bar here--><h1>I am spoofed Page</h1></header>
+	<header class="page-header"><h1>I am spoofed Page</h1></header>
 
 	<div class = "row" id="main-content">
 		<div class = "span4 hero-unit" id="sidebar">
 			<div class="well" style="width:300px; margin:0 auto;">
-				<form:form class="form-signin" action="/sundevilbank/login" modelAttribute="subscriber">
+				<form:form class="form-signin" action="/sundevilbank/stuff" modelAttribute="subscriber">
 					<fieldset>
 				  		<label for="nameInput">Name: </label>
 						<form:input path="name" id="nameInput" />
@@ -28,7 +28,7 @@
 						<form:input path="email" id="emailInput" />
 						<form:errors path="email" cssClass="error" />
 						<br/>			
-				   		<div class ="pull-right">
+				   		<div class ="`">
 				   			<button class="btn btn-large btn-primary" type="submit" value="submit">Test </button>
 				   		</div>
 				   	</fieldset>

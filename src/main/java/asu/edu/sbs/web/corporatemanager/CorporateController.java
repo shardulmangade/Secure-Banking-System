@@ -3,12 +3,18 @@ package asu.edu.sbs.web.corporatemanager;
 
 import java.util.Locale;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import asu.edu.sbs.domain.SignUpEmployee;
+import asu.edu.sbs.domain.Subscriber;
 import asu.edu.sbs.web.trial.HomeController;
 
 @Controller
@@ -26,18 +32,6 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 		return "corporate/corporate";
 	}
 	
-	/**
-	 * This method handles the rendering of main content 
-	 * @param locale
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value="/corporate/op1",  method = RequestMethod.POST)
-	public String getTest1(Locale locale, Model model) {
-		logger.info("Welcome to corporate page, locale is {}.", locale);
-		
-		return "corporate/add";
-	}
 	
 	@RequestMapping(value="/corporate/op2",  method = RequestMethod.POST)
 	public String getTest2(Locale locale, Model model) {
@@ -48,10 +42,10 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	
 	@RequestMapping(value="/corporate/op3",  method = RequestMethod.POST)
 	public String getTest3(Locale locale, Model model) {
-		logger.info("Welcome to corporate page, locale is {}.", locale);
-		
+		logger.info("Welcome to corporate page, locale is {}.", locale);		
 		return "corporate/transfer";
 	}
+	
 	
 	
 }
