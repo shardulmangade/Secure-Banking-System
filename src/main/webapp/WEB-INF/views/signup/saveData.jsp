@@ -1,20 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<jsp:useBean id="user" class="asu.edu.sbs.domain.SignUpUser" scope="session"/>
+<jsp:setProperty name="user" property="*"/> 
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>HR Employee Page</title>
+<title>Save Data for newly </title>
 </head>
-<h4>
-	HR Regular Employee
-</h4>
 <body>
-	
-	<a href="../../signupuser/signupemployee">Add a new employee to payroll system</a> <br> <br> <br>
-	
-	<a href="../../signupuser/deleteemployee">Delete an employee from payroll system</a>  <br> <br> <br>
-	
-	
+
+<P> ${message}</P>
+
 </body>
 </html>
