@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import asu.edu.sbs.domain.SignUpEmployee;
@@ -38,20 +39,29 @@ public class HrManagerController {
 		}
 		
 		
-		@RequestMapping(value = "/newhremployee", method = RequestMethod.GET)
-		public String newHrEmployeeGet(Locale locale, Model model) {
+		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST)
+		public ModelAndView newHrEmployeeGet(Locale locale, Model model) {
 			System.out.println("Inside hr manager get Controller .............");				
-			return "hr/newhremployee";
+			//return "hr/newhremployee";
+			
+			return new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
 		}
 		
-//		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST)
-//		public String newHrEmployeePost(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes) {
-//			System.out.println("INSIDE hr manager post Controller .............");
-//		
-//			return "signup/saveData";
-//		}
+		@RequestMapping(value = "/newhremployee/op1", method = RequestMethod.POST)
+		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes) {
+			System.out.println("INSIDE hr manager post Controller .............");
+			
+			return new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
+			
+		}
+
 		
-		
+		@RequestMapping(value = "/deletehremployee/op1" ,method = RequestMethod.POST)
+		public String deleteEmployeeGet(Model model,HttpServletRequest request)
+		{
+			return  ("hr/deletehremployee");
+		}
+			
 		@RequestMapping(value = "/deletehremployee" ,method = RequestMethod.POST)
 		public String deleteEmployeePost(Model model,HttpServletRequest request)
 		{
