@@ -57,37 +57,7 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		sqlstatement.setString(1,UserName );		
 		sqlstatement.execute();		
 	}
-	
-	public void addNewHrEmployee(String UserName,String firstName,String lastName ,String emailId,String department	) throws Exception 
-	{
-		connection = dataSource.getConnection();
-		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.ALL_NEW_EMPLOYEE_REQUESTS + "(?,?,?,?,?)" );
-		sqlstatement.setString(1,UserName );
-		sqlstatement.setString(2,firstName );
-		sqlstatement.setString(3,lastName );
-		sqlstatement.setString(4,emailId );
-		sqlstatement.setString(5,department );
-		sqlstatement.execute();
-	}
-	
-	
-	public void deleteHrEmployee(String UserName) throws Exception 
-	{
-		connection = dataSource.getConnection();
-		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.DELETE_EMPLOYEE + "(?)" );
-		sqlstatement.setString(1,UserName );
-		sqlstatement.execute();
-	}
 
-
-	public void updateDepartmentOfEmployee(String UserName,String department) throws Exception 
-	{
-		connection = dataSource.getConnection();
-		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.UPDATE_EMPLOYEE + "(?,?)" );
-		sqlstatement.setString(1,UserName );
-		sqlstatement.setString(2,department );
-		sqlstatement.execute();
-	}
 }
 
 

@@ -26,14 +26,4 @@ public class HrDeptManager {
 			hrdbconnection.deleteEmployeeRequest(UserName);
 	}
 	
-	public void addNewHrEmployee(String UserName,String firstName,String lastName ,String emailId,String department)  throws Exception
-	{
-			hrdbconnection.addNewHrEmployee(UserName, firstName, lastName , emailId, department);
-	}
-	
-	public void updateDepartmentOfEmployee(String UserName,String department)  throws Exception
-	{
-			hrdbconnection.updateDepartmentOfEmployee(UserName, department);
-	}
-	
 }
