@@ -13,13 +13,13 @@ import asu.edu.sbs.domain.Subscriber;
 @Controller
 public class FormController {
 
-	@RequestMapping(value="/login", method=RequestMethod.GET)
+	@RequestMapping(value="/stuff", method=RequestMethod.GET)
 	public String loadFormPage(Model m) {
 		m.addAttribute("subscriber", new Subscriber());
 		return "formPage";
 	}
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST)
+	@RequestMapping(value="/stuff", method=RequestMethod.POST)
 	public String submitForm(@Valid Subscriber subscriber, BindingResult result, Model m) {
 		if(result.hasErrors()) {
 			return "formPage";
