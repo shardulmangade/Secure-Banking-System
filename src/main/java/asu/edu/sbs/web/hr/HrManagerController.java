@@ -62,6 +62,7 @@ public class HrManagerController {
 			return  ("hr/deletehremployee");
 		}
 			
+		
 		@RequestMapping(value = "/deletehremployee" ,method = RequestMethod.POST)
 		public String deleteEmployeePost(Model model,HttpServletRequest request)
 		{

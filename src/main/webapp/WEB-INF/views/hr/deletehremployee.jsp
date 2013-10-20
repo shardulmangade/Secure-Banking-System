@@ -18,13 +18,13 @@
 	<div class = "row" id="main-content">
 		<div class = "span4 hero-unit" id="sidebar">
 			<div class="well" style="width:300px; margin:0 auto;">
-				<form class="form-signin">
+				<form class="form-signin" action = "/sundevilbank/signupemployee/deletehremployee" method = "post" >
 				  						  			    
         <label for = "textboxuser"> Enter username of HR employee to be deleted</label> 
         <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                
     	     	 
     	     	 <div class ="pull-right">
-				   			<button class="btn btn-large btn-primary" type="submit" value="submit">Submit</button>
+				   			<button class="btn btn-large btn-primary" type="submit" value="submit" >Submit</button>
 				   		</div>
 				 </form>
 				 	 

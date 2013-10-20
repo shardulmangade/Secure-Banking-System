@@ -16,7 +16,7 @@
 	<div class = "row" id="main-content">
 		<div class = "span4 hero-unit" id="sidebar">
 			<div class="well" style="width:500px;">
-				<form class="form-signin">			  						  			    
+				<form class="form-signin" method = "post" action = "/sundevilbank/signupuser/deleteemployee">			  						  			    
 			        <label for = "textboxuser"> Enter username of employee to be deleted:</label> 
 			        <br/>
 			        <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                
