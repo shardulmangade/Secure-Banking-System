@@ -12,30 +12,24 @@
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 
 <div class="container ">
-	<header class="page-header"><!-- We can add navigation bar here--><h3>Delete employee form</h3></header>
-	<!-- End of header -->
 	
 	<div class = "row" id="main-content">
 		<div class = "span4 hero-unit" id="sidebar">
-			<div class="well" style="width:300px; margin:0 auto;">
-				<form class="form-signin">
-				  						  			    
-        <label for = "textboxuser"> Enter username of employee to be deleted</label> 
-        <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                
-    	     	 
-    	     	 <div class ="pull-right">
-				   			<button class="btn btn-large btn-primary" type="submit" value="submit">Submit</button>
-				   		</div>
+			<div class="well" style="width:500px;">
+				<form class="form-signin">			  						  			    
+			        <label for = "textboxuser"> Enter username of employee to be deleted:</label> 
+			        <br/>
+			        <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                
+    	     	 	<br/>
+    	     	 	<div class ="pull-right">
+				   		<button class="btn btn-large btn-primary" type="submit" value="submit">Submit</button>
+				   	</div>
+				   	<br/>
 				 </form>
 				 	 
 			</div>
 		</div>
-	</div> 	
-	<!-- End of main content -->
-	<footer class = "container"> 
-		<em> copyright @Group 4, for more information do not hack this site ! </em>
-	</footer>
-	<!--  end of footer -->
+	</div> 
 </div>
 </body>
 </html>

@@ -47,9 +47,12 @@ font-style: italic;
     </tr>
    
     <tr>
-    <td colspan="2">
-            <input type="submit" value="Submit"/>
-        </td>
+	    <td colspan="2">
+	    	<div class ="pull-right">
+				<button class="btn btn-large btn-primary" type="submit" value="submit">Submit</button>
+			</div>
+	          
+	    </td>
     </tr>
 </table>  
 </form:form> 
