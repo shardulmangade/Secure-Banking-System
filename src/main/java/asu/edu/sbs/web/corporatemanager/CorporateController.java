@@ -36,21 +36,21 @@ private static final Logger logger = LoggerFactory.getLogger(HomeController.clas
 	public String getTest1(Locale locale, Model model) {
 		logger.info("Welcome to corporate page, locale is {}.", locale);
 		
-		return "corporate/test1";
+		return "corporate/add";
 	}
 	
 	@RequestMapping(value="/corporate/op2",  method = RequestMethod.POST)
 	public String getTest2(Locale locale, Model model) {
 		logger.info("Welcome to corporate page, locale is {}.", locale);
 		
-		return "corporate/test2";
+		return "corporate/delete";
 	}
 	
 	@RequestMapping(value="/corporate/op3",  method = RequestMethod.POST)
 	public String getTest3(Locale locale, Model model) {
 		logger.info("Welcome to corporate page, locale is {}.", locale);
 		
-		return "corporate/test3";
+		return "corporate/transfer";
 	}
 	
 	

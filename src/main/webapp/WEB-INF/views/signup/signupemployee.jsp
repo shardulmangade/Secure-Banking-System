@@ -37,7 +37,7 @@ font-style: italic;
         <td><form:errors path="emailId" cssClass="error" /></td>
     </tr>
     <tr>   	    
-   	    <td> Department : </td>
+   	    <td> Department : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
    	    <td> <form:select path = "department">
    	     <form:option value="NONE" label="--- Select ---" />
    	     <form:options items="${departmentList}"/>
