@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ page session="false" %>
 <html>
 <head>
@@ -12,7 +13,7 @@
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
 <div class="container">
-	<h2>Add Page</h2>
+	<p>POST IS GOOD !! ADD ANYONE</p>
 </div>
 </body>
 </html>
