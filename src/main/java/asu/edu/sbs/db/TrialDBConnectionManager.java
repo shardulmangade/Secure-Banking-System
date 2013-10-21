@@ -13,7 +13,7 @@ public class TrialDBConnectionManager {
 		
 		//TODO: Make database connection and populate User object
 		user = new User();
-		user.setName("Ram");
+		//user.setName("Ram");
 		return user;
 		
 	}
