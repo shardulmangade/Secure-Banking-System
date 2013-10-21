@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.db.HrDBConnectionManager;
 import asu.edu.sbs.db.SalesDBConnectionManager;
+import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 
 @Service
@@ -26,9 +27,9 @@ public class HrDeptManager {
 			hrdbconnection.deleteEmployeeRequest(UserName);
 	}
 	
-	public void addNewHrEmployee(String UserName,String firstName,String lastName ,String emailId,String department)  throws Exception
+	public void addNewHrEmployee(SignUpEmployee employee)  throws Exception
 	{
-			hrdbconnection.addNewHrEmployee(UserName, firstName, lastName , emailId, department);
+			hrdbconnection.addNewHrEmployee(employee);
 	}
 	
 	public void updateDepartmentOfEmployee(String UserName,String department)  throws Exception

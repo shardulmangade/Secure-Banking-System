@@ -51,8 +51,41 @@ public class HrManagerController {
 		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes) {
 			System.out.println("INSIDE hr manager post Controller .............");
 			
-			return new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
-			
+			//return new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
+			String message ;
+			ModelAndView mav = new ModelAndView();
+			try{				
+				System.out.println("\n Inside Employee signup post controller");
+				if(result.hasErrors())
+				{
+					return new ModelAndView("/newhremployee", "signemployee",employee);
+				}		 
+						
+				mav.setViewName("signup/saveData");
+				message= "Your request has been submitted for approval";
+				employee.setDepartment("HR");
+	
+				hrmanager.addNewHrEmployee(employee);
+				mav.addObject("message", message);				
+				return mav;
+			}
+		 catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			if(e instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException )
+			{
+				message = "Username already Exists.Choose a different username";
+				mav.addObject("message", message);
+				mav.setViewName("signup/saveData");		
+				return mav;
+			} else
+			{
+				message = "Error in saving your data.Please try again";
+				mav.addObject("message", message);
+				mav.setViewName("signup/saveData");		
+				return mav;					
+			}
+		  } 
 		}
 
 		

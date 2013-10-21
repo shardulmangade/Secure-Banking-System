@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.PreparedStatement;
 
+import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 
 @Service
@@ -58,15 +59,16 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		sqlstatement.execute();		
 	}
 	
-	public void addNewHrEmployee(String UserName,String firstName,String lastName ,String emailId,String department	) throws Exception 
+	public void addNewHrEmployee(SignUpEmployee employee) throws Exception 
 	{
 		connection = dataSource.getConnection();
-		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.ALL_NEW_EMPLOYEE_REQUESTS + "(?,?,?,?,?)" );
-		sqlstatement.setString(1,UserName );
-		sqlstatement.setString(2,firstName );
-		sqlstatement.setString(3,lastName );
-		sqlstatement.setString(4,emailId );
-		sqlstatement.setString(5,department );
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_NEW_EMPLOYEE + "(?,?,?,?,?,?)" );
+		sqlstatement.setString(1,employee.getUserName() );
+		sqlstatement.setString(2,employee.getFirstName() );
+		sqlstatement.setString(3,employee.getLastName() );
+		sqlstatement.setString(4,employee.getEmailId() );
+		sqlstatement.setString(5,employee.getDepartment() );
+		sqlstatement.setString(6,employee.getDepartment() );
 		sqlstatement.execute();
 	}
 	
