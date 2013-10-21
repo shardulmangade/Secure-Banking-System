@@ -9,6 +9,8 @@ public interface DBConstants
 	public final static String DELETE_EMPLOYEE_REQUESTS = "sp_deleteEmployeeRequests";	
 	public final static String INSERT_NEW_EMPLOYEE = "sp_insertNewEmployee";
 	public final static String DELETE_EMPLOYEE = "sp_deleteEmployee";
-	public final static String UPDATE_EMPLOYEE = "sp_updateEmployee";
+	public final static String UPDATE_EMPLOYEE = "sp_updateEmployee";	
+	public final static String INSERT_DELETE_REQUESTS_TO_CORPORATEMGMT = "sp_insertdeleteRequeststoCorporate";
+	public final static String GET_DELETE_REQUEST_STATUS = "sp_getdeleteRequestsStatus";
 	
 }

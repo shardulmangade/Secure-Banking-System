@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.activity.InvalidActivityException;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,8 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,UserName );		
 		sqlstatement.execute();		
+		if (sqlstatement.getUpdateCount()==0)
+			throw new InvalidActivityException();
 	}
 	
 	public void addNewHrEmployee(SignUpEmployee employee) throws Exception 
@@ -68,7 +71,7 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		sqlstatement.setString(3,employee.getLastName() );
 		sqlstatement.setString(4,employee.getEmailId() );
 		sqlstatement.setString(5,employee.getDepartment() );
-		sqlstatement.setString(6,employee.getDepartment() );
+		sqlstatement.setString(6,employee.getPassword() );
 		sqlstatement.execute();
 	}
 	
@@ -79,6 +82,9 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.DELETE_EMPLOYEE + "(?)" );
 		sqlstatement.setString(1,UserName );
 		sqlstatement.execute();
+		
+		if (sqlstatement.getUpdateCount()==0)
+			throw new InvalidActivityException();
 	}
 
 
@@ -89,7 +95,42 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		sqlstatement.setString(1,UserName );
 		sqlstatement.setString(2,department );
 		sqlstatement.execute();
+		if (sqlstatement.getUpdateCount()==0)
+			throw new InvalidActivityException();
 	}
+	
+	
+	public void insertDeleteRequesttoCM(String userName, String department, boolean deleteApprove) throws Exception 
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_DELETE_REQUESTS_TO_CORPORATEMGMT + "(?,?,?)" );
+		sqlstatement.setString(1,userName );
+		sqlstatement.setString(2,department );
+		sqlstatement.setBoolean(3,deleteApprove );
+		sqlstatement.execute();
+		if (sqlstatement.getUpdateCount()==0)
+			throw new InvalidActivityException();
+		
+	}
+	
+	public int getDeleteApprovalStatus(String userName, String department) throws Exception
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_DELETE_REQUEST_STATUS + "(?,?)" );
+		sqlstatement.setString(1,userName );
+		sqlstatement.setString(2,department );		
+		ResultSet rs = sqlstatement.executeQuery();
+		if(rs.next())
+		{
+			if(rs.getBoolean("approvedelete"))
+				return 1;
+			else 
+				return 0;			
+		}else {
+			return -1;
+		}
+	}
+	
 }
 
 

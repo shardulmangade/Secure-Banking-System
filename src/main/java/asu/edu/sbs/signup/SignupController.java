@@ -6,8 +6,11 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.activity.InvalidActivityException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +89,13 @@ public class SignupController {
 		return new ModelAndView("signup/signupemployee", "signupuser", new SignUpEmployee());
 	}
 	
+	
+//	@RequestMapping(value = "/hr/employee/hrEmployee", method = RequestMethod.GET)
+//	public String addnewHrEmployeePost(Locale locale, Model model) {
+//						
+//		return "hr/employee/hrEmployee";
+//	}
+	
 	@RequestMapping(value = "/SignupEmployeePost" ,method = RequestMethod.POST)
 	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes)
 	 {
@@ -96,6 +106,7 @@ public class SignupController {
 			if(result.hasErrors())
 			{
 				return new ModelAndView("signup/signupemployee", "signupuser",employee);
+				//return new ModelAndView("hr/employee/hrEmployee","signupuser",employee);
 			}		 
 					
 			mav.setViewName("signup/saveData");
@@ -172,42 +183,20 @@ public class SignupController {
 			return ("signup/saveData");
 			
 		} catch (Exception e) {
+			if(e instanceof InvalidActivityException )
+			{
+				e.printStackTrace();		
+				message = "Error occured in sending delete employee request";
+				model.addAttribute("message", message);							
+				return ("signup/saveData");
+			} else {
 			// TODO Auto-generated catch block
 			e.printStackTrace();						
 			message = "Error occured in sending delete request";
 			model.addAttribute("message", message);				
-			return ("signup/saveData");						
+			return ("signup/saveData");
+			}
 		 }		
 	}
 	
-
-	
-	
-//	@RequestMapping(value = "/deleteemployee" ,method = RequestMethod.POST)
-//	public ModelAndView  deleteEmployeePost(HttpServletRequest request)
-//	{
-//		System.out.println("\n Inside delete empployee post controller");
-//		String message ;
-//		ModelAndView mav = new ModelAndView();
-//		try{														
-//			message= "Your request has been submitted for approval";
-//			System.out.println("request is : "+ request.getParameter("userlabel"));
-//			if (request.getParameterValues("userNametext") == null)
-//			{				
-//				throw new Exception();
-//			}
-//			hrmanager.deleteEmployeeRequest(request.getParameter("userNametext"));
-//			mav.setViewName("signup/saveData");
-//			mav.addObject("message", message);
-//			return mav;
-//			
-//		} catch (Exception e) {
-//			
-//			e.printStackTrace();						
-//			message = "Error occured in sending delete request.Please try again";
-//			mav.addObject("message", message);
-//			mav.setViewName("signup/saveData");
-//			return mav;			 
-//		 }		
-//	}	
 }

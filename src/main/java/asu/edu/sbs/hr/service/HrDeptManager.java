@@ -32,9 +32,24 @@ public class HrDeptManager {
 			hrdbconnection.addNewHrEmployee(employee);
 	}
 	
+	public void deleteHrEmployee(String username) throws Exception
+	{
+		hrdbconnection.deleteHrEmployee(username);
+	}
+	
 	public void updateDepartmentOfEmployee(String UserName,String department)  throws Exception
 	{
 			hrdbconnection.updateDepartmentOfEmployee(UserName, department);
+	}
+	
+	public void insertDeleteRequesttoCM (String userName,String department, boolean deleteApprove) throws Exception 
+	{
+		hrdbconnection.insertDeleteRequesttoCM(userName,department,deleteApprove);
+	}
+	
+	public int getDeleteApprovalStatus (String userName,String department) throws Exception 
+	{
+		return hrdbconnection.getDeleteApprovalStatus(userName,department);
 	}
 	
 }
