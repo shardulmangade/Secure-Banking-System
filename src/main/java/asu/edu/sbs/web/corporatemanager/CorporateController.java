@@ -1,7 +1,9 @@
 package asu.edu.sbs.web.corporatemanager;
 
 
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -57,7 +59,29 @@ public class CorporateController {
 		return "corporate/transfer";
 	}
 	
-	@RequestMapping(value = "/addusercorporate" ,method = RequestMethod.POST)
+	@RequestMapping(value = "/corporate/op1" ,method = RequestMethod.POST)
+	public ModelAndView getDataEmployee(Locale locale , Model model)
+	{
+		System.out.println("\n Inside Employee signup controller");		
+		
+		Map <String,String> department = new LinkedHashMap<String,String>();
+		department.put("HR", "HR department");
+		department.put("sales", "Sales department");
+		department.put("TM", "Transaction Management department");
+		department.put("IT", "IT & Tech Support department");
+		department.put("CM", "Company Managment department");
+		model.addAttribute("departmentList", department);
+		return new ModelAndView("corporate/add", "signupuser", new SignUpEmployee());
+	}	
+	
+	/**
+	 * This method adds the user to database on behalf of 
+	 * @param employee
+	 * @param result
+	 * @param attributes
+	 * @return
+	 */
+	@RequestMapping(value = "/corporateadduser" ,method = RequestMethod.POST)
 	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes)
 	 {
 		String message ;
@@ -66,10 +90,10 @@ public class CorporateController {
 			System.out.println("\n Inside Employee signup post controller");
 			if(result.hasErrors())
 			{
-				return new ModelAndView("signup/signupemployee", "signupuser",employee);
+				return new ModelAndView("corporate/add", "signupuser",employee);
 			}		 
 					
-			mav.setViewName("signup/saveData");
+			mav.setViewName("signup/saveData"); // need getter methods for setView. Using saveData in signup.
 			message= "Your request has been submitted for approval";
 			crManager.saveNewEmployeeRequest(employee);
 			mav.addObject("message", message);				
@@ -93,5 +117,9 @@ public class CorporateController {
 			}
 		 }
 	 }
+	
+	
+	
+	
 	
 }
