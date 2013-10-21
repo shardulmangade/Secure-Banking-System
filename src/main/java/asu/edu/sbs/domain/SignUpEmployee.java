@@ -20,6 +20,8 @@ public class SignUpEmployee {
 	
 	private String department;
 	
+	private String password;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -58,6 +60,14 @@ public class SignUpEmployee {
 
 	public void setDepartment(String department) {
 		this.department = department;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	
