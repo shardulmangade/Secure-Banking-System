@@ -34,12 +34,12 @@
 							<table>
 								<tr>
 									<td>Username: </td>
-									<td><input type='text' name='j_username' value=''>
+									<td><input type='text' name='j_username' autocomplete="off">
 									</td>
 								</tr>
 								<tr>
 									<td>Password: </td>
-									<td><input type='password' name='j_password' /></td>
+									<td><input type='password' name='j_password' autocomplete="off"/></td>
 								</tr>
 							</table>
 							<div class="pull-right">
