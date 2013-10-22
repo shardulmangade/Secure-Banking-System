@@ -25,12 +25,12 @@ import asu.edu.sbs.domain.SignUpUser;
 import asu.edu.sbs.domain.Subscriber;
 import asu.edu.sbs.hr.service.CorporateManager;
 import asu.edu.sbs.hr.service.HrDeptManager;
-import asu.edu.sbs.web.trial.HomeController;
+import asu.edu.sbs.web.login.LoginController;
 
 @Controller
 public class CorporateController {
 
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 		
 	@Autowired
 	CorporateManager crManager;

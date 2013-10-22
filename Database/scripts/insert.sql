@@ -1,5 +1,4 @@
 use sundevilbank;
-drop table tbl_sales_user_requests
 
 insert into tbl_sales_user_requests values
 ('username001','External User','Rob','Stark','ramk@asu.edu',null, substring_index(user(),'@',1), curdate());
