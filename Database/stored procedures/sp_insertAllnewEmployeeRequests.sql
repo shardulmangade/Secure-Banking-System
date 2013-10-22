@@ -7,5 +7,3 @@ BEGIN
  insert into tbl_new_employee_request values (userName,firstName ,lastName,email,department, substring_index(user(),'@',1), curdate());
 END$$
 DELIMITER ;
-
-call sp_insertAllnewEmployeeRequests();

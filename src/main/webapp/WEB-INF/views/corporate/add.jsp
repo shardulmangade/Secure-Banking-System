@@ -13,7 +13,7 @@ font-style: italic;
 </head>
 <body>
 <P>  Employee Registration Form </P>
-<form:form method="POST"  action="/sundevilbank/addusercorporate" modelAttribute="signupemployee" >
+<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/corporateadduser.html" >
 
  <table>
     <tr>
@@ -37,7 +37,7 @@ font-style: italic;
         <td><form:errors path="emailId" cssClass="error" /></td>
     </tr>
     <tr>   	    
-   	    <td><b > Department : </b></td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
+   	    <td><b> Department : </b></td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
    	    <td> <form:select path = "department">
    	     <form:option value="NONE" label="--- Select ---" />
    	     <form:options items="${departmentList}"/>

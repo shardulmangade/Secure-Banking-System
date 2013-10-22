@@ -34,7 +34,7 @@ public class CorporateDBConnectionManager {
 	public void saveNewEmployeeRequest(SignUpEmployee employee) throws Exception
 	{
 		connection = dataSource.getConnection();
-		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.ALL_NEW_EMPLOYEE_REQUESTS + "(?,?,?,?,?)" );
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.ALL_NEW_EMPLOYEE_PASSWORD_REQUESTS + "(?,?,?,?,?,?)" );
 		sqlstatement.setString(1,employee.getUserName() );
 		sqlstatement.setString(2,employee.getFirstName() );
 		sqlstatement.setString(3,employee.getLastName() );
