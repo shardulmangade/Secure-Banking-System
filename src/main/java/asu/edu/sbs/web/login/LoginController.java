@@ -39,8 +39,8 @@ public class LoginController {
 	public String validUserHandle(ModelMap model, Principal principal) {
 
 		String name = principal.getName();
+		
 		model.addAttribute("username", name);
-		model.addAttribute("message", "Spring Security Custom Form example");
 		return "hello";
 
 	}

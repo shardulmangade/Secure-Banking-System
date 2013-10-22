@@ -7,9 +7,8 @@
 	href="/sundevilbank/resources/css/bootstrap.min.css" />
 <link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" />
 </head>
-<body>
-	<h3>Message : ${message}</h3>	
-	<h3>Username : ${username}</h3>	
+<body>	
+	<h3>Welcome,  ${username}</h3>	
  
 	<a href="<c:url value="/j_spring_security_logout" />" > Logout</a>
 </body>
