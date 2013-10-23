@@ -6,6 +6,7 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -59,9 +60,12 @@ public class LoginController {
 	public String validateOTP(@RequestParam(value="otp") String otp, ModelMap model, Principal principal) {
 
 		System.out.println("The authenticated user "+principal.getName()+" submitted an OTP: "+otp);
+		
+		SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 		if(loginManager.validateOTP(principal.getName(), otp))
 		{
 			//TODO: Set new role fetched from database
+			loginManager.getRole(principal.getName());
 			
 			//TODO: redirect to page based on role.
 		}

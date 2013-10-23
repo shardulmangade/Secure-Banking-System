@@ -19,6 +19,11 @@ public class LoginManager {
 		return loginDBConnection.getOTP(username);
 	}
 	
+	public String getRole(String username)
+	{
+		return loginDBConnection.getRole(username);
+	}
+	
 	public boolean validateOTP(String username, String inputOTP)
 	{
 		String storedOTP = loginDBConnection.getOTP(username);
