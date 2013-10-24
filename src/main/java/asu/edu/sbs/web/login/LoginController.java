@@ -1,11 +1,18 @@
 package asu.edu.sbs.web.login;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,11 +68,23 @@ public class LoginController {
 
 		System.out.println("The authenticated user "+principal.getName()+" submitted an OTP: "+otp);
 		
-		SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+	
+		
 		if(loginManager.validateOTP(principal.getName(), otp))
 		{
-			//TODO: Set new role fetched from database
-			loginManager.getRole(principal.getName());
+			//Set the new role to the user
+			String role = loginManager.getRole(principal.getName());			
+			List<GrantedAuthority> authorityList = new ArrayList<GrantedAuthority>();
+			authorityList.add(new SimpleGrantedAuthority(role));		
+			Authentication newAuth = new UsernamePasswordAuthenticationToken(principal,SecurityContextHolder.getContext().getAuthentication().getCredentials(),authorityList);
+			SecurityContextHolder.getContext().setAuthentication(newAuth);
+			
+			Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+			System.out.println("------------Begin print of user roles------------");
+			for (GrantedAuthority ga : authorities) {
+				System.out.println(ga.getAuthority());
+			}
+			System.out.println("------------End print of user roles------------");
 			
 			//TODO: redirect to page based on role.
 		}
