@@ -22,7 +22,7 @@
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '/sundevilbank/corporate/op1/')"> Add </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/signupuser/deleteemployee/op1')"> Delete </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op2')"> Delete </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op3')"> Transfer </a></li>
 							</ul>
 						</div>

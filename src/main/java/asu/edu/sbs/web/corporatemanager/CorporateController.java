@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -99,7 +100,6 @@ public class CorporateController {
 			mav.addObject("message", message);				
 			return mav;
 		}catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			if(e instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException )
 			{
@@ -118,7 +118,26 @@ public class CorporateController {
 		 }
 	 }
 	
-	
+	@RequestMapping(value = "/deleteemployee" ,method = RequestMethod.POST)
+	public String deleteEmployeePost(Model model,HttpServletRequest request)
+	{
+		System.out.println("\n Inside delete empployee post controller");
+		String message ;
+								
+		try{												
+			message= "Your request has been submitted for approval";
+			System.out.println("request is :"+request.getParameter("userNametext"));			
+			crManager.deleteEmployeeRequest(request.getParameter("userNametext"));
+			model.addAttribute("message", message);							
+			return ("signup/saveData");
+			
+		} catch (Exception e) {		
+			e.printStackTrace();						
+			message = "Error occured in sending delete request";
+			model.addAttribute("message", message);				
+			return ("signup/saveData");						
+		 }		
+	}
 	
 	
 	

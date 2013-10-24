@@ -11,8 +11,24 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
-<div class="container">
-	<h2>Delete Page</h2>
+<div class="container ">	
+	<div class = "row" id="main-content">
+		<div class = "span4 hero-unit" id="sidebar">
+			<div class="well" style="width:500px;">
+				<form class="form-signin" method = "post" action = "/sundevilbank/corporate/deleteemployee">			  						  			    
+			        <label for = "textboxuser"> Enter username of employee to be deleted:</label> 
+			        <br/>
+			        <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                
+    	     	 	<br/>
+    	     	 	<div class ="pull-right">
+				   		<button class="btn btn-large btn-primary" type="submit" value="submit">Submit</button>
+				   	</div>
+				   	<br/>
+				 </form>
+				 	 
+			</div>
+		</div>
+	</div> 
 </div>
 </body>
 </html>
