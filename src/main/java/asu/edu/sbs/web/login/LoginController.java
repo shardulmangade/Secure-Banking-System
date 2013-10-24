@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.login.service.LoginManager;
 
 
@@ -55,7 +56,11 @@ public class LoginController {
 		String name = principal.getName();
 		logger.info("The authenticated user "+name+" entered the otp check stage !");
 		
-		//Insert a new OTP and email it for the user
+		//TODO: Check for existing OTP
+		//TODO: Create new OTP and email it for the user
+		
+		//TODO: Provide option to resend OTP
+		
 		loginManager.insertNewOTP(name);
 		
 		model.addAttribute("username", name);
@@ -66,16 +71,15 @@ public class LoginController {
 	@RequestMapping(value = "/auth/otp", method = RequestMethod.POST)
 	public String validateOTP(@RequestParam(value="otp") String otp, ModelMap model, Principal principal) {
 
-		System.out.println("The authenticated user "+principal.getName()+" submitted an OTP: "+otp);
+		System.out.println("The authenticated user "+principal.getName()+" submitted an OTP: "+otp);	
 		
-	
-		
+		//TODO:Check if OTP exists for user and then only proceed to validating OTP
 		if(loginManager.validateOTP(principal.getName(), otp))
 		{
 			//Set the new role to the user
 			String role = loginManager.getRole(principal.getName());			
 			List<GrantedAuthority> authorityList = new ArrayList<GrantedAuthority>();
-			authorityList.add(new SimpleGrantedAuthority(role));		
+			authorityList.add(new SimpleGrantedAuthority(role));
 			Authentication newAuth = new UsernamePasswordAuthenticationToken(principal,SecurityContextHolder.getContext().getAuthentication().getCredentials(),authorityList);
 			SecurityContextHolder.getContext().setAuthentication(newAuth);
 			
@@ -86,7 +90,13 @@ public class LoginController {
 			}
 			System.out.println("------------End print of user roles------------");
 			
-			//TODO: redirect to page based on role.
+			//TODO: Remove the OTP from database as it has been validated
+			
+			//Redirect to home page based on role.
+			if(role.equals(IBankRoles.ROLE_EXTERNAL_USER))
+				return "redirect:/euser/home";
+			//TODO: add default case
+				
 		}
 		else
 		{

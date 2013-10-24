@@ -14,7 +14,7 @@
 		<intercept-url pattern="/logout*" access="permitAll" />
 		<intercept-url pattern="/resources/**" access="permitAll" />
 		<intercept-url pattern="/auth/**" access="hasAnyRole('ROLE_VALID_USER')" />
-		<intercept-url pattern="/euser/home" access="ROLE_EXTERNAL_USER"/>
+		<intercept-url pattern="/euser/**" access="hasRole('ROLE_EXTERNAL_USER')"/>
 		<!-- <intercept-url pattern="/**" access="denyAll" />-->
 		
 		<form-login login-page="/" default-target-url="/auth/otpcheck"
