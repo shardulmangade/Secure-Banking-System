@@ -6,6 +6,6 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 
 	<!--Reference to Database connection file -->
-	<import resource="spring-dbconnectionmanager.xml" />
+	<!-- <import resource="spring-dbconnectionmanager.xml" />-->
 	
 </beans>

@@ -1,7 +1,10 @@
 package asu.edu.sbs.web.hr;
 
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
+import javax.activity.InvalidActivityException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -24,6 +27,7 @@ public class HrManagerController {
 	
 	@Autowired
 	HrDeptManager hrmanager;
+	ModelAndView savedMav;
 		
 		@RequestMapping(value = "hr/hrmanager", method = RequestMethod.GET)
 		public String addnewHrEmployee(Locale locale, Model model) {
@@ -41,30 +45,31 @@ public class HrManagerController {
 		
 		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST)
 		public ModelAndView newHrEmployeeGet(Locale locale, Model model) {
-			System.out.println("Inside hr manager get Controller .............");				
-			//return "hr/newhremployee";
+			System.out.println("Inside hr manager get Controller .............");							
+			savedMav = new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
 			
-			return new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
+			return savedMav;
 		}
 		
 		@RequestMapping(value = "/newhremployee/op1", method = RequestMethod.POST)
 		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes) {
 			System.out.println("INSIDE hr manager post Controller .............");
 			
-			//return new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
 			String message ;
 			ModelAndView mav = new ModelAndView();
 			try{				
 				System.out.println("\n Inside Employee signup post controller");
 				if(result.hasErrors())
 				{
-					return new ModelAndView("/newhremployee", "signemployee",employee);
+					//return new ModelAndView("hr/newhremployee", "signupemployee",employee);
+					//return savedMav;
+					return new ModelAndView("hr/manager/manager","signupemployee",employee);
 				}		 
 						
 				mav.setViewName("signup/saveData");
 				message= "Your request has been submitted for approval";
 				employee.setDepartment("HR");
-	
+				employee.setPassword("temppassword");
 				hrmanager.addNewHrEmployee(employee);
 				mav.addObject("message", message);				
 				return mav;
@@ -100,22 +105,84 @@ public class HrManagerController {
 		public String deleteEmployeePost(Model model,HttpServletRequest request)
 		{
 			System.out.println("\n Inside delete empployee post controller");
-			String message ;
-									
-			try{												
-				message= "Employee "+ request.getParameter("userNametext")+ "has been deleted";						
-				hrmanager.deleteEmployeeRequest(request.getParameter("userNametext"));
+			String message = null ,userName;
+			userName = request.getParameter("userNametext");
+			int status;
+			try{				
+				status = hrmanager.getDeleteApprovalStatus(userName, "HR");
+				if(status==1 )
+				{					
+					message = "Employee "+ userName+ " has been deleted after approval of corporate level manager";
+					hrmanager.deleteHrEmployee(userName);					
+				} else  if (status==0){
+					message= "Employee "+ userName+ " delete request has not beeen approved by corporate level manager yet";											
+				} else if (status==-1)
+				{
+					message= "Employee "+ userName+ " delete request has beeen sent for approval to corporate level manager";						
+					hrmanager.insertDeleteRequesttoCM(userName,"HR",false);
+				}
 				model.addAttribute("message", message);							
 				return ("signup/saveData");
 				
 			} catch (Exception e) {
+				if(e instanceof InvalidActivityException )
+				{
+					e.printStackTrace();		
+					message = "Error occured in deleting employee .Please use valid username";
+					model.addAttribute("message", message);							
+					return ("signup/saveData");
+				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending delete request";
 				model.addAttribute("message", message);				
-				return ("signup/saveData");						
+				return ("signup/saveData");
+				}
 			 }		
 		}
-
+		
+		
+		@RequestMapping(value = "/transferemployee" ,method = RequestMethod.POST)
+		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request)
+		{								
+			Map <String,String> department = new LinkedHashMap<String,String>();			
+			department.put("sales", "Sales department");
+			department.put("TM", "Transaction Management department");
+			department.put("IT", "IT & Tech Support department");
+			department.put("CM", "Company Managment department");
+			model.addAttribute("departmentList", department);			
+			return new ModelAndView("hr/transferhremployee", "signupemployee", new SignUpEmployee());
+		}
+		
+		@RequestMapping(value = "/transferemployee/op1" ,method = RequestMethod.POST)
+		public String transferHrEmployee( SignUpEmployee employee,Model model,HttpServletRequest request)
+		{
+			System.out.println("\n Inside delete empployee post controller");
+			String message,department = null ;
+									
+			try{												
+				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
+				hrmanager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
+				model.addAttribute("message", message);							
+				return ("signup/saveData");
+				
+			} catch (Exception e) {
+				
+				if(e instanceof InvalidActivityException )
+				{
+					e.printStackTrace();		
+					message = "Error occured in transferring employee .Please use valid username";
+					model.addAttribute("message", message);							
+					return ("signup/saveData");
+				} else {
+				// TODO Auto-generated catch block
+				e.printStackTrace();						
+				message = "Error occured in sending transfer request";
+				model.addAttribute("message", message);				
+				return ("signup/saveData");
+				}
+			 }		
+		}
+		
 		
 }
