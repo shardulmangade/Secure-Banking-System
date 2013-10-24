@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,5 +38,28 @@ public class customerController {
 		model.addAttribute("listTransactions", listTransactions);
 		return "customer/viewtransaction";
 	}
+	
+	
+	@RequestMapping(value = "customer/newtransaction", method = RequestMethod.POST)
+	public String newCustomerTransaction(Locale locale, Model model, Principal principle) {
+		System.out.println("Inside new transaction Controller .............");						
+		return "customer/maketransaction";
+	}
+	
+	@RequestMapping(value = "customer/performTransaction", method = RequestMethod.POST)
+	public String performTransaction(Locale locale, Model model, Principal principle,HttpServletRequest request) {
+		System.out.println("Inside new transaction Controller .............");
+		String userName=request.getParameter("userNametext");
+		String accountNumber = request.getParameter("accountNumbertext");
+		String amount= request.getParameter("amounttext");
+		
+		if(userName!=null && accountNumber!= null && amount != null)
+		{
+			
+		}
+		
+		return "customer/performTransaction";
+	}
+	
 	
 }

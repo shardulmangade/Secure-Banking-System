@@ -58,6 +58,7 @@ public class CustomerDBConnection {
 				credit.setToacccount(rs.getString("toaccount"));
 				credit.setFromCustomer(rs.getString("fromusername"));
 				credit.setToCustomer(rs.getString("tousername"));
+				credit.setAmount(rs.getDouble("amount"));
 				listCredits.add(credit);
 			}
 			
