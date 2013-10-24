@@ -56,12 +56,13 @@ public class LoginController {
 		String name = principal.getName();
 		logger.info("The authenticated user "+name+" entered the otp check stage !");
 		
+		loginManager.checkForvalidOTP(name);
 		//TODO: Check for existing OTP
 		//TODO: Create new OTP and email it for the user
 		
 		//TODO: Provide option to resend OTP
 		
-		loginManager.insertNewOTP(name);
+//		loginManager.insertNewOTP(name);
 		
 		model.addAttribute("username", name);
 		return "otp";

@@ -27,7 +27,14 @@ public class LoginManager {
 	
 	public boolean validateOTP(String username, String inputOTP)
 	{
+		return true;
+	}
+	public boolean checkForvalidOTP(String username)
+	{
 		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
+		System.out.println("OTP fetched from database.................");
+		System.out.println(storedOTP.getPassword());
+		System.out.println(storedOTP.getExpirationTime());
 //		if(inputOTP.equals(storedOTP))
 			return true;
 		
