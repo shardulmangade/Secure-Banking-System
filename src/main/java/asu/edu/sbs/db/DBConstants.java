@@ -19,5 +19,7 @@ public interface DBConstants
 	public final static String INSERT_DELETE_REQUESTS_TO_CORPORATEMGMT = "sp_insertdeleteRequeststoCorporate";
 	public final static String GET_DELETE_REQUEST_STATUS = "sp_getdeleteRequestsStatus";
 	public final static String GET_ALL_CUSTOMER_TRANSACTIONS = "sp_getCustomerTransaction";
+	public final static String IT_ALL_PENDING_USER_REQUESTS = "sp_getAllItPendingUserRequests";
+
 	
 }
