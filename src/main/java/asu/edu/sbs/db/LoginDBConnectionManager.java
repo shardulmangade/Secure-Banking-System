@@ -4,8 +4,9 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 import javax.sql.DataSource;
 
@@ -57,7 +58,15 @@ public class LoginDBConnectionManager {
 				{
 					otp = new OneTimePassword();
 					otp.setPassword(rs.getString(1));
-					otp.setExpirationTime(rs.getTimestamp(2));
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+					try {
+						otp.setExpirationTime(format.parse(rs.getString(2).substring(0, 19)));
+					} catch (ParseException e) {
+						//This catch should never be executed. Application logic should make sure of that
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}			
 		} catch (SQLException e) {
@@ -79,13 +88,16 @@ public class LoginDBConnectionManager {
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
 			sqlStatement.setString(2,otp.getPassword());
-			sqlStatement.setTimestamp(3, (Timestamp) otp.getExpirationTime());
+			if(otp.getExpirationTime()!=null)
+				sqlStatement.setTimestamp(3, new java.sql.Timestamp(otp.getExpirationTime().getTime()));
+			else
+				sqlStatement.setTimestamp(3,null);	
 			sqlStatement.registerOutParameter(4, Types.VARCHAR);
 
 			sqlStatement.execute();
-			
+
 			sOutErrorValue = sqlStatement.getString(4);
-			
+
 			//SQL exception has occurred			
 			if(sOutErrorValue != null)
 			{
@@ -105,7 +117,7 @@ public class LoginDBConnectionManager {
 	public String getRole(String username)
 	{
 		String dbCommand;
-		
+
 
 		try {
 			Connection connection = dataSource.getConnection();
