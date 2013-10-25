@@ -1,6 +1,5 @@
 package asu.edu.sbs.signup;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -14,26 +13,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
-
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.SignUpUser;
-import asu.edu.sbs.hr.service.HrDeptManager;
+import asu.edu.sbs.sales.service.SalesDeptManager;
+
 
 @Controller
-@RequestMapping(value= "/signupuser")
-public class SignupController {
+@RequestMapping(value= "/signupuserexternal")
+public class SignupExternalController {
 
 	@Autowired
-	HrDeptManager hrmanager;
+	SalesDeptManager salesmanager;
 	
 //	@Autowired
 //	private SignUpValidator validator ;
@@ -44,10 +41,10 @@ public class SignupController {
 //	}
 	
 	@RequestMapping(value = "signup" ,method = RequestMethod.GET)
-	public ModelAndView getData( )
+	public ModelAndView getData()
 	{
 		System.out.println("\n Inside signup controller of external user");		
-		return new ModelAndView("signup/signup", "signupuser", new SignUpEmployee());		
+		return new ModelAndView("signup/signupexternal", "signupuserexternal", new SignUpExternalEmployee());		
 	}
 	
 	@RequestMapping(value = "/signupPost" ,method = RequestMethod.POST)
@@ -56,7 +53,7 @@ public class SignupController {
 		System.out.println("\n Inside signup post controller");
 		if(result.hasErrors())
 		{
-			return new ModelAndView("signup", "signupuser",user);
+			return new ModelAndView("signupexternal", "signupuserexternal",user);
 		}		 
 		
 		ModelAndView mav = new ModelAndView();
@@ -81,7 +78,7 @@ public class SignupController {
 		department.put("IT", "IT & Tech Support department");
 		department.put("CM", "Company Managment department");
 		model.addAttribute("departmentList", department);
-		return new ModelAndView("signup/signup", "signupuser", new SignUpEmployee());
+		return new ModelAndView("signup/signupexternal", "signupuserexternal", new SignUpExternalEmployee());
 	}
 	
 //	@RequestMapping(value = "/hr/employee/hrEmployee", method = RequestMethod.GET)
@@ -105,7 +102,7 @@ public class SignupController {
 					
 			mav.setViewName("signup/saveData");
 			message= "Your request has been submitted for approval";
-			hrmanager.saveNewEmployeeRequest(employee.getUserName(),employee.getFirstName(),employee.getLastName(),employee.getEmailId(),employee.getDepartment());
+			salesmanager.saveNewEmployeeRequest(employee.getUserName(),employee.getFirstName(),employee.getLastName(),employee.getEmailId(),employee.getDepartment());
 			mav.addObject("message", message);				
 			return mav;
 		}
@@ -172,7 +169,7 @@ public class SignupController {
 		try{												
 			message= "Your request has been submitted for approval";
 			System.out.println("request is :"+request.getParameter("userNametext"));			
-			hrmanager.deleteEmployeeRequest(request.getParameter("userNametext"));
+			salesmanager.deleteEmployeeRequest(request.getParameter("userNametext"));
 			model.addAttribute("message", message);							
 			return ("signup/saveData");
 			
