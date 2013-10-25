@@ -24,6 +24,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 import asu.edu.sbs.domain.SignUpEmployee;
+import asu.edu.sbs.domain.SignUpMerchantEmployee;
 import asu.edu.sbs.domain.SignUpUser;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.hr.service.HrDeptManager;
