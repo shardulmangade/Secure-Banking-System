@@ -70,6 +70,56 @@ public class CustomerDBConnection {
 	
 	return listCredits;
  }
+	
+	
+	public int insertNewTransaction(Credit credit) throws Exception
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_CUSTOMER_NEW_TRANSACTIONS + "(?,?,?,?,?)" );
+		System.out.println("\n"+sqlstatement);
+		sqlstatement.setString(1,credit.getFromCustomer());
+		sqlstatement.setString(2,credit.getToCustomer());
+		sqlstatement.setString(3,credit.getFromaccount() );
+		sqlstatement.setString(4,credit.getToacccount() );
+		sqlstatement.setDouble(5, credit.getAmount());
+		sqlstatement.execute();
+		return (sqlstatement.getUpdateCount());
+	}
+
+	public double getbalanceofCustomer(String username) throws Exception
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_BALANCE_OF_CUSTOMER + "(?)" );
+		System.out.println("\n"+sqlstatement);
+		sqlstatement.setString(1,username);
+		ResultSet rs = sqlstatement.executeQuery();
+		rs.next();
+		return (rs.getDouble("balance"));
+	}
+	
+	
+	public int updatebalanceofCustomer(String username,double balance) throws Exception
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.UPDATE_BALANCE_OF_CUSTOMER + "(?,?)" );
+		System.out.println("\n"+sqlstatement);
+		sqlstatement.setString(1,username);
+		sqlstatement.setDouble(2,balance);
+		sqlstatement.execute();
+		return (sqlstatement.getUpdateCount());
+	}
+	
+	
+	public boolean validateRecepientUser(String userName,String account) throws Exception 
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.VALIDATE_RECIPIENT_USER + "(?,?)" );
+		System.out.println("\n"+sqlstatement);
+		sqlstatement.setString(1,userName);
+		sqlstatement.setString(2,account);
+		ResultSet rs =sqlstatement.executeQuery();
+		return(rs.next());												
+	}
 }
 
 		
