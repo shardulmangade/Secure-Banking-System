@@ -6,7 +6,14 @@ public class Credit {
 	private String toacccount ;
 	private String fromCustomer;
 	private String toCustomer;
+	private Double amount;
 
+	public Double getAmount() {
+		return amount;
+	}
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
 	public String getFromaccount() {
 		return fromaccount;
 	}

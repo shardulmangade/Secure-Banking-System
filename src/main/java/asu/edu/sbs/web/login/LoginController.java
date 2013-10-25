@@ -32,6 +32,8 @@ import asu.edu.sbs.login.service.LoginManager;
 public class LoginController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+	public final static int SUCCESS = 1;
+	public final static int FAILURE = 0;
 	
 	@Autowired
 	private LoginManager loginManager;
@@ -56,12 +58,13 @@ public class LoginController {
 		String name = principal.getName();
 		logger.info("The authenticated user "+name+" entered the otp check stage !");
 		
-		//TODO: Check for existing OTP
-		//TODO: Create new OTP and email it for the user
-		
-		//TODO: Provide option to resend OTP
-		
-		loginManager.insertNewOTP(name);
+		//Check for existing OTP
+		if(!loginManager.checkForvalidOTP(name))
+		{
+			// Create new OTP and email it for the user
+			loginManager.insertNewOTP(name);
+			model.addAttribute("newOTP",true);
+		}		
 		
 		model.addAttribute("username", name);
 		return "otp";
@@ -73,24 +76,32 @@ public class LoginController {
 
 		System.out.println("The authenticated user "+principal.getName()+" submitted an OTP: "+otp);	
 		
-		//TODO:Check if OTP exists for user and then only proceed to validating OTP
+		//Check if OTP exists for user and then only proceed to validating OTP
+		if(!loginManager.checkForvalidOTP(principal.getName()))
+		{			
+			// Create new OTP and email it for the user
+			loginManager.insertNewOTP(principal.getName());
+			
+			// Set error message: OTP has expired and we have sent a new one
+			model.addAttribute("newOTP",true);
+			
+			//Redirect to OTP page
+			return "otp"; 
+		}
+		
+		//The time period of OTP is valid. Now check for otp correctness
 		if(loginManager.validateOTP(principal.getName(), otp))
 		{
 			//Set the new role to the user
-			String role = loginManager.getRole(principal.getName());			
+			String role = loginManager.getRole(principal.getName());	
+			
 			List<GrantedAuthority> authorityList = new ArrayList<GrantedAuthority>();
 			authorityList.add(new SimpleGrantedAuthority(role));
 			Authentication newAuth = new UsernamePasswordAuthenticationToken(principal,SecurityContextHolder.getContext().getAuthentication().getCredentials(),authorityList);
 			SecurityContextHolder.getContext().setAuthentication(newAuth);
-			
-			Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-			System.out.println("------------Begin print of user roles------------");
-			for (GrantedAuthority ga : authorities) {
-				System.out.println(ga.getAuthority());
-			}
-			System.out.println("------------End print of user roles------------");
-			
-			//TODO: Remove the OTP from database as it has been validated
+						
+			//Remove the OTP from database as it has been validated
+			loginManager.deleteOTP(principal.getName());
 			
 			//Redirect to home page based on role.
 			if(role.equals(IBankRoles.ROLE_EXTERNAL_USER))
@@ -102,8 +113,12 @@ public class LoginController {
 		{
 			//OTP did not match
 			System.out.println("The authenticated user "+principal.getName()+" OTP did not match");
-			//TODO: Set error message and redirect to same page
+			
+			// Set error message and redirect to same page
+			model.addAttribute("errorOTP",true);			
+			return "otp";
 		}
+		
 		return "otp";
 
 	}

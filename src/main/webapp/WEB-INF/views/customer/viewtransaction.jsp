@@ -17,6 +17,7 @@
 <td>FromAccount </td>
 <td>To</td>
 <td>ToAccount</td>
+<td>Amount</td>
 </tr>
 
 <c:forEach var="transaction" items="${listTransactions}">
@@ -25,6 +26,7 @@
 <td>${transaction.fromaccount}</td>
 <td>${transaction.toCustomer}</td>
 <td>${transaction.toacccount}</td>
+<td>${transaction.amount}</td>
 </tr>
 </c:forEach>
 </table>

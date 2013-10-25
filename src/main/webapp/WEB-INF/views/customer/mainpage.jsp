@@ -30,7 +30,7 @@
 										onclick="changeContent(1, '../../customer/customer/transaction')">View
 											all my transactions </a></li>
 									<li><a style="cursor: pointer;"
-										onclick="changeContent(1, '../../signupemployee/deletehremployee/op1')">
+										onclick="changeContent(1, '../../customer/customer/newtransaction')">
 											Make new Transfer Transaction </a></li>
 								</ul>
 							</div>

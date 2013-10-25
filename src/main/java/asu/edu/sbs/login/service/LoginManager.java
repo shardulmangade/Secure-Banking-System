@@ -1,5 +1,7 @@
 package asu.edu.sbs.login.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,36 +16,66 @@ public class LoginManager {
 	@Autowired
 	private LoginDBConnectionManager loginDBConnection;
 
-	public String getOTP(String username)
-	{
-		return loginDBConnection.getOTP(username);
-	}
-	
 	public String getRole(String username)
 	{
 		return loginDBConnection.getRole(username);
 	}
-	
+
 	public boolean validateOTP(String username, String inputOTP)
 	{
-		String storedOTP = loginDBConnection.getOTP(username);
-		if(inputOTP.equals(storedOTP))
+		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
+		if(storedOTP.getPassword().equals(inputOTP))
 			return true;
-		
+		else
+			return false;
+	}
+	public boolean checkForvalidOTP(String username)
+	{
+		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
+		if(storedOTP != null)
+		{
+			Date nowTime = new Date();
+			long difference = (nowTime.getTime() - storedOTP.getExpirationTime().getTime())/(1000);
+
+			if(difference < 600)
+				return true;
+		}
 		return false;
 	}
 
 	public int insertNewOTP(String username)
 	{
-		//TODO: Generate OTP
-		String otp = null;
+		//Generate new OTP
+		OneTimePassword otp = new OneTimePassword();
 
-		if(loginDBConnection.insertNewOTP(username, otp) == SUCCESS)
+		if(loginDBConnection.updateOTP(username, otp) == SUCCESS)
 		{
 			//TODO: Send the user an email
 			return SUCCESS;
 		}
 
 		return FAILURE;
+	}
+	
+	public int deleteOTP(String username)
+	{
+		//Generate new OTP
+		OneTimePassword otp = new OneTimePassword();
+		otp.setExpirationTime(null);
+		otp.setPassword(null);
+
+		if(loginDBConnection.updateOTP(username, otp) == SUCCESS)
+		{
+			return SUCCESS;
+		}
+
+		return FAILURE;
+	}
+
+	public int resendOTP(String username)
+	{
+		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
+		//TODO: Send the user OTP
+		return SUCCESS;
 	}
 }
