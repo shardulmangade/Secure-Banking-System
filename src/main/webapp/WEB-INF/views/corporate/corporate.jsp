@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" type="text/css" />
 </head>
 <body>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
 <div class="container">
@@ -24,6 +24,7 @@
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '/sundevilbank/corporate/op1/')"> Add </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op2')"> Delete </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op3')"> Transfer </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op4')"> View Pending Request </a></li>
 							</ul>
 						</div>
 					</div>
