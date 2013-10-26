@@ -21,9 +21,9 @@
     				<div class="sidebar-nav-fixed">
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
-								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '../../signupemployee/newhremployee')">Add a new HR employee  </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '../../signupemployee/deletehremployee/op1')"> Delete an employee </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '../../signupemployee/transferemployee')"> Transfer HR employee</a></li>
+								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hrmanager/newhremployee')">Add a new HR employee  </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hrmanager/deletehremployee/op1')"> Delete an employee </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hrmanager/transferemployee')"> Transfer HR employee</a></li>
 							</ul>
 						</div>
 					</div>

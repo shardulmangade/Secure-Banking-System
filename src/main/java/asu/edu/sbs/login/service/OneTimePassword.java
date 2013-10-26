@@ -52,7 +52,7 @@ public class OneTimePassword
 		cal.add(Calendar.MINUTE, 10);
 		return cal.getTime();
 	}
-	
+
 	public static void main(String a[])
 	{
 		OneTimePassword otp=new OneTimePassword();
@@ -90,4 +90,5 @@ public class OneTimePassword
 		}
 		return hashedPassword;
 	}
+
 }

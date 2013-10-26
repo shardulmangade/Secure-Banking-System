@@ -1,0 +1,29 @@
+﻿
+Employee Manager in Transactions
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Your branch and 'origin/master' have diverged,
+# and have 1 and 49 different commits each, respectively.
+#   (use "git pull" to merge the remote branch into yours)
+#
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#	modified:   src/main/java/asu/edu/sbs/db/TransactionDBManager.java
+#	renamed:    src/main/java/asu/edu/sbs/transaction/service/TransactionManager.java -> src/main/java/asu/edu/sbs/transaction/service/TransactionService.java
+#	new file:   src/main/java/asu/edu/sbs/transaction/service/TransactionServiceForManager.java
+#	modified:   src/main/java/asu/edu/sbs/web/transaction/TransactionController.java
+#	new file:   src/main/java/asu/edu/sbs/web/transaction/TransactionControllerForManager.java
+#	new file:   src/main/webapp/WEB-INF/views/transactions/employee/askPermission.jsp
+#	renamed:    src/main/webapp/WEB-INF/views/transactions/regularEmployee.jsp -> src/main/webapp/WEB-INF/views/transactions/employee/regularEmployee.jsp
+#	renamed:    src/main/webapp/WEB-INF/views/transactions/askPermission.jsp -> src/main/webapp/WEB-INF/views/transactions/employee/transactionsForRegEmp.jsp
+#	deleted:    src/main/webapp/WEB-INF/views/transactions/manager.jsp
+#	new file:   src/main/webapp/WEB-INF/views/transactions/manager/deleteTransEmployee.jsp
+#	new file:   src/main/webapp/WEB-INF/views/transactions/manager/newTransEmployee.jsp
+#	new file:   src/main/webapp/WEB-INF/views/transactions/manager/transManager.jsp
+#	renamed:    src/main/webapp/WEB-INF/views/transactions/transactionsForRegEmp.jsp -> src/main/webapp/WEB-INF/views/transactions/manager/transactionsForManager.jsp
+#	new file:   src/main/webapp/WEB-INF/views/transactions/manager/transferTransEmployee.jsp
+#
+

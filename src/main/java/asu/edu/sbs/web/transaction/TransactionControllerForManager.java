@@ -1,6 +1,7 @@
-package asu.edu.sbs.web.hr;
+package asu.edu.sbs.web.transaction;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -19,41 +20,52 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import asu.edu.sbs.domain.SignUpEmployee;
+import asu.edu.sbs.domain.Transaction;
 import asu.edu.sbs.hr.service.HrDeptManager;
+import asu.edu.sbs.transaction.service.TransactionServiceForManager;
 
 @Controller
-@RequestMapping(value= "/hr/hrmanager")
-public class HrManagerController {
+@RequestMapping(value= "/transactions/transactionManager")
+public class TransactionControllerForManager {
 	
 	@Autowired
-	HrDeptManager hrmanager;
+	TransactionServiceForManager transManager;
+	
 	ModelAndView savedMav;
 		
-		@RequestMapping(value = "manager/op1", method = RequestMethod.GET)
-		public String addnewHrEmployee(Locale locale, Model model) {
-			System.out.println("Inside hr manager Controller .............");				
-			return "hr/manager/manager";
+		@RequestMapping(value = "addNewEmployee", method = RequestMethod.GET)
+		public String addnewTransEmployee(Locale locale, Model model) {
+			System.out.println("Inside trans manager Controller .............");				
+			return "transactions/manager/transManager";
 		} 
 		
-		
-		@RequestMapping(value = "hr/manager", method = RequestMethod.POST)
-		public String addnewHrEmployeePost(Locale locale, Model model) {
-			System.out.println("Inside hr manager post Controller .............");				
-			return "hr/manager/hrmanager";
+		@RequestMapping(value = "transactionsForManager", method = RequestMethod.POST)
+		public String getTransactions(Locale locale, Model model) throws Exception
+		{
+//			transactionManager = new TransactionManager();
+			List<Transaction> transactions =  transManager.getManagerTransactions();
+			model.addAttribute("transactionsM", transactions);
+			return "transactions/manager/transactionsForManager";
 		}
 		
 		
-		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST)
-		public ModelAndView newHrEmployeeGet(Locale locale, Model model) {
-			System.out.println("Inside hr manager get Controller .............");							
-			savedMav = new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
-			
+		@RequestMapping(value = "transactions/transmanager1", method = RequestMethod.POST)
+		public String addnewTransEmployeePost(Locale locale, Model model) {
+			System.out.println("Inside trans manager post Controller .............");				
+			return "transactions/manager/transmanager";
+		}
+		
+		
+		@RequestMapping(value = "newTransEmployee", method = RequestMethod.POST)
+		public ModelAndView newTransEmployeeGet(Locale locale, Model model) {
+			System.out.println("Inside trans manager get Controller .............");							
+			savedMav = new ModelAndView("transactions/manager/newTransEmployee", "signupemployee", new SignUpEmployee());
 			return savedMav;
 		}
 		
-		@RequestMapping(value = "/newhremployee/op1", method = RequestMethod.POST)
+		@RequestMapping(value = "/newtransemployee/op1", method = RequestMethod.POST)
 		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes) {
-			System.out.println("INSIDE hr manager post Controller .............");
+			System.out.println("INSIDE trans manager post Controller .............");
 			
 			String message ;
 			ModelAndView mav = new ModelAndView();
@@ -63,14 +75,14 @@ public class HrManagerController {
 				{
 					//return new ModelAndView("hr/newhremployee", "signupemployee",employee);
 					//return savedMav;
-					return new ModelAndView("hr/manager/manager","signupemployee",employee);
+					return new ModelAndView("transactions/manager/manager","signupemployee",employee);
 				}		 
 						
 				mav.setViewName("signup/saveData");
 				message= "Your request has been submitted for approval";
-				employee.setDepartment("HR");
+				employee.setDepartment("TRANSACTIONS");
 				employee.setPassword("temppassword");
-				hrmanager.addNewHrEmployee(employee);
+				transManager.addNewHrEmployee(employee);
 				mav.addObject("message", message);				
 				return mav;
 			}
@@ -94,14 +106,14 @@ public class HrManagerController {
 		}
 
 		
-		@RequestMapping(value = "/deletehremployee/op1" ,method = RequestMethod.POST)
+		@RequestMapping(value = "/deletetransemployee/op1" ,method = RequestMethod.POST)
 		public String deleteEmployeeGet(Model model,HttpServletRequest request)
 		{
-			return  ("hr/deletehremployee");
+			return  ("transactions/deletetransemployee");
 		}
 			
 		
-		@RequestMapping(value = "/deletehremployee" ,method = RequestMethod.POST)
+		@RequestMapping(value = "deleteTransEmployee" ,method = RequestMethod.POST)
 		public String deleteEmployeePost(Model model,HttpServletRequest request)
 		{
 			System.out.println("\n Inside delete empployee post controller");
@@ -109,17 +121,17 @@ public class HrManagerController {
 			userName = request.getParameter("userNametext");
 			int status;
 			try{				
-				status = hrmanager.getDeleteApprovalStatus(userName, "HR");
+				status = transManager.getDeleteApprovalStatus(userName, "TRANSACTIONS");
 				if(status==1 )
 				{					
 					message = "Employee "+ userName+ " has been deleted after approval of corporate level manager";
-					hrmanager.deleteHrEmployee(userName);					
+					transManager.deleteHrEmployee(userName);					
 				} else  if (status==0){
 					message= "Employee "+ userName+ " delete request has not beeen approved by corporate level manager yet";											
 				} else if (status==-1)
 				{
 					message= "Employee "+ userName+ " delete request has beeen sent for approval to corporate level manager";						
-					hrmanager.insertDeleteRequesttoCM(userName,"HR",false);
+					transManager.insertDeleteRequesttoCM(userName,"HR",false);
 				}
 				model.addAttribute("message", message);							
 				return ("signup/saveData");
@@ -142,7 +154,7 @@ public class HrManagerController {
 		}
 		
 		
-		@RequestMapping(value = "/transferemployee" ,method = RequestMethod.POST)
+		@RequestMapping(value = "transferTransEmployee" ,method = RequestMethod.POST)
 		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request)
 		{								
 			Map <String,String> department = new LinkedHashMap<String,String>();			
@@ -151,18 +163,18 @@ public class HrManagerController {
 			department.put("IT", "IT & Tech Support department");
 			department.put("CM", "Company Managment department");
 			model.addAttribute("departmentList", department);			
-			return new ModelAndView("hr/transferhremployee", "signupemployee", new SignUpEmployee());
+			return new ModelAndView("transactions/manager/transferTransEmployee", "signupemployee", new SignUpEmployee());
 		}
 		
-		@RequestMapping(value = "/transferemployee/op1" ,method = RequestMethod.POST)
-		public String transferHrEmployee( SignUpEmployee employee,Model model,HttpServletRequest request)
+		@RequestMapping(value = "/transfertransemployee/op1" ,method = RequestMethod.POST)
+		public String transferTransEmployee( SignUpEmployee employee,Model model,HttpServletRequest request)
 		{
 			System.out.println("\n Inside delete empployee post controller");
 			String message,department = null ;
 									
 			try{												
 				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
-				hrmanager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
+				transManager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
 				model.addAttribute("message", message);							
 				return ("signup/saveData");
 				

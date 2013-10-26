@@ -21,5 +21,3 @@ BEGIN
 
 END$$
 DELIMITER ;
-
-call sp_getAllSalesUserRequests();

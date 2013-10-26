@@ -1,4 +1,3 @@
-drop table tbl_all_users;
 create table tbl_all_users
 (
 username varchar(100) not null primary key,

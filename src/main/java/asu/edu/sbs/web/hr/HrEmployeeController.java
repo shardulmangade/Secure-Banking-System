@@ -12,9 +12,10 @@ import asu.edu.sbs.domain.User;
 
 
 @Controller
+@RequestMapping(value = "hr/hremployee")
 public class HrEmployeeController {
 	
-	@RequestMapping(value = "hr/employee/hrEmployee", method = RequestMethod.GET)
+	@RequestMapping(value = "/hrEmployee", method = RequestMethod.GET)
 	public String getHrEmployee(Locale locale, Model model) {
 		System.out.println("Inside hr employee Controller .............");
 				

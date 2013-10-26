@@ -29,19 +29,12 @@ import asu.edu.sbs.domain.SignUpUser;
 import asu.edu.sbs.hr.service.HrDeptManager;
 
 @Controller
-@RequestMapping(value= "/signupuser")
+@RequestMapping(value= "/hr/hremployee")
 public class SignupController {
 
 	@Autowired
 	HrDeptManager hrmanager;
 	
-//	@Autowired
-//	private SignUpValidator validator ;
-//	
-//	private void initBinder(WebDataBinder binder)
-//	{
-//		binder.setValidator(validator);		
-//	}
 	
 	@RequestMapping(value = "signup" ,method = RequestMethod.GET)
 	public ModelAndView getData( )
@@ -56,7 +49,7 @@ public class SignupController {
 		System.out.println("\n Inside signup post controller");
 		if(result.hasErrors())
 		{
-			return new ModelAndView("signup", "signupuser",user);
+			return new ModelAndView("signup/signup", "signupuser",user);
 		}		 
 		
 		ModelAndView mav = new ModelAndView();

@@ -22,3 +22,4 @@ BEGIN
 	FROM tbl_merchant_pending_transactions WHERE tbl_merchant_pending_transactions.tomerchantname = merchantName;  
 
 END$$
+DELIMITER ;

@@ -7,12 +7,12 @@
 	<link rel="stylesheet" href="/sundevilbank/resources/css/bootstrap.min.css" type="text/css"/>
 	<link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" type="text/css" />
 </head>
-<body>
+<body onload="changeContent(1, 'transactionsForRegEmp')">
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
 <div class="container">
-	<header class="page-header"><!-- We can add navigation bar here--><h1>HR Regular Employee</h1>	</header>
+	<header class="page-header"><!-- We can add navigation bar here--><h1>Welcome Regular Employee</h1>	</header>
 	<!-- End of header -->
 	<div class = "row" id="main-content">	
     	<table style="width:100%">
@@ -21,9 +21,9 @@
     				<div class="sidebar-nav-fixed">
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
-								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hremployee/signupemployee/op1')"> Add an employee to payroll</a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hremployee/deleteemployee/op1')"> Delete an employee from payroll </a></li>
-								
+								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '/sundevilbank/corporate/op1/')"> Ask Permission </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, 'transactionsForRegEmp')"> View Transactions </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/askPermissionRegEmp')"> Ask Permission </a></li>
 							</ul>
 						</div>
 					</div>
@@ -31,6 +31,11 @@
     			<td width = "15%"></td>
     			<td  width="70%">
 	   				<div class="hero-unit" id= "1">
+	   				
+	   				
+	   				
+	   				
+	   				
 					</div>
     			</td>
     		</tr>
@@ -44,41 +49,3 @@
 </div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<%-- <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>HR Employee Page</title>
-</head>
-<h4>
-	HR Regular Employee
-</h4>
-<body>
-	
-	<a href="../../signupuser/signupemployee">Add a new employee to payroll system</a> <br> <br> <br>
-	
-	<a href="../../signupuser/deleteemployee">Delete an employee from payroll system</a>  <br> <br> <br>
-	
-	
-</body>
-</html> --%>
