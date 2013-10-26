@@ -22,7 +22,7 @@
 				<th> Description </th>
 				<th> TimeStamp </th>
 			</tr>
-			<c:forEach var="request" items="${transactions}">
+			<c:forEach var="request" items="${transactionsM}">
 				<tr>
 					<td>${request.transactionID}</td>
 					<td>${request.description}</td>

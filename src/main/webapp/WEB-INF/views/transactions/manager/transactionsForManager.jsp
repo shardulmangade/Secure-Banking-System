@@ -14,28 +14,27 @@
 <div class="container">
 	<h2>Transactions</h2>
 	
-	
 	<c:choose>
-		<c:when test="${not empty users}">
+		<c:when test="${not empty transactions}">
 			<table border="1">
 			<tr>
-				<th> UserName </th>
-				<th> Action </th>
+				<th> Transaction ID</th>
+				<th> Description </th>
+				<th> TimeStamp </th>
 			</tr>
-			<c:forEach var="request" items="${users}">
+			<c:forEach var="request" items="${transactions}">
 				<tr>
-					<td>${request}</td>
-					<td> Aprrove or Deny</td>
+					<td>${request.transactionID}</td>
+					<td>${request.description}</td>
+					<td>${request.time}</td>
 				<tr>
 				</c:forEach>
 			</table>
 		</c:when>
 		<c:otherwise>
-			No Users
+			No transactions so far...
 		</c:otherwise>
 	</c:choose>
-	
-	
 	
 </div>
 </body>

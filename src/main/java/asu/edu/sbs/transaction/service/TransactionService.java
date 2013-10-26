@@ -9,7 +9,7 @@ import asu.edu.sbs.domain.Transaction;
 import asu.edu.sbs.db.TransactionDBManager;
 
 @Service
-public class TransactionManager {
+public class TransactionService {
 	
 	@Autowired
 	private TransactionDBManager transactionDBManager;
@@ -24,5 +24,10 @@ public class TransactionManager {
 	{
 		return transactionDBManager.getUsersForPermission();
 		
+	}
+	
+	public void makeUsersActive(List<String> users)
+	{
+		transactionDBManager.makeUsersActive(users);
 	}
 }
