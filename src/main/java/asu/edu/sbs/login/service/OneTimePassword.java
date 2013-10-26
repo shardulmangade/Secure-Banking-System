@@ -51,10 +51,4 @@ public class OneTimePassword
 		return cal.getTime();
 	}
 	
-	public static void main(String a[])
-	{
-		OneTimePassword otp=new OneTimePassword();
-		System.out.println("The OTP generated is --->" + "["+otp.password+"]");
-		System.out.println(otp.getExpirationTime());
-	}
 }

@@ -22,10 +22,13 @@ public class EmailNotificationSender {
 	private static final Logger logger = LoggerFactory
 			.getLogger(EmailNotificationSender.class);
 
+	public final static int SUCCESS = 1;
+	public final static int FAILURE = 0;
+	
 	@Autowired
 	private JavaMailSender mailSender;
 
-	public void sendNotificationEmail(String emailaddress, String subject, String msgText) {    	
+	public int sendNotificationEmail(String emailaddress, String subject, String msgText) {    	
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -38,11 +41,13 @@ public class EmailNotificationSender {
 			helper.setText(msgText);
 			mailSender.send(message);
 			logger.debug("Send email to " + emailaddress + " with subject \"" + subject + "\"");
+			return SUCCESS;
 		} catch (MessagingException ex) {
 			logger.error("Notification email could not be sent.", ex);
 		}
 		catch(Exception e) {
 			logger.error("Error in sending email",e);
 		}
+		return FAILURE;
 	}
 }

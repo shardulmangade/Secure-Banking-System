@@ -13,13 +13,13 @@ public class EmailNotificationManager{
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(EmailNotificationManager.class);
-	
+
 	public final static int SUCCESS = 1;
 	public final static int FAILURE = 0;
-	
+
 	@Autowired
 	private EmailNotificationSender emailSender;
-	
+
 
 	public int sendOTP(User user, OneTimePassword otp)
 	{
@@ -27,9 +27,12 @@ public class EmailNotificationManager{
 		{
 			StringBuilder message = new StringBuilder();
 			message.append("Dear User,\n\nYour One Time Password is: "+otp.getPassword()+". Expiration Time: "+otp.getExpirationTime() +" and its valid for only one login.");
-			emailSender.sendNotificationEmail(user.getEmail(), "SunDevilBank:Your One Time Password", message.toString());
-			logger.info("An OTP was sent to "+user.getEmail());
-			return SUCCESS;
+
+			if(emailSender.sendNotificationEmail(user.getEmail(), "SunDevilBank:Your One Time Password", message.toString()) == SUCCESS)
+			{
+				logger.info("An OTP was sent to "+user.getEmail());
+				return SUCCESS;
+			}
 		}
 		return FAILURE;
 	}
