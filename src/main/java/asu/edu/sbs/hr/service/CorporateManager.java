@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.db.CorporateDBConnectionManager;
@@ -25,11 +27,13 @@ public class CorporateManager {
 			System.out.println("\nIn corpoarte manager to sign up");
 			//generate otp
 			OneTimePassword otpInstance = new OneTimePassword();
-			String hashedPassword = otpInstance.getHashedOTP();
-			employee.setPassword(otpInstance.getPassword());
+			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+		    String hashedPass = encoder.encodePassword("admin", null);
+			employee.setPassword(hashedPass);
+			System.out.println(hashedPass);
 			corporateDbconnection.saveNewEmployeeRequest(employee);
 			//send email
-			enManager.sendPassword(employee);
+			enManager.sendPassword(employee, otpInstance.getPassword());
 	}
 	
 	public void deleteEmployeeRequest(String UserName)  throws Exception

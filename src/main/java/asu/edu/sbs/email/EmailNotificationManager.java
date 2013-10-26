@@ -35,12 +35,12 @@ public class EmailNotificationManager{
 		return FAILURE;
 	}
 	
-	public int sendPassword(SignUpEmployee user)
+	public int sendPassword(SignUpEmployee user, String password)
 	{
 		if(user.getEmailId() != null && !user.getEmailId().equals(""))
 		{
 			StringBuilder message = new StringBuilder();
-			message.append("Dear User,\n\nYour temporary password is: "+user.getPassword()+".\n Please change the password once you log in\n");
+			message.append("Dear User,\n\nYour temporary password is: "+   password +".\n Please change the password once you log in\n");
 			emailSender.sendNotificationEmail(user.getEmailId(), "SunDevilBank:Your temporary Password", message.toString());
 			logger.info("Temporary password was sent to "+user.getEmailId());
 			return SUCCESS;
