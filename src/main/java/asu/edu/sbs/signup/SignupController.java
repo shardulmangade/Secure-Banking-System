@@ -49,7 +49,7 @@ public class SignupController {
 		System.out.println("\n Inside signup post controller");
 		if(result.hasErrors())
 		{
-			return new ModelAndView("signup", "signupuser",user);
+			return new ModelAndView("signup/signup", "signupuser",user);
 		}		 
 		
 		ModelAndView mav = new ModelAndView();
