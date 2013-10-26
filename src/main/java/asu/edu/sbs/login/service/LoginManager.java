@@ -37,7 +37,7 @@ public class LoginManager {
 			Date nowTime = new Date();
 			long difference = (nowTime.getTime() - storedOTP.getExpirationTime().getTime())/(1000);
 
-			if(difference < 600)
+			if(difference < 0)
 				return true;
 		}
 		return false;
