@@ -26,7 +26,8 @@ import asu.edu.sbs.sales.service.SalesDeptManager;
 import asu.edu.sbs.service.TrialUserManager;
 
 @Controller
-@RequestMapping(value= "/signupemployee")
+@RequestMapping(value= "/sales/salesmanager")
+
 public class SalesManagerController {
 
 	@Autowired
@@ -34,7 +35,7 @@ public class SalesManagerController {
 	ModelAndView savedMav;
 	ModelAndView savedMav1;
 		
-		@RequestMapping(value = "sales/salesmanager", method = RequestMethod.GET)
+		@RequestMapping(value = "/manager", method = RequestMethod.GET)
 		public String addnewSalesEmployee(Locale locale, Model model) {
 			System.out.println("Inside Sales manager Controller .............");				
 			return "sales/manager/manager";
