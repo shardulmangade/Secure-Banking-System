@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/sundevilbank/resources/css/bootstrap.min.css" type="text/css"/>
 	<link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" type="text/css" />
 </head>
-<body>
+<body onload="changeContent(1, 'transactionsForRegEmp')">
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
@@ -22,7 +22,7 @@
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '/sundevilbank/corporate/op1/')"> Ask Permission </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/transactionsForRegEmp')"> View Transactions </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, 'transactionsForRegEmp')"> View Transactions </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/askPermissionRegEmp')"> Ask Permission </a></li>
 							</ul>
 						</div>
