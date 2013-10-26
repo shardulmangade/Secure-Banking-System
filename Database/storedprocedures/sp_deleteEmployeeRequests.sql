@@ -7,5 +7,3 @@ BEGIN
  delete from tbl_new_employee_request where tbl_new_employee_request.username = 'userName';
 END$$
 DELIMITER ;
-
-call sp_deleteEmployeeRequests();

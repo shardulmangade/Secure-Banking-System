@@ -8,3 +8,4 @@ BEGIN
  SELECT username, department FROM tbl_delete_request_for_corporatemgmt;  
 
 END$$
+DELIMITER ;
