@@ -20,3 +20,4 @@ BEGIN
 	FROM tbl_it_pending_user_requests;  
 
 END$$
+DELIMITER ;

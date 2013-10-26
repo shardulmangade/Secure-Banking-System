@@ -1,4 +1,3 @@
-drop table tbl_customer_account_no;
 create table tbl_customer_account_no
 (
 username varchar(100) not null primary key,
