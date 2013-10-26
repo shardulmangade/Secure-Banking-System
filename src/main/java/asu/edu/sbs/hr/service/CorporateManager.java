@@ -9,18 +9,27 @@ import org.springframework.stereotype.Service;
 import asu.edu.sbs.db.CorporateDBConnectionManager;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.email.EmailNotificationManager;
+import asu.edu.sbs.login.service.OneTimePassword;
 
 @Service
 public class CorporateManager {
 
 	@Autowired
 	private CorporateDBConnectionManager corporateDbconnection;
+	@Autowired
+	private EmailNotificationManager enManager;
 	
 	public void  saveNewEmployeeRequest(SignUpEmployee employee) throws Exception
 	{
 			System.out.println("\nIn corpoarte manager to sign up");
-			employee.setPassword("random password"); //random passsword currently. Use OTP once Ashwin is done with it
+			//generate otp
+			OneTimePassword otpInstance = new OneTimePassword();
+			String hashedPassword = otpInstance.getHashedOTP();
+			employee.setPassword(otpInstance.getPassword());
 			corporateDbconnection.saveNewEmployeeRequest(employee);
+			//send email
+			enManager.sendPassword(employee);
 	}
 	
 	public void deleteEmployeeRequest(String UserName)  throws Exception
