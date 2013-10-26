@@ -17,39 +17,9 @@ public class SignUpExternalEmployee {
 	
 	
 	private String department;
-	@NotBlank
-	private String SSN;
-	public String getSSN() {
-		return SSN;
-	}
-
-	public void setSSN(String sSN) {
-		SSN = sSN;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	@NotBlank
-	private String phone;
-	@NotBlank
-	private String gender;
-	
+		
 	private String password;
-	
+		
 	public String getFirstName() {
 		return firstName;
 	}

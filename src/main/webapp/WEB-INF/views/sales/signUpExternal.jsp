@@ -36,22 +36,7 @@ font-style: italic;
         <td><form:input class = "form-control" path="emailId" /></td>
         <td><form:errors path="emailId" cssClass="error" /></td>
     </tr>
-      <tr>
-        <td><form:label path="SSN">lastName</form:label></td>
-        <td><form:input class = "form-control" path="SSN" /></td>
-        <td><form:errors path="SSN" cssClass="error" /></td>
-    </tr>
-    <tr>
-        <td><form:label path="phone">userName</form:label></td>
-        <td><form:input class = "form-control" path="phone" /></td>
-        <td><form:errors path="phone" cssClass="error" /></td>
-    </tr>
-    <tr>
-        <td><form:label path="gender">emailId</form:label></td>
-        <td><form:input class = "form-control" path="gender" /></td>
-        <td><form:errors path="gender" cssClass="error" /></td>
-    </tr>
-   
+      
     <tr>
 	    <td colspan="2">
 	    	<div class ="pull-right">

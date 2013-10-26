@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import asu.edu.sbs.db.HrDBConnectionManager;
 import asu.edu.sbs.db.SalesDBConnectionManager;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
@@ -18,7 +17,7 @@ public class SalesDeptManager {
 	
 	public void  saveNewEmployeeRequest(String UserName,String firstName,String lastName ,String emailId,String department) throws Exception
 	{
-			System.out.println("\n In Sales Db connection manager");
+			System.out.println("\n In SalesDb connection manager");
 			salesdbconnection.saveNewEmployeeRequest( UserName, firstName, lastName , emailId, department);
 	}
 	
@@ -27,12 +26,12 @@ public class SalesDeptManager {
 		salesdbconnection.deleteEmployeeRequest(UserName);
 	}
 	
-	public void addNewHrEmployee(SignUpEmployee employee)  throws Exception
+	public void addNewSalesEmployee(SignUpEmployee employee)  throws Exception
 	{
 		salesdbconnection.addNewSalesEmployee(employee);
 	}
 	
-	public void deleteHrEmployee(String username) throws Exception
+	public void deleteSalesEmployee(String username) throws Exception
 	{
 		salesdbconnection.deleteSalesEmployee(username);
 	}
