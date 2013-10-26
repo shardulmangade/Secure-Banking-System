@@ -23,7 +23,8 @@ public class ItDBConnectionManager {
 
 	public final static int SUCCESS = 1;
 	public final static int FAILURE = 0;
-
+	private Connection connection;
+	
 	@Autowired
 	@Qualifier("dataSource")
 	private DataSource dataSource;
@@ -82,5 +83,59 @@ public class ItDBConnectionManager {
 		sqlstatement.execute();		
 		if (sqlstatement.getUpdateCount()==0)
 			throw new InvalidActivityException();
+	}
+
+	public void deleteItEmployee(String UserName) throws Exception 
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.DELETE_EMPLOYEE + "(?)" );
+		sqlstatement.setString(1,UserName );
+		sqlstatement.execute();
+		
+		if (sqlstatement.getUpdateCount()==0)
+			throw new InvalidActivityException();
+	}
+
+	public void updateDepartmentOfEmployee(String UserName,String department) throws Exception 
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.UPDATE_EMPLOYEE + "(?,?)" );
+		sqlstatement.setString(1,UserName );
+		sqlstatement.setString(2,department );
+		sqlstatement.execute();
+		if (sqlstatement.getUpdateCount()==0)
+			throw new InvalidActivityException();
+	}
+	
+	
+	public void insertDeleteRequesttoCM(String userName, String department, boolean deleteApprove) throws Exception 
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_DELETE_REQUESTS_TO_CORPORATEMGMT + "(?,?,?)" );
+		sqlstatement.setString(1,userName );
+		sqlstatement.setString(2,department );
+		sqlstatement.setBoolean(3,deleteApprove );
+		sqlstatement.execute();
+		if (sqlstatement.getUpdateCount()==0)
+			throw new InvalidActivityException();
+		
+	}
+	
+	public int getDeleteApprovalStatus(String userName, String department) throws Exception
+	{
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_DELETE_REQUEST_STATUS + "(?,?)" );
+		sqlstatement.setString(1,userName );
+		sqlstatement.setString(2,department );		
+		ResultSet rs = sqlstatement.executeQuery();
+		if(rs.next())
+		{
+			if(rs.getBoolean("approvedelete"))
+				return 1;
+			else 
+				return 0;			
+		}else {
+			return -1;
+		}
 	}
 }
