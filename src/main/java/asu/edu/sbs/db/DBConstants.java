@@ -22,6 +22,11 @@ public interface DBConstants
 	public final static String GET_DELETE_REQUEST_STATUS = "sp_getdeleteRequestsStatus";
 	public final static String GET_ALL_CUSTOMER_TRANSACTIONS = "sp_getCustomerTransaction";
 	public final static String IT_ALL_PENDING_USER_REQUESTS = "sp_getAllItPendingUserRequests";
+	public final static String TRANSACTIONS_FOR_REG_EMPLOYEE = "sp_getAllTransactionsForRegEmp";
+	public final static String TRANSACTIONS_FOR_TRANSACTION_MANAGER = "sp_getAllTransactionsForManager";
+	public final static String USER_FOR_PERMISSION_TRANSACTIONS = "sp_getUsersForPermission";
+	
+	
 
 	
 }
