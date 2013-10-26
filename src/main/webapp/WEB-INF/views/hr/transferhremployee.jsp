@@ -13,7 +13,7 @@ font-style: italic;
 </head>
 <body>
 <P> HR Employee Transfer Form </P>
-<form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/signupemployee/transferemployee/op1.html" >
+<form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/hr/hrmanager/transferemployee/op1.html" >
 
      <label for = "textboxuser"> Enter username of HR employee to be transfered</label> 
         <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                

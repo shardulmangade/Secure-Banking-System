@@ -26,7 +26,7 @@ BEGIN
 	 
 		THEN 
 			
-			update tbl_all_users set otp = inotp, otpvalidity = inotpvalidiy 
+			update tbl_all_users set otp = inotp, otpvalidity = inotpvalidity 
 			where username = inusername;
 	
 	ELSE 

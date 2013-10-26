@@ -1,6 +1,5 @@
 package asu.edu.sbs.signup;
 
-
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -9,9 +8,6 @@ import java.util.Map;
 import javax.activity.InvalidActivityException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,31 +24,23 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 import asu.edu.sbs.domain.SignUpEmployee;
+//import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.SignUpUser;
 import asu.edu.sbs.hr.service.HrDeptManager;
 
-
-
 @Controller
-@RequestMapping(value= "/signupuser")
+@RequestMapping(value= "/hr/hremployee")
 public class SignupController {
 
 	@Autowired
 	HrDeptManager hrmanager;
 	
-//	@Autowired
-//	private SignUpValidator validator ;
-//	
-//	private void initBinder(WebDataBinder binder)
-//	{
-//		binder.setValidator(validator);		
-//	}
 	
 	@RequestMapping(value = "signup" ,method = RequestMethod.GET)
 	public ModelAndView getData( )
 	{
-		System.out.println("\n Inside signup controller");		
-		return new ModelAndView("signup/signup", "signupuser", new SignUpUser());		
+		System.out.println("\n Inside signup controller of external user");		
+		return new ModelAndView("signup/signup", "signupuser", new SignUpEmployee());		
 	}
 	
 	@RequestMapping(value = "/signupPost" ,method = RequestMethod.POST)
@@ -86,9 +74,8 @@ public class SignupController {
 		department.put("IT", "IT & Tech Support department");
 		department.put("CM", "Company Managment department");
 		model.addAttribute("departmentList", department);
-		return new ModelAndView("signup/signupemployee", "signupuser", new SignUpEmployee());
+		return new ModelAndView("signup/signup", "signupuser", new SignUpEmployee());
 	}
-	
 	
 //	@RequestMapping(value = "/hr/employee/hrEmployee", method = RequestMethod.GET)
 //	public String addnewHrEmployeePost(Locale locale, Model model) {

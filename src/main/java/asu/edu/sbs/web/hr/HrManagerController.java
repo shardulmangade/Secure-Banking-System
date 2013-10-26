@@ -22,21 +22,21 @@ import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.hr.service.HrDeptManager;
 
 @Controller
-@RequestMapping(value= "/signupemployee")
+@RequestMapping(value= "/hr/hrmanager")
 public class HrManagerController {
 	
 	@Autowired
 	HrDeptManager hrmanager;
 	ModelAndView savedMav;
 		
-		@RequestMapping(value = "hr/hrmanager", method = RequestMethod.GET)
+		@RequestMapping(value = "manager/op1", method = RequestMethod.GET)
 		public String addnewHrEmployee(Locale locale, Model model) {
 			System.out.println("Inside hr manager Controller .............");				
 			return "hr/manager/manager";
 		} 
 		
 		
-		@RequestMapping(value = "hr/hrmanager", method = RequestMethod.POST)
+		@RequestMapping(value = "hr/manager", method = RequestMethod.POST)
 		public String addnewHrEmployeePost(Locale locale, Model model) {
 			System.out.println("Inside hr manager post Controller .............");				
 			return "hr/manager/hrmanager";
