@@ -29,19 +29,12 @@ import asu.edu.sbs.domain.SignUpUser;
 import asu.edu.sbs.hr.service.HrDeptManager;
 
 @Controller
-@RequestMapping(value= "/signupuser")
+@RequestMapping(value= "/hr/hremployee")
 public class SignupController {
 
 	@Autowired
 	HrDeptManager hrmanager;
 	
-//	@Autowired
-//	private SignUpValidator validator ;
-//	
-//	private void initBinder(WebDataBinder binder)
-//	{
-//		binder.setValidator(validator);		
-//	}
 	
 	@RequestMapping(value = "signup" ,method = RequestMethod.GET)
 	public ModelAndView getData( )
