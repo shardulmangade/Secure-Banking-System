@@ -136,15 +136,59 @@ public class LoginDBConnectionManager {
 			//Iterate through each row returned by the database
 			while(rs.next())
 			{	
-				System.out.println("___________________"+rs.getString(1));
+				if(rs.getString(1) != null && !rs.getString(1).equals(""))
+					return rs.getString(1);
 			}		
 		} catch (SQLException e) {
 			// TODO Use our application specific custom exception
 			e.printStackTrace();
 		}
 
-		return IBankRoles.ROLE_EXTERNAL_USER;
+		return IBankRoles.ROLE_INVALID_USER;
 	}
+	
+//	public OneTimePassword getOTP(String username)
+//	{
+//		String dbCommand;
+//		OneTimePassword otp = null;
+//
+//		try {
+//			Connection connection = dataSource.getConnection();
+//			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_OTP + "(?,?)";
+//			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+//			sqlStatement.setString(1,username);
+//			sqlStatement.registerOutParameter(2, Types.VARCHAR);
+//
+//			sqlStatement.execute();
+//
+//			ResultSet rs = sqlStatement.getResultSet();
+//
+//			//Iterate through each row returned by the database
+//			while(rs.next())
+//			{				
+//				if(rs.getString(1)!=null)
+//				{
+//					otp = new OneTimePassword();
+//					otp.setPassword(rs.getString(1));
+//					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//
+//					try {
+//						otp.setExpirationTime(format.parse(rs.getString(2).substring(0, 19)));
+//					} catch (ParseException e) {
+//						//This catch should never be executed. Application logic should make sure of that
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+//			}			
+//		} catch (SQLException e) {
+//			// TODO Use our application specific custom exception
+//			e.printStackTrace();
+//		}
+//
+//		return otp;
+//	}
+
 
 
 }

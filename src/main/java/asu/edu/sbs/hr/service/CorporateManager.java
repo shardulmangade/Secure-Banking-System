@@ -1,10 +1,14 @@
 package asu.edu.sbs.hr.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.db.CorporateDBConnectionManager;
 import asu.edu.sbs.domain.SignUpEmployee;
+import asu.edu.sbs.domain.User;
 
 @Service
 public class CorporateManager {
@@ -27,5 +31,15 @@ public class CorporateManager {
 	public void updateDepartmentOfEmployee(String UserName,String department)  throws Exception
 	{
 			corporateDbconnection.updateDepartmentOfEmployee(UserName, department);
+	}
+
+	public List<SignUpEmployee> getAllPendingUserRequests() {
+		
+		return corporateDbconnection.getAllPendingUserRequests();
+	}
+
+	public void deleteEmployee(String username) throws Exception{
+		
+		corporateDbconnection.deleteEmployee(username);
 	}
 }
