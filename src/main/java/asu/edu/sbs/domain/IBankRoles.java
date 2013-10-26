@@ -10,4 +10,5 @@ public interface IBankRoles {
 	public final String ROLE_HR_MANAGER = "ROLE_HR_MANAGER";
 	public final String ROLE_IT_EMPLOYEE = "ROLE_IT_EMPLOYEE";
 	public final String ROLE_IT_MANAGER = "ROLE_IT_MANAGER";
+	public final String ROLE_CORPORATE_MANAGER="ROLE_CORPORATE_MANAGER";
 }
