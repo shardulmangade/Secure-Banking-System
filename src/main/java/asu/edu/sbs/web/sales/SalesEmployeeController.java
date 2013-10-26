@@ -14,18 +14,25 @@ import asu.edu.sbs.sales.service.SalesDeptManager;
 
 @Controller
 public class SalesEmployeeController {
-
-	@Autowired
-	private SalesDeptManager salesdept;
 	
-	@RequestMapping(value = "sales/employee/userrequests", method = RequestMethod.GET)
-	public String getUserRequests(Locale locale, Model model) {
-		System.out.println("Inside employee Controller for sales.............");
-		
-		List<User> userRequests = salesdept.getAllUserRequests();
-		model.addAttribute("userRequests", userRequests);
-		return "sales/employee/requests";
+	@RequestMapping(value = "/sales/emp/home", method = RequestMethod.GET)
+	public String getsalesEmployee(Locale locale, Model model) {
+		System.out.println("Inside sales employee Controller .............");
+				
+		return "sales/employee/home";
 	}
-		
-	
 }
+
+
+/*@Autowired
+private SalesDeptManager salesdept;
+*/
+/*@RequestMapping(value = "sales/employee/userrequests", method = RequestMethod.GET)
+public String getUserRequests(Locale locale, Model model) {
+	System.out.println("Inside employee Controller for sales.............");*/
+	
+/*	List<User> userRequests = salesdept.getAllUserRequests();
+	model.addAttribute("userRequests", userRequests);
+	return "sales/employee/requests";
+}
+	*/

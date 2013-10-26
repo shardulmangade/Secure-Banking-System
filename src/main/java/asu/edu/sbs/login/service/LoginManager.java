@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.db.LoginDBConnectionManager;
+import asu.edu.sbs.domain.User;
+import asu.edu.sbs.email.EmailNotificationManager;
 
 @Service
 public class LoginManager {
@@ -15,6 +17,9 @@ public class LoginManager {
 
 	@Autowired
 	private LoginDBConnectionManager loginDBConnection;
+	
+	@Autowired
+	private EmailNotificationManager emailManager;
 
 	public String getRole(String username)
 	{
@@ -37,7 +42,7 @@ public class LoginManager {
 			Date nowTime = new Date();
 			long difference = (nowTime.getTime() - storedOTP.getExpirationTime().getTime())/(1000);
 
-			if(difference < 600)
+			if(difference < 0)
 				return true;
 		}
 		return false;
@@ -50,7 +55,12 @@ public class LoginManager {
 
 		if(loginDBConnection.updateOTP(username, otp) == SUCCESS)
 		{
-			//TODO: Send the user an email
+			//TODO: Fetch user email from database
+			User user = new User();
+			
+			user.setEmail("ramkumar007@gmail.com");
+			emailManager.sendOTP(user, otp);
+							
 			return SUCCESS;
 		}
 
