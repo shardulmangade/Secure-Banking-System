@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.domain.IBankRoles;
+import asu.edu.sbs.domain.User;
 import asu.edu.sbs.login.service.OneTimePassword;
 
 @Service
@@ -136,15 +137,51 @@ public class LoginDBConnectionManager {
 			//Iterate through each row returned by the database
 			while(rs.next())
 			{	
-				System.out.println("___________________"+rs.getString(1));
+				if(rs.getString(1) != null && !rs.getString(1).equals(""))
+					return rs.getString(1);
 			}		
 		} catch (SQLException e) {
 			// TODO Use our application specific custom exception
 			e.printStackTrace();
 		}
 
-		return IBankRoles.ROLE_EXTERNAL_USER;
+		return IBankRoles.ROLE_INVALID_USER;
 	}
+
+	public User getUser(String username)
+	{
+		String dbCommand;
+		OneTimePassword otp = null;
+		User user = null;
+
+		try {
+			Connection connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_USER + "(?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,username);
+			sqlStatement.registerOutParameter(2, Types.VARCHAR);
+
+			sqlStatement.execute();
+
+			ResultSet rs = sqlStatement.getResultSet();
+
+			//Iterate through each row returned by the database
+			while(rs.next())
+			{				
+				user = new User();
+				user.setUsername(rs.getString(1));
+				user.setFirstName(rs.getString(2));
+				user.setLastName(rs.getString(3));
+				user.setEmail(rs.getString(4));
+			}			
+		} catch (SQLException e) {
+			// TODO Use our application specific custom exception
+			e.printStackTrace();
+		}
+
+		return user;
+	}
+
 
 
 }

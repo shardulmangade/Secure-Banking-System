@@ -13,7 +13,7 @@ font-style: italic;
 </head>
 <body>
 <P>  Employee Registration Form </P>
-<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/corporateadduser.html" >
+<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/corporate/corporateadduser.html" >
 
  <table>
     <tr>

@@ -8,4 +8,7 @@
 	<!--Reference to Database connection file -->
 	<!-- <import resource="spring-dbconnectionmanager.xml" />-->
 	
+	<!-- Reference TO email configuration -->
+	<import resource="email-config.xml"/>
+	
 </beans>

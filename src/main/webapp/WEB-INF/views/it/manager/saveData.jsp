@@ -2,7 +2,7 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Sun Devil Bank</title>
+	<title>Save Data for newly</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="/sundevilbank/resources/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" />
@@ -12,22 +12,13 @@
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 
 <div class="container ">
-	<header class="page-header"><!-- We can add navigation bar here--><h3>Delete Sales employee form</h3></header>
+	<header class="page-header"><!-- We can add navigation bar here--><h1> Status of request is</h1></header>
 	<!-- End of header -->
 	
 	<div class = "row" id="main-content">
 		<div class = "span4 hero-unit" id="sidebar">
 			<div class="well" style="width:300px; margin:0 auto;">
-				<form class="form-signin" action = "/sundevilbank/sales/salesmanager/deletesalesemployee" method = "post" >
-				  						  			    
-        <label for = "textboxuser"> Enter Username of Sales employee to be deleted</label> 
-        <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                
-    	     	 
-    	     	 <div class ="pull-right">
-				   			<button class="btn btn-large btn-primary" type="submit" value="submit" >Submit</button>
-				   		</div>
-				 </form>
-				 	 
+				 <P> ${message}</P>
 			</div>
 		</div>
 	</div> 	
@@ -43,3 +34,45 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%--  <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<jsp:useBean id="user" class="asu.edu.sbs.domain.SignUpUser" scope="session"/>
+<jsp:setProperty name="user" property="*"/> 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Save Data for newly </title>
+</head>
+<body>
+
+<P> ${message}</P>
+
+</body>
+</html> --%>

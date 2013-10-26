@@ -22,8 +22,8 @@
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
 				<%--				<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '../../it/newitemployee')">Add a new IT employee  </a></li> --%>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '../it/deleteitemployee/op1')"> Delete an employee </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '../it/transferemployee')"> Transfer IT employee</a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '../it/manager/deleteitemployee/op1')"> Delete an employee </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '../it/manager/transferemployee')"> Transfer IT employee</a></li>
 							</ul>
 						</div>
 					</div>
