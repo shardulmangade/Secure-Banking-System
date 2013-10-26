@@ -26,7 +26,7 @@ public class EmailNotificationManager{
 		if(user.getEmail() != null && !user.getEmail().equals(""))
 		{
 			StringBuilder message = new StringBuilder();
-			message.append("Dear User,\n\nYour One Time Password is: "+otp.getPassword()+". Expiration Time: "+otp.getExpirationTime());
+			message.append("Dear User,\n\nYour One Time Password is: "+otp.getPassword()+". Expiration Time: "+otp.getExpirationTime() +" and its valid for only one login.");
 			emailSender.sendNotificationEmail(user.getEmail(), "SunDevilBank:Your One Time Password", message.toString());
 			logger.info("An OTP was sent to "+user.getEmail());
 			return SUCCESS;
