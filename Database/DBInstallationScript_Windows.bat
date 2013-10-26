@@ -2,7 +2,7 @@
 
 REM Assinging folder names to local variables
  SET DB_TABLES=\tables
- SET DB_PROC=\stored procedures
+ SET DB_PROC=\storedprocedures
  SET DB_SCRIPTS=\scripts
 
 REM Assigning file names to local variables
