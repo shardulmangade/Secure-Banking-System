@@ -47,7 +47,7 @@ public class OneTimePassword
 	{
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(new Date());
-		cal.add(Calendar.MINUTE, 5);
+		cal.add(Calendar.MINUTE, 10);
 		return cal.getTime();
 	}
 	

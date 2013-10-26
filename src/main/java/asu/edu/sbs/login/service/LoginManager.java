@@ -17,7 +17,7 @@ public class LoginManager {
 
 	@Autowired
 	private LoginDBConnectionManager loginDBConnection;
-	
+
 	@Autowired
 	private EmailNotificationManager emailManager;
 
@@ -55,18 +55,19 @@ public class LoginManager {
 
 		if(loginDBConnection.updateOTP(username, otp) == SUCCESS)
 		{
-			//TODO: Fetch user email from database
-			User user = new User();
-			
-			user.setEmail("ramkumar007@gmail.com");
-			emailManager.sendOTP(user, otp);
-							
+			//Fetch user from database
+			User user = loginDBConnection.getUser(username);
+
+			//Send OTP to user
+			if(user != null)
+				emailManager.sendOTP(user, otp);
+
 			return SUCCESS;
 		}
 
 		return FAILURE;
 	}
-	
+
 	public int deleteOTP(String username)
 	{
 		//Generate new OTP

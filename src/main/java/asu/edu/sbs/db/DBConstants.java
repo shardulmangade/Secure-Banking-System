@@ -12,6 +12,9 @@ public interface DBConstants
 	public final static String GET_OTP = "sp_getOTP";
 	public final static String UPDATE_OTP = "sp_updateOTP";
 	
+	//User Stored Procedures
+	public final static String GET_USER = "sp_getUser";
+	
 	public final static String ALL_NEW_EMPLOYEE_REQUESTS = "sp_insertAllnewEmployeeRequests";
 	public final static String ALL_NEW_EMPLOYEE_PASSWORD_REQUESTS = "sp_insertAllnewEmployeePasswordRequests";
 	public final static String DELETE_EMPLOYEE_REQUESTS = "sp_deleteEmployeeRequests";	
