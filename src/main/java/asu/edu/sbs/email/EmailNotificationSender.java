@@ -1,8 +1,5 @@
 package asu.edu.sbs.email;
 
-import java.util.Properties;
-
-import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -14,6 +11,11 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+/**
+ * 
+ * @author Ram Kumar Kumaresan
+ *
+ */
 @Service
 public class EmailNotificationSender {
 
