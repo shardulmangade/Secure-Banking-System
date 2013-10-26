@@ -35,14 +35,14 @@ public class ItManagerController {
 		} 
 		
 		
-		@RequestMapping(value = "it/deleteitemployee/op1" ,method = RequestMethod.POST)
+		@RequestMapping(value = "it/manager/deleteitemployee/op1" ,method = RequestMethod.POST)
 		public String deleteEmployeeGet(Model model,HttpServletRequest request)
 		{
-			return  ("it/deleteitemployee");
+			return  ("it/manager/deleteitemployee");
 		}
 			
 		
-		@RequestMapping(value = "it/deleteitemployee" ,method = RequestMethod.POST)
+		@RequestMapping(value = "it/manager/deleteitemployee" ,method = RequestMethod.POST)
 		public String deleteEmployeePost(Model model,HttpServletRequest request)
 		{
 			System.out.println("\n Inside delete empployee post controller");
@@ -63,7 +63,7 @@ public class ItManagerController {
 					itmanager.insertDeleteRequesttoCM(userName,"IT",false);
 				}
 				model.addAttribute("message", message);							
-				return ("signup/saveData");
+				return ("it/manager/saveData");
 				
 			} catch (Exception e) {
 				if(e instanceof InvalidActivityException )
@@ -71,19 +71,19 @@ public class ItManagerController {
 					e.printStackTrace();		
 					message = "Error occured in deleting employee .Please use valid username";
 					model.addAttribute("message", message);							
-					return ("signup/saveData");
+					return ("it/manager/saveData");
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending delete request";
 				model.addAttribute("message", message);				
-				return ("signup/saveData");
+				return ("it/manager/saveData");
 				}
 			 }		
 		}
 		
 		
-		@RequestMapping(value = "it/transferemployee" ,method = RequestMethod.POST)
+		@RequestMapping(value = "it/manager/transferemployee" ,method = RequestMethod.POST)
 		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request)
 		{								
 			Map <String,String> department = new LinkedHashMap<String,String>();			
@@ -92,10 +92,10 @@ public class ItManagerController {
 			department.put("HR", "Human Resource department");
 			department.put("CM", "Company Managment department");
 			model.addAttribute("departmentList", department);			
-			return new ModelAndView("it/transferitemployee", "signupemployee", new SignUpEmployee());
+			return new ModelAndView("it/manager/transferitemployee", "signupemployee", new SignUpEmployee());
 		}
 		
-		@RequestMapping(value = "it/transferemployee/op1" ,method = RequestMethod.POST)
+		@RequestMapping(value = "it/manager/transferemployee/op1" ,method = RequestMethod.POST)
 		public String transferItEmployee( SignUpEmployee employee,Model model,HttpServletRequest request)
 		{
 			System.out.println("\n Inside delete empployee post controller");
@@ -105,7 +105,7 @@ public class ItManagerController {
 				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
 				itmanager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
 				model.addAttribute("message", message);							
-				return ("signup/saveData");
+				return ("it/manager/saveData");
 				
 			} catch (Exception e) {
 				
@@ -114,13 +114,13 @@ public class ItManagerController {
 					e.printStackTrace();		
 					message = "Error occured in transferring employee .Please use valid username";
 					model.addAttribute("message", message);							
-					return ("signup/saveData");
+					return ("it/manager/saveData");
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending transfer request";
 				model.addAttribute("message", message);				
-				return ("signup/saveData");
+				return ("it/manager/saveData");
 				}
 			 }		
 		}
