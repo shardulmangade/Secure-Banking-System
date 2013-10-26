@@ -41,5 +41,8 @@ public class EmailNotificationSender {
 		} catch (MessagingException ex) {
 			logger.error("Notification email could not be sent.", ex);
 		}
+		catch(Exception e) {
+			logger.error("Error in sending email",e);
+		}
 	}
 }
