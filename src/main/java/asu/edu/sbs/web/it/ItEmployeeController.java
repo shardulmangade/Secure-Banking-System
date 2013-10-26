@@ -27,7 +27,7 @@ public class ItEmployeeController {
 	@Autowired
 	private ItEmployee itEmployee;
 	
-	@RequestMapping(value = "/it", method = RequestMethod.GET)
+	@RequestMapping(value = "/it/employee", method = RequestMethod.GET)
 	public String regularEmp(Locale locale, Model model) {
 		System.out.println("Inside IT employee controller.............");
 		
