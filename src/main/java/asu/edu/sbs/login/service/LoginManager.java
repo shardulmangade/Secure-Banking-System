@@ -86,7 +86,15 @@ public class LoginManager {
 	public int resendOTP(String username)
 	{
 		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
-		//TODO: Send the user OTP
-		return SUCCESS;
+		//Fetch user from database
+		User user = loginDBConnection.getUser(username);
+
+		//Send OTP to user
+		if(user != null)
+		{
+			return emailManager.sendOTP(user, storedOTP); 
+		}
+		
+		return FAILURE;
 	}
 }
