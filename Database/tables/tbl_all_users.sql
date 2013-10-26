@@ -4,7 +4,7 @@ create table tbl_all_users
 username varchar(100) not null primary key,
 password varchar(100) not null,
 otp varchar(100) DEFAULT NULL,
-otpvalidity timestamp DEFAULT NULL, 
+otpvalidity timestamp NULL, 
 roles varchar(100) not null,
 firstname varchar(100) not null,
 lastname varchar(100) not null,
