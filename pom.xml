@@ -177,7 +177,6 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>3.2.2.RELEASE</version>
 		</dependency>
-
 		<!-- dependency for forms -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

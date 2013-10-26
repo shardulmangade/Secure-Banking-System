@@ -36,6 +36,9 @@ public interface DBConstants
 	public final static String UPDATE_EMPLOYEE_CORPORATE = "sp_updateEmployeeCorporate";
 	public final static String DELETE_AUTHORIZATION_REQUEST = "sp_deleteAuthorizationRequest";
 	public static final String ALL_PENDING_REQUEST_CORPORATE = "sp_getPendingRequestCorporate";
+	public final static String TRANSACTIONS_FOR_REG_EMPLOYEE = "sp_getAllTransactionsForRegEmp";
+	public final static String TRANSACTIONS_FOR_TRANSACTION_MANAGER = "sp_getAllTransactionsForManager";
+	public final static String USER_FOR_PERMISSION_TRANSACTIONS = "sp_getUsersForPermission";
 
 	
 }

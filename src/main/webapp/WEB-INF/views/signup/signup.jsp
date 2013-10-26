@@ -12,7 +12,7 @@ font-style: italic;
 </head>
 <body>
 <P>  Registration Form </P>
-<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/hr/hremployee/signupPost.html" >
+<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/hr/hremployee/SignupEmployeePost.html" >
 
  <table>
     <tr>
@@ -34,11 +34,6 @@ font-style: italic;
         <td><form:label path="emailId">emailId</form:label></td>
         <td><form:input path="emailId" /></td>
         <td><form:errors path="emailId" cssClass="error" /></td>
-    </tr>
-    <tr>
-   	    <td><form:label path="dateOfBirth">dateOfBirth</form:label></td>
-        <td><form:input path="dateOfBirth" /></td>
-        <td><form:errors path="dateOfBirth" cssClass="error" /></td>
     </tr>
    
     <tr>
