@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS sp_deleteEmployee ;
+DROP PROCEDURE IF EXISTS sp_deleteItPendingRequests ;
 
 DELIMITER $$
 CREATE PROCEDURE sp_deleteItPendingRequests(IN userName VARCHAR(100))

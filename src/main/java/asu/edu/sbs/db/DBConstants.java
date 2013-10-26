@@ -27,6 +27,7 @@ public interface DBConstants
 	public final static String GET_BALANCE_OF_CUSTOMER = "sp_getbalanceofCustomer";
 	public final static String UPDATE_BALANCE_OF_CUSTOMER = "sp_updatebalanceofCustomer";
 	public final static String DELETE_IT_PENDING_REQUESTS = "sp_deleteItPendingRequests";
+	public final static String GET_ALL_MERCHANT_PENDING_TRANSACTIONS = "sp_getMerchantPendingTransactions";
 
 	
 }
