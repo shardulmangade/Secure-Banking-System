@@ -1,5 +1,6 @@
 package asu.edu.sbs.web.it;
 
+import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -29,24 +30,29 @@ public class ItManagerController {
 	ModelAndView savedMav;
 		
 		@RequestMapping(value = "it/manager", method = RequestMethod.GET)
-		public String ItManager(Locale locale, Model model) {
-			System.out.println("Inside it manager Controller .............");				
+		public String ItManager(Locale locale, Model model, Principal principal) {
+			System.out.println("Inside it manager Controller .............");
+			String name = principal.getName();
+			model.addAttribute("username", name);
 			return "it/manager/manager";
 		} 
 		
 		
 		@RequestMapping(value = "it/manager/deleteitemployee/op1" ,method = RequestMethod.POST)
-		public String deleteEmployeeGet(Model model,HttpServletRequest request)
+		public String deleteEmployeeGet(Model model,HttpServletRequest request,Principal principal)
 		{
+			String name = principal.getName();
+			model.addAttribute("username", name);
 			return  ("it/manager/deleteitemployee");
 		}
 			
 		
 		@RequestMapping(value = "it/manager/deleteitemployee" ,method = RequestMethod.POST)
-		public String deleteEmployeePost(Model model,HttpServletRequest request)
+		public String deleteEmployeePost(Model model,HttpServletRequest request,Principal principal)
 		{
 			System.out.println("\n Inside delete empployee post controller");
 			String message = null ,userName;
+			String name = principal.getName();
 			userName = request.getParameter("userNametext");
 			int status;
 			try{				
@@ -62,7 +68,8 @@ public class ItManagerController {
 					message= "Employee "+ userName+ " delete request has beeen sent for approval to corporate level manager";						
 					itmanager.insertDeleteRequesttoCM(userName,"IT",false);
 				}
-				model.addAttribute("message", message);							
+				model.addAttribute("message", message);	
+				model.addAttribute("username", name);
 				return ("it/manager/saveData");
 				
 			} catch (Exception e) {
@@ -70,13 +77,15 @@ public class ItManagerController {
 				{
 					e.printStackTrace();		
 					message = "Error occured in deleting employee .Please use valid username";
-					model.addAttribute("message", message);							
+					model.addAttribute("message", message);
+					model.addAttribute("username", name);
 					return ("it/manager/saveData");
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending delete request";
-				model.addAttribute("message", message);				
+				model.addAttribute("message", message);	
+				model.addAttribute("username", name);
 				return ("it/manager/saveData");
 				}
 			 }		
@@ -84,27 +93,31 @@ public class ItManagerController {
 		
 		
 		@RequestMapping(value = "it/manager/transferemployee" ,method = RequestMethod.POST)
-		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request)
+		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request,Principal principal)
 		{								
-			Map <String,String> department = new LinkedHashMap<String,String>();			
+			Map <String,String> department = new LinkedHashMap<String,String>();	
+			String name = principal.getName();
 			department.put("sales", "Sales department");
 			department.put("TM", "Transaction Management department");
 			department.put("HR", "Human Resource department");
 			department.put("CM", "Company Managment department");
-			model.addAttribute("departmentList", department);			
+			model.addAttribute("departmentList", department);	
+			model.addAttribute("username", name);
 			return new ModelAndView("it/manager/transferitemployee", "signupemployee", new SignUpEmployee());
 		}
 		
 		@RequestMapping(value = "it/manager/transferemployee/op1" ,method = RequestMethod.POST)
-		public String transferItEmployee( SignUpEmployee employee,Model model,HttpServletRequest request)
+		public String transferItEmployee( SignUpEmployee employee,Model model,HttpServletRequest request,Principal principal)
 		{
 			System.out.println("\n Inside delete empployee post controller");
+			String name = principal.getName();
 			String message,department = null ;
 									
 			try{												
 				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
 				itmanager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
-				model.addAttribute("message", message);							
+				model.addAttribute("message", message);
+				model.addAttribute("username", name);
 				return ("it/manager/saveData");
 				
 			} catch (Exception e) {
@@ -113,13 +126,15 @@ public class ItManagerController {
 				{
 					e.printStackTrace();		
 					message = "Error occured in transferring employee .Please use valid username";
-					model.addAttribute("message", message);							
+					model.addAttribute("message", message);
+					model.addAttribute("username", name);
 					return ("it/manager/saveData");
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending transfer request";
-				model.addAttribute("message", message);				
+				model.addAttribute("message", message);
+				model.addAttribute("username", name);
 				return ("it/manager/saveData");
 				}
 			 }		
