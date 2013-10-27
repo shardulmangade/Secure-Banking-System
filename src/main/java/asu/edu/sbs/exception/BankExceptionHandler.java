@@ -17,7 +17,7 @@ public class BankExceptionHandler {
 	public ModelAndView handleDatabaseException(BankStorageException ex) {
 		
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("auth/storageissue");
+		modelAndView.setViewName("exceptions/storageissue");
 		modelAndView.addObject("ex_name", ex.getClass().getName());
 		modelAndView.addObject("ex_message", ex.getMessage());
 		logger.error(ex.getMessage(), ex);

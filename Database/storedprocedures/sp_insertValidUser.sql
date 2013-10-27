@@ -13,13 +13,10 @@ Modified Date : 10/24/2013
 
 DROP PROCEDURE IF EXISTS sp_insertValidUser;
 
-
 DELIMITER $$
 CREATE PROCEDURE sp_insertValidUser(
 in inusername varchar(100),
 in inpassword varchar(100),
-in inotp varchar(100),
-in inotpvalidity timestamp, 
 in inroles varchar(100),
 in infirstname varchar(100),
 in inlastname varchar(100),
@@ -27,7 +24,7 @@ in inemailid varchar(100),
 in indepartment varchar(100),
 in inssn varchar(100),
 in increatedby varchar(100),
-OUT errorMessage  varchar(100)
+OUT errorMessage  varchar(200)
 )
 BEGIN
      
@@ -40,9 +37,9 @@ BEGIN
 				THEN 
 					
 					insert into tbl_all_users values
-					(inusername, inpassword, inotp, inotpvalidity, 'ROLE_VALID_USER', infirstname, inlastname, inemailid, indepartment, inssn, increatedby, curtime(), increatedby, curtime());
+					(inusername, inpassword, null, null, 'ROLE_VALID_USER', infirstname, inlastname, inemailid, indepartment, inssn, increatedby, curtime(), increatedby, curtime());
 
-					insert into tbl_all_users values
+					insert into tbl_user_role values
 					(inusername, inroles, increatedby, curtime(), increatedby, curtime());
 
 			ELSE
@@ -57,4 +54,5 @@ BEGIN
 
 END$$
 DELIMITER ;
+
 

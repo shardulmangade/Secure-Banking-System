@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.domain.IBankRoles;
+import asu.edu.sbs.domain.IDepartments;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.login.service.OneTimePassword;
 
@@ -183,8 +185,10 @@ public class LoginDBConnectionManager {
 	}
 
 	/**
-	 * This method will return null if the user does not exist in the table
 	 * 
+	 * Return the user object with data in all the fields
+	 * This method will return null if the user does not exist in the table.
+	 *  
 	 * @param username
 	 * @return
 	 * @throws BankStorageException
@@ -234,12 +238,141 @@ public class LoginDBConnectionManager {
 				} catch (SQLException e) {
 
 				}
-		}
-		
+		}		
 
 		return user;
 	}
 
+	/**
+	 * IMPORTANT: This is for changing user login rights. If you want to change role use updateUserRole().
+	 * 
+	 * @param canLogin					TRUE - if you want the user to login. FALSE - if you want to deactivate the user.
+	 * @param username					The user whose login right is to be changed
+	 * @param updatedbyName				The user who requests the change
+	 * @throws BankStorageException
+	 */
+	public int updateUserLoginRights(Boolean canLogin, String username, String updatedbyName) throws BankStorageException
+	{
+		String dbCommand;
+		Connection connection = null;
+		String role = null;
 
+		if(canLogin)
+			role = IBankRoles.ROLE_VALID_USER;
+		else
+			role = IBankRoles.ROLE_INVALID_USER;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_LOGIN_ROLE + "(?,?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,username);
+			sqlStatement.setString(2,role);
+			sqlStatement.setString(3,updatedbyName);
+			sqlStatement.registerOutParameter(4, Types.VARCHAR);
+
+			sqlStatement.execute();
+			String output = sqlStatement.getString(4);
+			if(output == null)
+				return SUCCESS;		
+			else
+				throw new BankStorageException(output);
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}			
+	}
+
+	/**
+	 * Used to transfer a person or change his role.
+	 * 
+	 * @param newRole				Must be a final string from {@link IBankRoles}. NOT NULL.
+	 * @param newDepartmentName		New department name to which the user is transferred. Must be a final string from {@link IDepartments}. NOT NULL.
+	 * @param username
+	 * @param updatedbyName
+	 * @return
+	 * @throws BankStorageException
+	 * @throws BankAccessException 
+	 */
+	public int updateUserRole(String newRole, String newDepartmentName, String username, String updatedbyName) throws BankStorageException, BankAccessException
+	{
+		if(newRole == null || newDepartmentName == null)
+			throw new BankAccessException();
+		
+		String dbCommand;
+		Connection connection = null;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_ROLE + "(?,?,?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,username);
+			sqlStatement.setString(2,newDepartmentName);
+			sqlStatement.setString(3,newRole);
+			sqlStatement.setString(4,updatedbyName);
+			sqlStatement.registerOutParameter(5, Types.VARCHAR);
+
+			sqlStatement.execute();
+			String output = sqlStatement.getString(4);
+			if(output == null)
+				return SUCCESS;		
+			else
+				throw new BankStorageException(output);
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}	
+	}
+	
+	public int insertValidUser(User user, String randomPassword, String insertedbyUsername) throws BankStorageException
+	{
+		String dbCommand;
+		Connection connection = null;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.INSERT_TO_ALL_USERS_TABLE + "(?,?,?,?,?,?,?,?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,user.getUsername());
+			sqlStatement.setString(2,randomPassword);
+			sqlStatement.setString(3,IBankRoles.ROLE_VALID_USER);
+//			sqlStatement.setString(4,user.);
+			sqlStatement.registerOutParameter(5, Types.VARCHAR);
+
+			sqlStatement.execute();
+			String output = sqlStatement.getString(4);
+			if(output == null)
+				return SUCCESS;		
+			else
+				throw new BankStorageException(output);
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}	
+	}
 
 }

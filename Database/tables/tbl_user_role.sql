@@ -8,6 +8,7 @@ createdby varchar(100) not null,
 createddate timestamp not null
 );
 
+delete from tbl_user_role;
 insert into tbl_user_role
 values("admin","ROLE_EXTERNAL_USER",substring_index(user(),'@',1), curdate(),substring_index(user(),'@',1), curdate());
 
