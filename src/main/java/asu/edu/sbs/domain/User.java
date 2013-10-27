@@ -3,7 +3,6 @@ package asu.edu.sbs.domain;
 public class User {
 
 	private String username;
-	private String accountType;  
 	private String firstName;
 	private String lastName;
 	private String role;
@@ -51,14 +50,6 @@ public class User {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public String getAccountType() {
-		return accountType;
-	}
-
-	public void setAccountType(String accountType) {
-		this.accountType = accountType;
 	}
 
 	public String getEmail() {

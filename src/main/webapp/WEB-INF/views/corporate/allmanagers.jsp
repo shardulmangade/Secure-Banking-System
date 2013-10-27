@@ -37,7 +37,7 @@ List of active managers:
 		<td>${user.email}</td>
 		<td>${user.department}</td>
 		<td>${user.createdBy}</td>
-		<td>Deactivate</td>
+		<td><a href="${pageContext.servletContext.contextPath}/corporate/deactivate/${user.username}">Deactivate</a></td>
   	</tr>
 	</c:forEach>
 </table>
