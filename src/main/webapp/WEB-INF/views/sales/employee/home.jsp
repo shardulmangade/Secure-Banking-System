@@ -22,8 +22,7 @@
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '../../signupuserexternal/signupemployee/op1')"> Add an external user account</a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '../../signupuserexternal/signupemployee/op1')"> Add a merchant account </a></li>
-								
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '../../signupusermerchant/signupemployee/op2')"> Add a merchant account </a></li>
 							</ul>
 						</div>
 					</div>

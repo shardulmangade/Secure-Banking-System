@@ -109,7 +109,7 @@ public class SignupMerchantController {
 					
 			mav.setViewName("signup/saveData");
 			message= "Your request has been submitted for approval";
-			salesmanager.saveNewEmployeeRequest(employee.getUserName(),employee.getFirstName(),employee.getLastName(),employee.getEmailId(),employee.getDepartment());
+			//salesmanager.saveNewMerchantRequest(employee.getUserName(),employee.getMerchantName(),employee.getEmailId(),employee.getDepartment());
 			mav.addObject("message", message);				
 			return mav;
 		}

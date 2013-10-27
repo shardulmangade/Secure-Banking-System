@@ -6,34 +6,23 @@ import org.hibernate.validator.constraints.NotBlank;
 public class SignUpMerchantEmployee {
 
 	@NotBlank
-	private String firstName;
-	@NotBlank
-	private String lastName;
+	private String MerchantName;
 	@NotBlank
 	private String userName;
 	
 	@Email @NotBlank
 	private String emailId;
 	
-	
 	private String department;
 	
 	private String password;
 	
-	public String getFirstName() {
-		return firstName;
+	public String getMerchantName() {
+		return MerchantName;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setMerchantName(String MerchantName) {
+		this.MerchantName = MerchantName;
 	}
 
 	public String getUserName() {

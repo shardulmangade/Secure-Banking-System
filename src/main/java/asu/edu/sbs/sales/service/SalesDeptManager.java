@@ -21,6 +21,12 @@ public class SalesDeptManager {
 			salesdbconnection.saveNewEmployeeRequest( UserName, firstName, lastName , emailId, department);
 	}
 	
+	public void  saveNewMerchantRequest(String UserName,String MerchantName ,String emailId,String department) throws Exception
+	{
+			System.out.println("\n In SalesDb connection manager");
+		//	salesdbconnection.saveNewMerchantRequest( UserName, MerchantName , emailId, department);
+	}
+	
 	public void deleteEmployeeRequest(String UserName)  throws Exception
 	{
 		salesdbconnection.deleteEmployeeRequest(UserName);
