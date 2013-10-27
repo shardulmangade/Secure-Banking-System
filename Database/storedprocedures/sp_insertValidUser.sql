@@ -22,7 +22,7 @@ in infirstname varchar(100),
 in inlastname varchar(100),
 in inemailid varchar(100),
 in indepartment varchar(100),
-in inssn varchar(100),
+in inssn varchar(10),
 in increatedby varchar(100),
 OUT errorMessage  varchar(200)
 )
