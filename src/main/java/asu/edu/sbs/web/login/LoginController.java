@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import asu.edu.sbs.domain.IBankRoles;
+import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.login.service.LoginManager;
 
 
@@ -50,10 +52,16 @@ public class LoginController {
 	 * A valid authenticated user is redirected to the otp page.
 	 * 
 	 * @return 		Returned to the home page of Quadriga.
+	 * @throws BankAccessException 
+	 * @throws BankStorageException 
 	 */
 	@RequestMapping(value = "/auth/otpcheck", method = RequestMethod.GET)
-	public String createOTP(ModelMap model, Principal principal) {
+	public String createOTP(ModelMap model, Principal principal) throws BankAccessException, BankStorageException {
 
+		if(true)
+		throw new BankAccessException("This where your custom message will appear");
+//			throw new BankStorageException("This where your custom message will appear");
+		
 		String name = principal.getName();
 		logger.info("The authenticated user "+name+" entered the otp check stage !");
 		
@@ -71,8 +79,9 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/auth/otp", method = RequestMethod.POST)
-	public String validateOTP(@RequestParam(value="otp") String otp, ModelMap model, Principal principal) {
+	public String validateOTP(@RequestParam(value="otp") String otp, ModelMap model, Principal principal) throws BankStorageException {
 
+		
 		System.out.println("The authenticated user "+principal.getName()+" submitted an OTP: "+otp);	
 		
 		//Check if OTP exists for user and then only proceed to validating OTP

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.login.service.OneTimePassword;
 
 @Service
@@ -36,7 +37,7 @@ public class LoginDBConnectionManager {
 		this.dataSource = dataSource;
 	}
 
-	public OneTimePassword getOTP(String username)
+	public OneTimePassword getOTP(String username) throws BankStorageException
 	{
 		String dbCommand;
 		OneTimePassword otp = null;
@@ -50,35 +51,40 @@ public class LoginDBConnectionManager {
 
 			sqlStatement.execute();
 
-			ResultSet rs = sqlStatement.getResultSet();
+			String sOutErrorValue = sqlStatement.getString(4);
+			if(sOutErrorValue != null)
+			{
+				ResultSet rs = sqlStatement.getResultSet();
 
-			//Iterate through each row returned by the database
-			while(rs.next())
-			{				
-				if(rs.getString(1)!=null)
-				{
-					otp = new OneTimePassword();
-					otp.setPassword(rs.getString(1));
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				//Iterate through each row returned by the database
+				while(rs.next())
+				{				
+					if(rs.getString(1)!=null)
+					{
+						otp = new OneTimePassword();
+						otp.setPassword(rs.getString(1));
+						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-					try {
-						otp.setExpirationTime(format.parse(rs.getString(2).substring(0, 19)));
-					} catch (ParseException e) {
-						//This catch should never be executed. Application logic should make sure of that
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						try {
+							otp.setExpirationTime(format.parse(rs.getString(2).substring(0, 19)));
+						} catch (ParseException e) {
+							throw new BankStorageException(e);
+						}
 					}
 				}
-			}			
+			}
+			else
+			{
+				throw new BankStorageException(sOutErrorValue);
+			}
 		} catch (SQLException e) {
-			// TODO Use our application specific custom exception
-			e.printStackTrace();
+			throw new BankStorageException(e);
 		}
 
 		return otp;
 	}
 
-	public int updateOTP(String username, OneTimePassword otp)
+	public int updateOTP(String username, OneTimePassword otp) throws BankStorageException
 	{
 		//Insert the OTP for the user in the database
 		String dbCommand, sOutErrorValue;
@@ -102,20 +108,16 @@ public class LoginDBConnectionManager {
 			//SQL exception has occurred			
 			if(sOutErrorValue != null)
 			{
-				System.out.println("Error occurred during OTP insertion....");
-				return FAILURE;
-				//TODO: Throw custom exception
+				throw new BankStorageException(sOutErrorValue);
 			}
 
 		} catch (SQLException e) {
-			// TODO Use our application specific custom exception
-			e.printStackTrace();
-			return FAILURE;
+			throw new BankStorageException(e);
 		}
 		return SUCCESS;
 	}
 
-	public String getRole(String username)
+	public String getRole(String username) throws BankStorageException
 	{
 		String dbCommand;
 
@@ -130,28 +132,26 @@ public class LoginDBConnectionManager {
 			sqlStatement.execute();
 
 			String output = sqlStatement.getString(2);
-			System.out.println("Output from database: "+output);
+			if(output != null)
+			{
+				ResultSet rs = sqlStatement.getResultSet();
 
-			ResultSet rs = sqlStatement.getResultSet();
-
-			//Iterate through each row returned by the database
-			while(rs.next())
-			{	
-				if(rs.getString(1) != null && !rs.getString(1).equals(""))
-					return rs.getString(1);
-			}		
+				//Iterate through each row returned by the database
+				while(rs.next())
+				{	
+					if(rs.getString(1) != null && !rs.getString(1).equals(""))
+						return rs.getString(1);
+				}}		
 		} catch (SQLException e) {
-			// TODO Use our application specific custom exception
-			e.printStackTrace();
+			throw new BankStorageException(e);
 		}
 
 		return IBankRoles.ROLE_INVALID_USER;
 	}
 
-	public User getUser(String username)
+	public User getUser(String username) throws BankStorageException
 	{
 		String dbCommand;
-		OneTimePassword otp = null;
 		User user = null;
 
 		try {
@@ -175,8 +175,7 @@ public class LoginDBConnectionManager {
 				user.setEmail(rs.getString(4));
 			}			
 		} catch (SQLException e) {
-			// TODO Use our application specific custom exception
-			e.printStackTrace();
+			throw new BankStorageException(e);
 		}
 
 		return user;
