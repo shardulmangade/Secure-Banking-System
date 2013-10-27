@@ -182,6 +182,13 @@ public class LoginDBConnectionManager {
 		return IBankRoles.ROLE_INVALID_USER;
 	}
 
+	/**
+	 * This method will return null if the user does not exist in the table
+	 * 
+	 * @param username
+	 * @return
+	 * @throws BankStorageException
+	 */
 	public User getUser(String username) throws BankStorageException
 	{
 		String dbCommand;
@@ -190,7 +197,7 @@ public class LoginDBConnectionManager {
 
 		try {
 			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_USER + "(?,?)";
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_USER_FROM_ALL_USERS_TABLE + "(?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
 			sqlStatement.registerOutParameter(2, Types.VARCHAR);

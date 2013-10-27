@@ -19,7 +19,7 @@ OUT errorMessage      VARCHAR(100)
 )
 BEGIN
      
- -- check if the workspace exists
+
 	 IF EXISTS(SELECT 1 FROM tbl_all_users WHERE username = inusername)
 	 
 		THEN 
@@ -32,3 +32,4 @@ BEGIN
 
 END$$
 DELIMITER ;
+
