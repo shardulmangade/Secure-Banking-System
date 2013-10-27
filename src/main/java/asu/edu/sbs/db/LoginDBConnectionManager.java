@@ -10,17 +10,23 @@ import java.text.SimpleDateFormat;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.domain.IBankRoles;
+import asu.edu.sbs.domain.IDepartments;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.login.service.OneTimePassword;
 
 @Service
 public class LoginDBConnectionManager {
 
+	private static final Logger logger = LoggerFactory.getLogger(LoginDBConnectionManager.class);
 	public final static int SUCCESS = 1;
 	public final static int FAILURE = 0;
 
@@ -36,13 +42,14 @@ public class LoginDBConnectionManager {
 		this.dataSource = dataSource;
 	}
 
-	public OneTimePassword getOTP(String username)
+	public OneTimePassword getOTP(String username) throws BankStorageException
 	{
 		String dbCommand;
 		OneTimePassword otp = null;
+		Connection connection = null;
 
 		try {
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_OTP + "(?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
@@ -50,41 +57,57 @@ public class LoginDBConnectionManager {
 
 			sqlStatement.execute();
 
-			ResultSet rs = sqlStatement.getResultSet();
+			String sOutErrorValue = sqlStatement.getString(2);
+			if(sOutErrorValue == null)
+			{
+				ResultSet rs = sqlStatement.getResultSet();
 
-			//Iterate through each row returned by the database
-			while(rs.next())
-			{				
-				if(rs.getString(1)!=null)
-				{
-					otp = new OneTimePassword();
-					otp.setPassword(rs.getString(1));
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				//Iterate through each row returned by the database
+				while(rs.next())
+				{				
+					if(rs.getString(1)!=null)
+					{
+						otp = new OneTimePassword();
+						otp.setPassword(rs.getString(1));
+						SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-					try {
-						otp.setExpirationTime(format.parse(rs.getString(2).substring(0, 19)));
-					} catch (ParseException e) {
-						//This catch should never be executed. Application logic should make sure of that
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						try {
+							otp.setExpirationTime(format.parse(rs.getString(2).substring(0, 19)));
+						} catch (ParseException e) {
+							throw new BankStorageException(e);
+						}
 					}
 				}
-			}			
+			}
+			else
+			{
+				logger.error("getOTP error for user <<"+username+">> "+sOutErrorValue);
+				throw new BankStorageException(sOutErrorValue);
+			}
 		} catch (SQLException e) {
-			// TODO Use our application specific custom exception
-			e.printStackTrace();
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
 		}
 
 		return otp;
 	}
 
-	public int updateOTP(String username, OneTimePassword otp)
+	public int updateOTP(String username, OneTimePassword otp) throws BankStorageException
 	{
 		//Insert the OTP for the user in the database
 		String dbCommand, sOutErrorValue;
+		Connection connection = null;
 
 		try {
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_OTP + "(?,?,?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
@@ -102,26 +125,31 @@ public class LoginDBConnectionManager {
 			//SQL exception has occurred			
 			if(sOutErrorValue != null)
 			{
-				System.out.println("Error occurred during OTP insertion....");
-				return FAILURE;
-				//TODO: Throw custom exception
+				throw new BankStorageException(sOutErrorValue);
 			}
 
 		} catch (SQLException e) {
-			// TODO Use our application specific custom exception
-			e.printStackTrace();
-			return FAILURE;
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
 		}
 		return SUCCESS;
 	}
 
-	public String getRole(String username)
+	public String getRole(String username) throws BankStorageException
 	{
 		String dbCommand;
-
+		Connection connection = null;
 
 		try {
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 			dbCommand = DBConstants.SP_CALL + " " + DBConstants.LOGIN_GET_USER_ROLE + "(?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
@@ -130,39 +158,60 @@ public class LoginDBConnectionManager {
 			sqlStatement.execute();
 
 			String output = sqlStatement.getString(2);
-			System.out.println("Output from database: "+output);
+			if(output == null)
+			{
+				ResultSet rs = sqlStatement.getResultSet();
 
-			ResultSet rs = sqlStatement.getResultSet();
-
-			//Iterate through each row returned by the database
-			while(rs.next())
-			{	
-				if(rs.getString(1) != null && !rs.getString(1).equals(""))
-					return rs.getString(1);
-			}		
+				//Iterate through each row returned by the database
+				while(rs.next())
+				{	
+					if(rs.getString(1) != null && !rs.getString(1).equals(""))
+						return rs.getString(1);
+				}}		
 		} catch (SQLException e) {
-			// TODO Use our application specific custom exception
-			e.printStackTrace();
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
 		}
 
 		return IBankRoles.ROLE_INVALID_USER;
 	}
 
-	public User getUser(String username)
+	/**
+	 * 
+	 * Return the user object with data in all the fields
+	 * This method will return null if the user does not exist in the table.
+	 *  
+	 * @param username
+	 * @return
+	 * @throws BankStorageException
+	 */
+	public User getUser(String username) throws BankStorageException
 	{
 		String dbCommand;
-		OneTimePassword otp = null;
 		User user = null;
+		Connection connection = null;
 
 		try {
-			Connection connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_USER + "(?,?)";
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_USER_FROM_ALL_USERS_TABLE + "(?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
 			sqlStatement.registerOutParameter(2, Types.VARCHAR);
 
 			sqlStatement.execute();
-
+			String output = sqlStatement.getString(2);
+			if(output != null)
+			{
+				logger.info("A request for user <<+"+username+">> returned no value from database" );
+			}
 			ResultSet rs = sqlStatement.getResultSet();
 
 			//Iterate through each row returned by the database
@@ -173,15 +222,193 @@ public class LoginDBConnectionManager {
 				user.setFirstName(rs.getString(2));
 				user.setLastName(rs.getString(3));
 				user.setEmail(rs.getString(4));
+				user.setDepartment(rs.getString(5));
+				user.setSsn(rs.getString(6));
+				user.setCreatedBy(rs.getString(7));
+				user.setCreatedDate(rs.getString(8));
 			}			
 		} catch (SQLException e) {
-			// TODO Use our application specific custom exception
-			e.printStackTrace();
+			throw new BankStorageException(e);
 		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}		
 
 		return user;
 	}
 
+	/**
+	 * IMPORTANT: This is for changing user login rights. If you want to change role use updateUserRole().
+	 * 
+	 * @param canLogin					TRUE - if you want the user to login. FALSE - if you want to deactivate the user.
+	 * @param username					The user whose login right is to be changed
+	 * @param updatedbyName				The user who requests the change
+	 * @throws BankStorageException
+	 */
+	public int updateUserLoginRights(Boolean canLogin, String username, String updatedbyName) throws BankStorageException
+	{
+		String dbCommand;
+		Connection connection = null;
+		String role = null;
 
+		if(canLogin)
+			role = IBankRoles.ROLE_VALID_USER;
+		else
+			role = IBankRoles.ROLE_INVALID_USER;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_LOGIN_ROLE + "(?,?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,username);
+			sqlStatement.setString(2,role);
+			sqlStatement.setString(3,updatedbyName);
+			sqlStatement.registerOutParameter(4, Types.VARCHAR);
+
+			sqlStatement.execute();
+			String output = sqlStatement.getString(4);
+			if(output == null)
+				return SUCCESS;		
+			else
+				throw new BankStorageException(output);
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}			
+	}
+
+	/**
+	 * Used to transfer a person or change his role.
+	 * 
+	 * @param newRole				Must be a final string from {@link IBankRoles}. NOT NULL.
+	 * @param newDepartmentName		New department name to which the user is transferred. Must be a final string from {@link IDepartments}. NOT NULL.
+	 * @param username
+	 * @param updatedbyName
+	 * @return
+	 * @throws BankStorageException
+	 * @throws BankAccessException 
+	 */
+	public int updateUserRole(String newRole, String newDepartmentName, String username, String updatedbyName) throws BankStorageException, BankAccessException
+	{
+		if(newRole == null || newDepartmentName == null)
+			throw new BankAccessException();
+
+		String dbCommand;
+		Connection connection = null;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_ROLE + "(?,?,?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,username);
+			sqlStatement.setString(2,newDepartmentName);
+			sqlStatement.setString(3,newRole);
+			sqlStatement.setString(4,updatedbyName);
+			sqlStatement.registerOutParameter(5, Types.VARCHAR);
+
+			sqlStatement.execute();
+			String output = sqlStatement.getString(5);
+			if(output == null)
+				return SUCCESS;		
+			else
+				throw new BankStorageException(output);
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}	
+	}
+
+	/**
+	 * Insert a new user with his/her first time password.
+	 * IMPORTANT: The role of the user has to be set in the User object.
+	 * 
+	 * @param user
+	 * @param firstTimePassword
+	 * @param insertedbyUsername
+	 * @return
+	 * @throws BankStorageException
+	 */
+	public int insertValidUser(User user, String firstTimePassword, String insertedbyUsername) throws BankStorageException
+	{
+		String dbCommand;
+		Connection connection = null;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.INSERT_TO_ALL_USERS_TABLE + "(?,?,?,?,?,?,?,?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,user.getUsername());
+			sqlStatement.setString(2,firstTimePassword);
+			sqlStatement.setString(3,user.getRole());
+
+			if(user.getFirstName() != null)
+				sqlStatement.setString(4,user.getFirstName());
+			else
+				sqlStatement.setString(4,"Not provided");
+
+			if(user.getLastName() != null)
+				sqlStatement.setString(5,user.getLastName());
+			else
+				sqlStatement.setString(5,"Not provided");
+
+			if(user.getEmail() != null)
+				sqlStatement.setString(6,user.getEmail());
+			else
+				sqlStatement.setString(6,"diging.momo@gmail.com");
+
+			if(user.getDepartment() != null)
+				sqlStatement.setString(7,user.getDepartment());
+			else
+				sqlStatement.setString(7,null);
+
+			if(user.getSsn() != null)
+				sqlStatement.setString(8,user.getSsn());
+			else
+				sqlStatement.setString(8,null);
+			
+			sqlStatement.setString(9,insertedbyUsername);
+			sqlStatement.registerOutParameter(10, Types.VARCHAR);
+
+			sqlStatement.execute();
+			String output = sqlStatement.getString(10);
+			if(output == null)
+				return SUCCESS;		
+			else
+				throw new BankStorageException(output);
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}	
+	}
 
 }

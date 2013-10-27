@@ -24,8 +24,8 @@ public class CustomerDBConnection {
 
 	public final static int SUCCESS = 1;
 	public final static int FAILURE = 0;
-	private String dbCommand;
-	private Connection connection;
+//	private String dbCommand;
+//	private Connection connection;
 	@Autowired
 	@Qualifier("dataSource")
 	private DataSource dataSource;
@@ -41,7 +41,7 @@ public class CustomerDBConnection {
 	
 	
 	public List<Credit> getAllTransaction(String userName) {
-		
+		Connection connection = null;
 		List<Credit> listCredits = null;
 		try {
 		connection = dataSource.getConnection();
@@ -65,6 +65,14 @@ public class CustomerDBConnection {
 	} catch (SQLException e) {
 		// TODO Use our application specific custom exception
 		e.printStackTrace();
+	} finally{
+		if (connection!=null)
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	}
 	
 	
@@ -74,7 +82,7 @@ public class CustomerDBConnection {
 	
 	public int insertNewTransaction(Credit credit) throws Exception
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_CUSTOMER_NEW_TRANSACTIONS + "(?,?,?,?,?)" );
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,credit.getFromCustomer());
@@ -83,42 +91,71 @@ public class CustomerDBConnection {
 		sqlstatement.setString(4,credit.getToacccount() );
 		sqlstatement.setDouble(5, credit.getAmount());
 		sqlstatement.execute();
-		return (sqlstatement.getUpdateCount());
+		int updateCount = sqlstatement.getUpdateCount();
+		if (connection!=null)
+			connection.close();
+		return (updateCount);
+		
 	}
 
 	public double getbalanceofCustomer(String username) throws Exception
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_BALANCE_OF_CUSTOMER + "(?)" );
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,username);
 		ResultSet rs = sqlstatement.executeQuery();
 		rs.next();
-		return (rs.getDouble("balance"));
+		double balance = rs.getDouble("balance");
+		if (connection!=null)
+			connection.close();
+		return (balance);
 	}
 	
 	
 	public int updatebalanceofCustomer(String username,double balance) throws Exception
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.UPDATE_BALANCE_OF_CUSTOMER + "(?,?)" );
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,username);
 		sqlstatement.setDouble(2,balance);
 		sqlstatement.execute();
-		return (sqlstatement.getUpdateCount());
+		int updateCount=sqlstatement.getUpdateCount();
+		if (connection!=null)
+			connection.close();
+		return (updateCount);
 	}
 	
 	
 	public boolean validateRecepientUser(String userName,String account) throws Exception 
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.VALIDATE_RECIPIENT_USER + "(?,?)" );
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,userName);
 		sqlstatement.setString(2,account);
 		ResultSet rs =sqlstatement.executeQuery();
-		return(rs.next());												
+		
+		boolean flag = rs.next();
+		if (connection!=null)
+			connection.close();
+		return flag;
+		
+	}
+	
+	public String getAccountNumberForCustomer(String userName) throws Exception
+	{
+				
+		Connection connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_ACCOUNT_NUMBER_CUSTOMER + "(?)" );		
+		sqlstatement.setString(1,userName);
+		ResultSet rs =sqlstatement.executeQuery();
+		rs.next();
+		String accountNumber = rs.getString("accountno");
+		if (connection!=null)
+			connection.close();		
+		return (accountNumber);
 	}
 }
 

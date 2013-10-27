@@ -57,5 +57,10 @@ public class CustomerManager {
 		public boolean validateRecepientUser(String userName,String account) throws Exception
 		{
 			return (customerdbconnection.validateRecepientUser(userName,account));
-		}				
+		}	
+		
+		public String getAccountNumberForCustomer (String userName) throws Exception
+		{
+			return (customerdbconnection.getAccountNumberForCustomer(userName));
+		}
 }

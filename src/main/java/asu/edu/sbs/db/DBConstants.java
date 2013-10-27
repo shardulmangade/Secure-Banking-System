@@ -12,8 +12,11 @@ public interface DBConstants
 	public final static String GET_OTP = "sp_getOTP";
 	public final static String UPDATE_OTP = "sp_updateOTP";
 	
-	//User Stored Procedures
-	public final static String GET_USER = "sp_getUser";
+	//All users Stored Procedures
+	public final static String GET_USER_FROM_ALL_USERS_TABLE = "sp_getUser";
+	public final static String UPDATE_USER_LOGIN_ROLE = "sp_updateUserLoginRights";
+	public final static String UPDATE_USER_ROLE = "sp_updateUserRoles";
+	public final static String INSERT_TO_ALL_USERS_TABLE = "sp_insertValidUser";
 	
 	public final static String ALL_NEW_EMPLOYEE_REQUESTS = "sp_insertAllnewEmployeeRequests";
 	public final static String ALL_NEW_EMPLOYEE_PASSWORD_REQUESTS = "sp_insertAllnewEmployeePasswordRequests";
@@ -39,8 +42,10 @@ public interface DBConstants
 	public final static String TRANSACTIONS_FOR_REG_EMPLOYEE = "sp_getAllTransactionsForRegEmp";
 	public final static String TRANSACTIONS_FOR_TRANSACTION_MANAGER = "sp_getAllTransactionsForManager";
 	public final static String USER_FOR_PERMISSION_TRANSACTIONS = "sp_getUsersForPermission";
+	public final static String GET_ACCOUNT_NUMBER_CUSTOMER= "sp_getAccountNumberForCustomer";
 	public final static String INSERT_TRANSACTION_PERMISSION_REQUESTS = "sp_insertTransactionPermissionRequests";
 	public final static String GET_USERS_FOR_REQUESTING_TRANSACTION_PERMISSION = "sp_getUsersForRequestingTransactionPermission";
 	public final static String GET_TRANSACTIONS_OF_PERMITTED_USERS = "sp_getTransactionsOfPermittedUsers";
+
 	
 }

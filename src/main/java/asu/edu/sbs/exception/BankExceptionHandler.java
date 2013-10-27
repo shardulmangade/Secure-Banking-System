@@ -13,17 +13,26 @@ public class BankExceptionHandler {
 	
 	private static final Logger logger = LoggerFactory.getLogger(BankExceptionHandler.class);
 
-	
+	@ExceptionHandler(value ={ BankStorageException.class})
+	public ModelAndView handleDatabaseException(BankStorageException ex) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("exceptions/storageissue");
+		modelAndView.addObject("ex_name", ex.getClass().getName());
+		modelAndView.addObject("ex_message", ex.getMessage());
+		logger.error(ex.getMessage(), ex);
+		return modelAndView;
+	}
 
-//	@ExceptionHandler(value ={ BankAccessException.class})
-//	public ModelAndView handleUserAccessException(BankAccessException ex) {
-//		
-//		ModelAndView modelAndView = new ModelAndView();
-//		modelAndView.setViewName("exceptions/accessissue");
-//		modelAndView.addObject("ex_name", ex.getClass().getName());
-//		modelAndView.addObject("ex_message", ex.getMessage());
-//		logger.error(ex.getMessage(), ex);
-//		return modelAndView;
-//	}
+	@ExceptionHandler(value ={ BankAccessException.class})
+	public ModelAndView handleUserAccessException(BankAccessException ex) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("exceptions/accessissue");
+		modelAndView.addObject("ex_name", ex.getClass().getName());
+		modelAndView.addObject("ex_message", ex.getMessage());
+		logger.error(ex.getMessage(), ex);
+		return modelAndView;
+	}
 	
 	}

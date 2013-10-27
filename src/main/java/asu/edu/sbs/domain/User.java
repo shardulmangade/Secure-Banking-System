@@ -6,8 +6,28 @@ public class User {
 	private String accountType;  
 	private String firstName;
 	private String lastName;
+	private String role;
 	private String email;
-	private String dateOfBirth;
+	private String department;
+	private String ssn;
+	private String createdBy;
+	private String createdDate;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getSsn() {
+		return ssn;
+	}
+
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
+	}
 
 	public String getUsername() {
 		return username;
@@ -49,12 +69,28 @@ public class User {
 		this.email = email;
 	}
 
-	public String getDateOfBirth() {
-		return dateOfBirth;
+	public String getDepartment() {
+		return department;
 	}
 
-	public void setDateOfBirth(String dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
+	public void setDepartment(String department) {
+		this.department = department;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
 	}
 	
 }

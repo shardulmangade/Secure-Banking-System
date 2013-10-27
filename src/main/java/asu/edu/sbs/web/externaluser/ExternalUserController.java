@@ -16,7 +16,7 @@ public class ExternalUserController {
 	
 	@RequestMapping(value = "/euser/home", method = RequestMethod.GET)
 	public String externalUserHome(ModelMap model, Principal principal) {
-		logger.info("The external user "+principal.getName()+" accessed the users home page");
+		logger.info("The external user <<"+principal.getName()+">> accessed the users home page");
 		model.addAttribute("username", principal.getName());
 		return "external/user/home";
 	}
