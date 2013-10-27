@@ -15,15 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import asu.edu.sbs.customer.service.CustomerManager;
 import asu.edu.sbs.domain.Credit;
-import asu.edu.sbs.login.service.OneTimePassword;
-import asu.edu.sbs.sales.service.SalesDeptManager;
 
 @Scope(value="session")
 @Controller

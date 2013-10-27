@@ -18,6 +18,7 @@ import com.mysql.jdbc.PreparedStatement;
 
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankStorageException;
 
 @Service
 public class HrDBConnectionManager {
@@ -124,7 +125,7 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 			connection.close();
 	}
 	
-	public int getDeleteApprovalStatus(String userName, String department) 
+	public int getDeleteApprovalStatus(String userName, String department) throws BankStorageException 
 	{
 		Connection connection = null;
 		try {
@@ -148,7 +149,12 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 			throw new BankStorageException(e);
 		}finally{
 			if (connection!=null)
-				connection.close();
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 	
