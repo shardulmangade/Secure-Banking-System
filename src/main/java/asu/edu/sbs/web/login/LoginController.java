@@ -58,10 +58,6 @@ public class LoginController {
 	@RequestMapping(value = "/auth/otpcheck", method = RequestMethod.GET)
 	public String createOTP(ModelMap model, Principal principal) throws BankAccessException, BankStorageException {
 
-		if(true)
-		throw new BankAccessException("This where your custom message will appear");
-//			throw new BankStorageException("This where your custom message will appear");
-		
 		String name = principal.getName();
 		logger.info("The authenticated user "+name+" entered the otp check stage !");
 		
