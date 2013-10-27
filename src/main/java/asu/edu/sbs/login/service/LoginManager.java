@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import asu.edu.sbs.db.LoginDBConnectionManager;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
+import asu.edu.sbs.exception.BankStorageException;
 
 @Service
 public class LoginManager {
@@ -21,12 +22,12 @@ public class LoginManager {
 	@Autowired
 	private EmailNotificationManager emailManager;
 
-	public String getRole(String username)
+	public String getRole(String username) throws BankStorageException
 	{
 		return loginDBConnection.getRole(username);
 	}
 
-	public boolean validateOTP(String username, String inputOTP)
+	public boolean validateOTP(String username, String inputOTP) throws BankStorageException
 	{
 		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
 		if(storedOTP.getPassword().equals(inputOTP))
@@ -34,7 +35,7 @@ public class LoginManager {
 		else
 			return false;
 	}
-	public boolean checkForvalidOTP(String username)
+	public boolean checkForvalidOTP(String username) throws BankStorageException
 	{
 		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
 		if(storedOTP != null)
@@ -48,7 +49,7 @@ public class LoginManager {
 		return false;
 	}
 
-	public int insertNewOTP(String username)
+	public int insertNewOTP(String username) throws BankStorageException
 	{
 		//Generate new OTP
 		OneTimePassword otp = new OneTimePassword();
@@ -68,7 +69,7 @@ public class LoginManager {
 		return FAILURE;
 	}
 
-	public int deleteOTP(String username)
+	public int deleteOTP(String username) throws BankStorageException
 	{
 		//Generate new OTP
 		OneTimePassword otp = new OneTimePassword();
@@ -83,7 +84,7 @@ public class LoginManager {
 		return FAILURE;
 	}
 
-	public int resendOTP(String username)
+	public int resendOTP(String username) throws BankStorageException
 	{
 		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
 		//Fetch user from database
