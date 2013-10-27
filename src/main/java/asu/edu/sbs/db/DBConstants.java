@@ -43,6 +43,9 @@ public interface DBConstants
 	public final static String TRANSACTIONS_FOR_TRANSACTION_MANAGER = "sp_getAllTransactionsForManager";
 	public final static String USER_FOR_PERMISSION_TRANSACTIONS = "sp_getUsersForPermission";
 	public final static String GET_ACCOUNT_NUMBER_CUSTOMER= "sp_getAccountNumberForCustomer";
+	public final static String INSERT_TRANSACTION_PERMISSION_REQUESTS = "sp_insertTransactionPermissionRequests";
+	public final static String GET_USERS_FOR_REQUESTING_TRANSACTION_PERMISSION = "sp_getUsersForRequestingTransactionPermission";
+	public final static String GET_TRANSACTIONS_OF_PERMITTED_USERS = "sp_getTransactionsOfPermittedUsers";
 
 	
 }

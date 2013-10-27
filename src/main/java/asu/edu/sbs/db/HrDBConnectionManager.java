@@ -146,7 +146,12 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		}
 		} catch(Exception e)
 		{
-			throw new BankStorageException(e);
+			try {
+				throw new BankStorageException(e);
+			} catch (BankStorageException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}finally{
 			if (connection!=null)
 				try {
@@ -156,6 +161,7 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 					e.printStackTrace();
 				}
 		}
+		return -1;
 	}
 	
 }

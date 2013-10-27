@@ -33,7 +33,7 @@ public class TransactionControllerForManager {
 	
 	ModelAndView savedMav;
 		
-		@RequestMapping(value = "addNewEmployee", method = RequestMethod.GET)
+		@RequestMapping(value = "home", method = RequestMethod.GET)
 		public String addnewTransEmployee(Locale locale, Model model) {
 			System.out.println("Inside trans manager Controller .............");				
 			return "transactions/manager/transManager";
