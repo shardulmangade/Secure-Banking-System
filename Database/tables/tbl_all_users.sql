@@ -30,3 +30,13 @@ values("sysad","a3fe41c36274fa31157d64bd152c8eeb", null, null, "ROLE_VALID_USER"
 #password is ceo
 insert into tbl_all_users 
 values("corporate","55161575f3e05dfb61145c5d63d67d29", null, null, "ROLE_VALID_USER","David","Gin","ramkumar007@gmail.com","",null,substring_index(user(),'@',1), curdate());
+
+
+#password is moheetB
+insert into tbl_all_users 
+values("moheetB","9e9f217121645aedc2c4cf6996705671", null, null, "ROLE_VALID_USER","Balin","Fundin","moheet.bhute@gmail.com","",null,substring_index(user(),'@',1), curdate());
+
+#password is gborse
+insert into tbl_all_users 
+values("gborse","b13ea122e813b9e13fc4f5eba9f7975f", null, null, "ROLE_VALID_USER","David","Gin","gborse@asu.edu","",null,substring_index(user(),'@',1), curdate());
+
