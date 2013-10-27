@@ -1,4 +1,4 @@
-DROP PROCEDURE IF EXISTS tbl_delete_request_for_corporatemgmt ;
+DROP PROCEDURE IF EXISTS sp_insertdeleteRequeststoCorporate ;
 
 DELIMITER $$
 CREATE PROCEDURE sp_insertdeleteRequeststoCorporate(IN userName VARCHAR(100),IN department VARCHAR(100),IN deleteapprove boolean )

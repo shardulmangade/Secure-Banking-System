@@ -13,3 +13,7 @@ values("admin","ROLE_EXTERNAL_USER",substring_index(user(),'@',1), curdate(),sub
 
 insert into tbl_user_role
 values("euser","ROLE_EXTERNAL_USER",substring_index(user(),'@',1), curdate(),substring_index(user(),'@',1), curdate());
+
+insert into sundevilbank.tbl_user_role values('moheetB','ROLE_TRANSACTION_EMPLOYEE','root',now(),'root',curtime());
+
+insert into sundevilbank.tbl_user_role values('gborse','ROLE_TRANSACTION_MANAGER','root',now(),'root',curtime());

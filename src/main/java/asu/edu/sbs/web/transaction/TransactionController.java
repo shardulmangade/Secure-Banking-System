@@ -1,5 +1,6 @@
 package asu.edu.sbs.web.transaction;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -23,13 +24,13 @@ public class TransactionController {
 	@Autowired
 	private TransactionService transactionManager;
 	
-	@RequestMapping(value = "regularEmployee", method = RequestMethod.GET)
+	@RequestMapping(value = "/transactions/regularEmployee/home", method = RequestMethod.GET)
 	public String getRegEmployeePage(Locale locale, Model model) throws Exception
 	{
 		return "transactions/employee/regularEmployee";
 	}
 	
-	@RequestMapping(value = "transactionsForRegEmp", method = RequestMethod.POST)
+	@RequestMapping(value = "/transactions/regularEmployee/transactions", method = RequestMethod.POST)
 	public String getTransactions(Locale locale, Model model) throws Exception
 	{
 //		transactionManager = new TransactionManager();
@@ -38,7 +39,7 @@ public class TransactionController {
 		return "transactions/employee/transactionsForRegEmp";
 	}
 	
-	@RequestMapping(value="askPermissionRegEmp", method = RequestMethod.POST)
+	@RequestMapping(value="/transactions/regularEmployee/askPermission", method = RequestMethod.POST)
 	public String getUsersForPermission(Locale locale, Model model) throws Exception
 	{
 		List<String> users = transactionManager.getUsersForPermission();
@@ -47,16 +48,16 @@ public class TransactionController {
 	}
 	
 	
-	@RequestMapping(value = "makeUsersActive", method = RequestMethod.POST)
-    public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request) throws Exception
+	@RequestMapping(value = "/transactions/regularEmployee/makeUsersActive", method = RequestMethod.POST)
+    public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) throws Exception
 	{
 		List<String> users = new ArrayList<String>();
 		for(String user:request.getParameterValues("euser"))
 			users.add(user);
+		transactionManager.makeUsersActive(users, "InternalUser");
+	//	transactionManager.makeUsersActive(users, principal.getName());
 		
-		transactionManager.makeUsersActive(users);
-		
-		return "redirect:regularEmployee";
+		return "redirect:/transactions/regularEmployee/home";
 	}
     
 

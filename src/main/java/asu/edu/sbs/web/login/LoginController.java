@@ -109,9 +109,12 @@ public class LoginController {
 				return "redirect:/it/employee";
 			if(role.equals(IBankRoles.ROLE_IT_MANAGER))
 				return "redirect:/it/manager";
-			if(role.equals(IBankRoles.ROLE_CORPORATE_MANAGER)){
+			if(role.equals(IBankRoles.ROLE_CORPORATE_MANAGER))
 				return "redirect:/corporate";
-			}
+			if(role.equals(IBankRoles.ROLE_TRANSACTION_EMPLOYEE))
+					return "redirect:/transactions/regularEmployee/home";
+			if(role.equals(IBankRoles.ROLE_TRANSACTION_MANAGER))
+				return "redirect://transactions/transactionManager/home";
 			//TODO: add default case
 				
 		}

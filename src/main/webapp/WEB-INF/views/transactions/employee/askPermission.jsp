@@ -14,7 +14,7 @@ font-style: italic;
 
 </head>
 <body>
-	<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/makeUsersActive">
+	<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/transactions/regularEmployee/makeUsersActive">
 		<c:choose>
 			<c:when test="${not empty users}">
 				<table border="1">

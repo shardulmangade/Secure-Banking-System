@@ -18,15 +18,17 @@
 		<c:when test="${not empty transactions}">
 			<table border="1">
 			<tr>
-				<th> Transaction ID</th>
-				<th> Description </th>
+				<th> From </th>
+				<th> To </th>
+				<th> Amount </th>
 				<th> TimeStamp </th>
 			</tr>
 			<c:forEach var="request" items="${transactions}">
 				<tr>
-					<td>${request.transactionID}</td>
-					<td>${request.description}</td>
-					<td>${request.time}</td>
+					<td>${request.fromuser}</td>
+					<td>${request.touser}</td>
+					<td>${request.amount}</td>
+					<td>${request.timestamp}</td>
 				<tr>
 				</c:forEach>
 			</table>
