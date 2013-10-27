@@ -1,5 +1,6 @@
 package asu.edu.sbs.web.it;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,31 +29,38 @@ public class ItEmployeeController {
 	private ItEmployee itEmployee;
 	
 	@RequestMapping(value = "/it/employee", method = RequestMethod.GET)
-	public String regularEmp(Locale locale, Model model) {
+	public String regularEmp(Locale locale, Model model, Principal principal) {
 		System.out.println("Inside IT employee controller.............");
-		
+		String name = principal.getName();
+		model.addAttribute("username", name);
 		return "it/employee/employee";
 	}
 	@RequestMapping(value = "it/op1", method = RequestMethod.POST)
-	public String getPendingRequests(Locale locale, Model model) {
+	public String getPendingRequests(Locale locale, Model model, Principal principal) {
 		System.out.println("Inside employee Controller for iiit.............");
 		
 		List<User> userRequests = itEmployee.getAllPendingUserRequests();
 		System.out.println(userRequests.get(0).getFirstName());
+		String name = principal.getName();
+		model.addAttribute("username", name);
 		model.addAttribute("userRequests", userRequests);
 		return "it/employee/ItApprovePendingRequests";
 	}
 
 	@RequestMapping(value = "it/op2", method = RequestMethod.POST)
-	public String postUserRequests(Locale locale, Model model) {
+	public String postUserRequests(Locale locale, Model model, Principal principal) {
 		System.out.println("Inside employee Controller for it.............");
+		String name = principal.getName();
+		model.addAttribute("username", name);
 		return "it/employee/employee";
 	}
 	
 	@RequestMapping(value = "it/handlePendingRequestsResponse.html", method = RequestMethod.POST)
-	public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request) {
+	public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) {
 	
 		System.out.println("Inside employee Controller for it.............");
+		String name = principal.getName();
+		model.addAttribute("username", name);
 		if(request.getParameterValues("selected")==null)
 		{
 			
@@ -70,12 +78,14 @@ public class ItEmployeeController {
 				System.out.println(username);
 				
 				// Delete from the tbl_it_pending
-/*				try {
+				try {
+					//ToDo: Add customer to customer tables
+//					itEmployee.ge
 					itEmployee.deleteEmployeeRequest(username);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 				// Insert into customers table
 			}
 			return "it/employee/requestsApproved";
@@ -100,45 +110,5 @@ public class ItEmployeeController {
 		return "it/Trial";
 	}
 	
-/*	@RequestMapping(value = "it/Trial" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes)
-	 {
-		String message ;
-		ModelAndView mav = new ModelAndView();
-		System.out.println("Inside employee Controller for it.............");
-//		try{				
-//			System.out.println("\n Inside Employee signup post controller");
-//			if(result.hasErrors())
-//			{
-//				return new ModelAndView("signup/signupemployee", "signupuser",employee);
-//				//return new ModelAndView("hr/employee/hrEmployee","signupuser",employee);
-//			}		 
-//					
-//			mav.setViewName("signup/saveData");
-			message= "Your request has been submitted for approval";
-//			hrmanager.saveNewEmployeeRequest(employee.getUserName(),employee.getFirstName(),employee.getLastName(),employee.getEmailId(),employee.getDepartment());
-			mav.addObject("message", message);				
-			return mav;
-//		}
-//	 catch (Exception e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//		if(e instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException )
-//		{
-//			message = "Username already Exists.Choose a different username";
-//			mav.addObject("message", message);
-//			mav.setViewName("signup/saveData");		
-//			return mav;
-//		} else
-//		{
-//			message = "Error in saving your data.Please try again";
-//			mav.addObject("message", message);
-//			mav.setViewName("signup/saveData");		
-//			return mav;
-//				
-//		}
-//	 }
-				
-	}*/
 
 }

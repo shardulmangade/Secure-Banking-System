@@ -37,8 +37,9 @@ public class MerchantDBConnectionManager {
 	
 	public List<MerchantTransaction> getAllPendingTransaction(String userName) {
 		List<MerchantTransaction> listTransactions = null;
+		Connection connection = null;
 		try {
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 			PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_ALL_MERCHANT_PENDING_TRANSACTIONS + "(?)" );
 			sqlstatement.setString(1,userName );		
 			ResultSet rs = sqlstatement.executeQuery();
@@ -60,9 +61,20 @@ public class MerchantDBConnectionManager {
 		} catch (SQLException e) {
 			// TODO Use our application specific custom exception
 			e.printStackTrace();
+		}finally
+		{
+			if(connection != null)
+			{
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
+		return listTransactions;
+	}
 	
 	
-	return listTransactions;
- }
 }

@@ -23,7 +23,7 @@
                 <intercept-url pattern="/customer/**" access="hasRole('ROLE_EXTERNAL_USER')"/>
             	<intercept-url pattern="/transactions/regularEmployee/**" access="hasRole('ROLE_TRANSACTION_EMPLOYEE')"/>
 				<intercept-url pattern="/transaction/transactionManager/**" access="hasRole('ROLE_TRANSACTION_MANAGER')"/>
-	                
+				<intercept-url pattern="/merchant/**" access="hasRole('ROLE_EXTERNAL_MERCHANT')"/>	                
                 
                 <!-- <intercept-url pattern="/**" access="denyAll" />-->
                 
@@ -41,5 +41,5 @@
                         authorities-by-username-query="select username, roles from tbl_all_users where username = ?"/>
                    </authentication-provider>
         </authentication-manager>
-        
+
 </beans:beans>
