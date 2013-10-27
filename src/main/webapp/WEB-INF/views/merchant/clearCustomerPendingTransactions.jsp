@@ -14,7 +14,9 @@ font-style: italic;
 
 </head>
 <body>
-
+	Want to leave ${username}?
+	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
+	<h3>${username},</h3>
 <form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/it/handlePendingRequestsResponse.html" >
 <c:choose>
 <c:when test="${not empty userRequests}">
