@@ -19,6 +19,7 @@ public interface DBConstants
 	public final static String INSERT_TO_ALL_USERS_TABLE = "sp_insertValidUser";
 	
 	//Corporate 
+	public final static String CORPORATE_GET_ALL_ACTIVE_MANAGERS = "sp_getAllActiveManagers";
 	
 	public final static String ALL_NEW_EMPLOYEE_REQUESTS = "sp_insertAllnewEmployeeRequests";
 	public final static String ALL_NEW_EMPLOYEE_PASSWORD_REQUESTS = "sp_insertAllnewEmployeePasswordRequests";
