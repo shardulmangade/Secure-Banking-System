@@ -19,12 +19,12 @@ OUT errorMessage      VARCHAR(100)
 )
 BEGIN
      
- -- check if the workspace exists
+
 	 IF EXISTS(SELECT 1 FROM tbl_all_users WHERE username = inusername)
 	 
 		THEN 
 			
-			SELECT username, firstname, lastname, emailid from tbl_all_users where username = inusername;
+			SELECT username, firstname, lastname, emailid, department, ssn, createdby, createddate from tbl_all_users where username = inusername;
 	
 	ELSE 
 			SET errorMessage = "No such user exists. This action has been logged. Please don't try to hack into the system !!!";

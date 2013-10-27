@@ -25,6 +25,7 @@
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op2')"> Delete </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op3')"> Transfer </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op4')"> View Pending Request </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/allactivemanagers')"> View All Managers </a></li>
 							</ul>
 						</div>
 					</div>

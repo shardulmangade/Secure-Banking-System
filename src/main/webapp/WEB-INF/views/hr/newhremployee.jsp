@@ -12,6 +12,8 @@ font-style: italic;
 
 </head>
 <body>
+	Want to leave ${username}?
+	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 <P> HR Employee Registration Form </P>
 <form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/hr/hrmanager/newhremployee/op1.html" >
 

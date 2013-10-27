@@ -6,5 +6,7 @@ fromaccount varchar(100) not null,
 toaccount varchar(100) not null,
 amount DOUBLE not null,
 createdby varchar(100) not null,
-createddate timestamp not null
+createddate timestamp not null,
+publickey varchar(300) not null,
+encryptedrequest BLOB not null
 )

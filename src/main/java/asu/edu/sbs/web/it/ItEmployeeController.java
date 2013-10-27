@@ -1,5 +1,6 @@
 package asu.edu.sbs.web.it;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
@@ -7,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +20,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.it.service.ItEmployee;
+import asu.edu.sbs.login.service.OneTimePassword;
 
 
 @Controller
@@ -26,40 +30,58 @@ public class ItEmployeeController {
 
 	@Autowired
 	private ItEmployee itEmployee;
+	@Autowired
+	private EmailNotificationManager enManager;
 	
 	@RequestMapping(value = "/it/employee", method = RequestMethod.GET)
-	public String regularEmp(Locale locale, Model model) {
+	public String regularEmp(Locale locale, Model model, Principal principal) {
 		System.out.println("Inside IT employee controller.............");
-		
+		String name = principal.getName();
+		model.addAttribute("username", name);
 		return "it/employee/employee";
 	}
 	@RequestMapping(value = "it/op1", method = RequestMethod.POST)
-	public String getPendingRequests(Locale locale, Model model) {
+	public String getPendingRequests(Locale locale, Model model, Principal principal) {
 		System.out.println("Inside employee Controller for iiit.............");
 		
 		List<User> userRequests = itEmployee.getAllPendingUserRequests();
 		System.out.println(userRequests.get(0).getFirstName());
+		String name = principal.getName();
+		model.addAttribute("username", name);
+		String message = "";
+		model.addAttribute("Message", message);
 		model.addAttribute("userRequests", userRequests);
 		return "it/employee/ItApprovePendingRequests";
 	}
 
 	@RequestMapping(value = "it/op2", method = RequestMethod.POST)
-	public String postUserRequests(Locale locale, Model model) {
+	public String postUserRequests(Locale locale, Model model, Principal principal) {
 		System.out.println("Inside employee Controller for it.............");
+		String name = principal.getName();
+		model.addAttribute("username", name);
 		return "it/employee/employee";
 	}
 	
 	@RequestMapping(value = "it/handlePendingRequestsResponse.html", method = RequestMethod.POST)
-	public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request) {
+	public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) {
 	
 		System.out.println("Inside employee Controller for it.............");
+		String name = principal.getName();
+		model.addAttribute("username", name);
 		if(request.getParameterValues("selected")==null)
 		{
-			
-			
+			List<User> userRequests = itEmployee.getAllPendingUserRequests();
+			System.out.println(userRequests.get(0).getFirstName());
+			model.addAttribute("username", name);
+			String message = "Please select an option";
+			model.addAttribute("message", message);
+			model.addAttribute("userRequests", userRequests);
+			return "it/employee/ItApprovePendingRequests";
 		}
 		if(request.getParameter("action")==null)
 		{
+			//ToDo:ToHandle 
+			return "it/op1";
 		}
 		System.out.println(request.getParameter("action"));
 		if(request.getParameter("action").equals("approve"))
@@ -70,12 +92,21 @@ public class ItEmployeeController {
 				System.out.println(username);
 				
 				// Delete from the tbl_it_pending
-/*				try {
+				try {
+					//ToDo: Add customer to customer tables
+					User user=itEmployee.getUser(username);
+					OneTimePassword otpInstance = new OneTimePassword();
+					String password = otpInstance.getPassword();
+					Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+				    String hashedPass = encoder.encodePassword(password, null);//change thi
+					itEmployee.insertValidUser(user, password, name);
+					//send email
+					enManager.sendPasswordCustomer(user, otpInstance.getPassword());
 					itEmployee.deleteEmployeeRequest(username);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 				// Insert into customers table
 			}
 			return "it/employee/requestsApproved";
@@ -85,60 +116,20 @@ public class ItEmployeeController {
 			for(String username:request.getParameterValues("selected"))
 			{
 				// Delete from the tbl_it_pending
-/*				try {
+				try {
 					itEmployee.deleteEmployeeRequest(username);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}*/
+				}
 				// Optional Insert into customers_deny table table
 				
 			}
 			return "it/employee/requestsDenied";
 			
 		}	
-		return "it/Trial";
+		return "it/op1";
 	}
 	
-/*	@RequestMapping(value = "it/Trial" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes)
-	 {
-		String message ;
-		ModelAndView mav = new ModelAndView();
-		System.out.println("Inside employee Controller for it.............");
-//		try{				
-//			System.out.println("\n Inside Employee signup post controller");
-//			if(result.hasErrors())
-//			{
-//				return new ModelAndView("signup/signupemployee", "signupuser",employee);
-//				//return new ModelAndView("hr/employee/hrEmployee","signupuser",employee);
-//			}		 
-//					
-//			mav.setViewName("signup/saveData");
-			message= "Your request has been submitted for approval";
-//			hrmanager.saveNewEmployeeRequest(employee.getUserName(),employee.getFirstName(),employee.getLastName(),employee.getEmailId(),employee.getDepartment());
-			mav.addObject("message", message);				
-			return mav;
-//		}
-//	 catch (Exception e) {
-//		// TODO Auto-generated catch block
-//		e.printStackTrace();
-//		if(e instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException )
-//		{
-//			message = "Username already Exists.Choose a different username";
-//			mav.addObject("message", message);
-//			mav.setViewName("signup/saveData");		
-//			return mav;
-//		} else
-//		{
-//			message = "Error in saving your data.Please try again";
-//			mav.addObject("message", message);
-//			mav.setViewName("signup/saveData");		
-//			return mav;
-//				
-//		}
-//	 }
-				
-	}*/
 
 }

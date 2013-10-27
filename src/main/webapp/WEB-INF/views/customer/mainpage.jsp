@@ -10,7 +10,7 @@
 	type="text/css" />
 </head>
 <body>
-	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 	<script src="/sundevilbank/resources/js/bootstrap.js"></script>
 	<script src="/sundevilbank/resources/js/custom.js"></script>
 	<div class="container">
@@ -27,10 +27,10 @@
 							<div class="well">
 								<ul class="nav nav-list">
 									<li><a class="active" style="cursor: pointer;"
-										onclick="changeContent(1, '../../customer/customer/transaction')">View
+										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/transaction')">View
 											all my transactions </a></li>
 									<li><a style="cursor: pointer;"
-										onclick="changeContent(1, '../../customer/customer/newtransaction')">
+										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/newtransaction')">
 											Make new Transfer Transaction </a></li>
 								</ul>
 							</div>

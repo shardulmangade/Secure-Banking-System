@@ -18,7 +18,7 @@
 	<div class = "row" id="main-content">
 		<div class = "span4 hero-unit" id="sidebar">
 			<div class="well" style="width:300px; margin:0 auto;">
-				<form class="form-signin" action = "${pageContext.request.contextPath}/customer/customer/performTransaction.html" method = "post" >
+				<form class="form-signin" action = "${pageContext.request.contextPath}/customer/performTransaction.html" method = "post" >
 				  						  			    
         <label for = "textboxuser"> Enter username to whom  you want to transfer money</label> 
         <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                

@@ -27,7 +27,7 @@ import asu.edu.sbs.hr.service.CorporateManager;
 import asu.edu.sbs.web.login.LoginController;
 
 @Controller
-//@RequestMapping(value= "/corporateDept")
+
 public class CorporateController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
@@ -42,7 +42,7 @@ public class CorporateController {
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome to corporate page, locale is {}.", locale);
 		
-		return "corporate/corporate";
+		return "corporate/home";
 	}
 	
 	
@@ -66,7 +66,7 @@ public class CorporateController {
 		
 	}
 	
-	@RequestMapping(value = "corporate/op4" ,method = RequestMethod.POST)
+	@RequestMapping(value = "/corporate/op4" ,method = RequestMethod.POST)
 	public String getPending(Locale locale, Model model){
 		
 		System.out.println("Inside corporate controler for pending request");
@@ -167,7 +167,7 @@ public class CorporateController {
 			message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
 			crManager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
 			model.addAttribute("message", message);							
-			return ("signup/saveData");
+			return ("corporate/saveData");
 			
 		} catch (Exception e) {
 			
@@ -176,13 +176,13 @@ public class CorporateController {
 				e.printStackTrace();		
 				message = "Error occured in transferring employee .Please use valid username";
 				model.addAttribute("message", message);							
-				return ("signup/saveData");
+				return ("corporate/saveData");
 			} else {
 			// TODO Auto-generated catch block
 			e.printStackTrace();						
 			message = "Error occured in sending transfer request";
 			model.addAttribute("message", message);				
-			return ("signup/saveData");
+			return ("corporate/saveData");
 			}
 		 }		
 	}
@@ -213,7 +213,7 @@ public class CorporateController {
 				}
 				//Delete from both tables
 			}
-			return "/corporate/corporate";
+			return "/corporate/home";
 		}
 		if(request.getParameter("action").equals("deny"))
 		{
@@ -227,10 +227,10 @@ public class CorporateController {
 					e.printStackTrace();
 				}
 			}
-			return "/corporate/corporate";
+			return "/corporate/home";
 			
 		}	
-		return "corporate/corporate";
+		return "corporate/home";
 	}
 
 }

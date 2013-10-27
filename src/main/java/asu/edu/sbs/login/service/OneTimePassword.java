@@ -1,9 +1,11 @@
 package asu.edu.sbs.login.service;
 
 
+import java.security.MessageDigest;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+
 public class OneTimePassword
 {
 	private String password;
@@ -50,5 +52,43 @@ public class OneTimePassword
 		cal.add(Calendar.MINUTE, 10);
 		return cal.getTime();
 	}
+
+	public static void main(String a[])
+	{
+		OneTimePassword otp=new OneTimePassword();
+		System.out.println("The OTP generated is --->" + "["+otp.password+"]");
+		System.out.println(otp.getExpirationTime());
+	}
 	
+	/**
+	 * method to get hashed password of OTP
+	 */
+	public String getHashedOTP(){
+		String hashedPassword="";
+		try{			
+			byte[] messageBytes = this.password.getBytes("UTF-8");
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] digest = md.digest(messageBytes);
+			hashedPassword = digest.toString();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return hashedPassword;
+	}
+	/**
+	 * method to get hashed password given string
+	 */
+	public String getHash(String toHashString){
+		String hashedPassword="";
+		try{			
+			byte[] messageBytes = toHashString.getBytes("UTF-8");
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			byte[] digest = md.digest(messageBytes);
+			hashedPassword = digest.toString();
+		}catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return hashedPassword;
+	}
+
 }
