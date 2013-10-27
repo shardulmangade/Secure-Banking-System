@@ -7,6 +7,7 @@ public class Credit {
 	private String fromCustomer;
 	private String toCustomer;
 	private Double amount;
+	private byte[] signedRequest;
 
 	public Double getAmount() {
 		return amount;
@@ -37,6 +38,20 @@ public class Credit {
 	}
 	public void setToCustomer(String toCustomer) {
 		this.toCustomer = toCustomer;
+	}
+	
+	@Override
+	public String toString(){
+		String result = this.fromCustomer + this.toCustomer;
+		return result;
+	}
+	
+	public byte[] getSignedRequest() {
+		return signedRequest;
+	}
+	
+	public void setSignedRequest(byte[] signedRequest) {
+		this.signedRequest = signedRequest;
 	}
 	
 }

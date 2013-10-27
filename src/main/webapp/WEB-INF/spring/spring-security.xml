@@ -8,18 +8,20 @@
 	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	
-	<http auto-config="true" use-expressions="true">
+	<http auto-config="true" use-expressions="true" access-denied-page="/forbidden">
 	
 		<!-- <intercept-url pattern="/*" access="permitAll" />-->
 		<intercept-url pattern="/logout*" access="permitAll" />
 		<intercept-url pattern="/resources/**" access="permitAll" />
 		<intercept-url pattern="/auth/**" access="hasAnyRole('ROLE_VALID_USER')" />
 		<intercept-url pattern="/euser/**" access="hasRole('ROLE_EXTERNAL_USER')"/>
+		<intercept-url pattern="/exceptions/**" access="hasAnyRole('ROLE_VALID_USER','ROLE_EXTERNAL_USER')"/>
 		<intercept-url pattern="/corporate/**" access="hasRole('ROLE_CORPORATE_MANAGER')"/>
 		<intercept-url pattern="/it/employee/**" access="hasRole('ROLE_IT_EMPLOYEE')"/>
 	    <intercept-url pattern="/it/manager/**" access="hasRole('ROLE_IT_MANAGER')"/>
   		<intercept-url pattern="/hr/hremployee/**" access="hasRole('ROLE_HR_EMPLOYEE')"/>
-		<intercept-url pattern="/hr/hrmanager/**" access="hasRole('ROLE_HR_MANAGER')"/>   
+		<intercept-url pattern="/hr/hrmanager/**" access="hasRole('ROLE_HR_MANAGER')"/>		
+		<intercept-url pattern="/customer/**" access="hasRole('ROLE_EXTERNAL_USER')"/>
 		<!-- <intercept-url pattern="/**" access="denyAll" />-->
 		
 		<form-login login-page="/" default-target-url="/auth/otpcheck"

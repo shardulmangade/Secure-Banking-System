@@ -18,14 +18,15 @@ import com.mysql.jdbc.PreparedStatement;
 
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankStorageException;
 
 @Service
 public class HrDBConnectionManager {
 
 public final static int SUCCESS = 1;
 public final static int FAILURE = 0;
-private String dbCommand;
-private Connection connection;
+//private String dbCommand;
+//private Connection connection;
 @Autowired
 @Qualifier("dataSource")
 private DataSource dataSource;
@@ -41,30 +42,34 @@ public void setDataSource(DataSource dataSource) {
 public void saveNewEmployeeRequest(String UserName,String firstName,String lastName ,String emailId,String department) throws Exception
 {
 					
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.ALL_NEW_EMPLOYEE_REQUESTS + "(?,?,?,?,?)" );
 		sqlstatement.setString(1,UserName );
 		sqlstatement.setString(2,firstName );
 		sqlstatement.setString(3,lastName );
 		sqlstatement.setString(4,emailId );
 		sqlstatement.setString(5,department );
-		sqlstatement.execute();									
+		sqlstatement.execute();
+		if (connection!=null)
+			connection.close();
 }
 	
 	public void deleteEmployeeRequest(String UserName) throws Exception
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.DELETE_EMPLOYEE_REQUESTS + "(?)" );
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,UserName );		
 		sqlstatement.execute();		
 		if (sqlstatement.getUpdateCount()==0)
 			throw new InvalidActivityException();
+		if (connection!=null)
+			connection.close();
 	}
 	
 	public void addNewHrEmployee(SignUpEmployee employee) throws Exception 
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_NEW_EMPLOYEE + "(?,?,?,?,?,?)" );
 		sqlstatement.setString(1,employee.getUserName() );
 		sqlstatement.setString(2,employee.getFirstName() );
@@ -73,36 +78,42 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		sqlstatement.setString(5,employee.getDepartment() );
 		sqlstatement.setString(6,employee.getPassword() );
 		sqlstatement.execute();
+		if (connection!=null)
+			connection.close();
 	}
 	
 	
 	public void deleteHrEmployee(String UserName) throws Exception 
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.DELETE_EMPLOYEE + "(?)" );
 		sqlstatement.setString(1,UserName );
 		sqlstatement.execute();
 		
 		if (sqlstatement.getUpdateCount()==0)
 			throw new InvalidActivityException();
+		if (connection!=null)
+			connection.close();
 	}
 
 
 	public void updateDepartmentOfEmployee(String UserName,String department) throws Exception 
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.UPDATE_EMPLOYEE + "(?,?)" );
 		sqlstatement.setString(1,UserName );
 		sqlstatement.setString(2,department );
 		sqlstatement.execute();
 		if (sqlstatement.getUpdateCount()==0)
 			throw new InvalidActivityException();
+		if (connection!=null)
+			connection.close();
 	}
 	
 	
 	public void insertDeleteRequesttoCM(String userName, String department, boolean deleteApprove) throws Exception 
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_DELETE_REQUESTS_TO_CORPORATEMGMT + "(?,?,?)" );
 		sqlstatement.setString(1,userName );
 		sqlstatement.setString(2,department );
@@ -110,16 +121,20 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		sqlstatement.execute();
 		if (sqlstatement.getUpdateCount()==0)
 			throw new InvalidActivityException();
-		
+		if (connection!=null)
+			connection.close();
 	}
 	
-	public int getDeleteApprovalStatus(String userName, String department) throws Exception
+	public int getDeleteApprovalStatus(String userName, String department) throws BankStorageException 
 	{
+		Connection connection = null;
+		try {
 		connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_DELETE_REQUEST_STATUS + "(?,?)" );
 		sqlstatement.setString(1,userName );
 		sqlstatement.setString(2,department );		
 		ResultSet rs = sqlstatement.executeQuery();
+		
 		if(rs.next())
 		{
 			if(rs.getBoolean("approvedelete"))
@@ -128,6 +143,18 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 				return 0;			
 		}else {
 			return -1;
+		}
+		} catch(Exception e)
+		{
+			throw new BankStorageException(e);
+		}finally{
+			if (connection!=null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 		}
 	}
 	
