@@ -27,10 +27,10 @@
 							<div class="well">
 								<ul class="nav nav-list">
 									<li><a class="active" style="cursor: pointer;"
-										onclick="changeContent(1, '../../customer/customer/transaction')">View
+										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/transaction')">View
 											all my transactions </a></li>
 									<li><a style="cursor: pointer;"
-										onclick="changeContent(1, '../../customer/customer/newtransaction')">
+										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/newtransaction')">
 											Make new Transfer Transaction </a></li>
 								</ul>
 							</div>

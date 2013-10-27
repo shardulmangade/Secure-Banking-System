@@ -1,5 +1,6 @@
 package asu.edu.sbs.web.hr;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,9 +17,9 @@ import asu.edu.sbs.domain.User;
 public class HrEmployeeController {
 	
 	@RequestMapping(value = "/hrEmployee", method = RequestMethod.GET)
-	public String getHrEmployee(Locale locale, Model model) {
+	public String getHrEmployee(Locale locale, Model model, Principal principal) {
 		System.out.println("Inside hr employee Controller .............");
-				
+		model.addAttribute("username", principal.getName());		
 		return "hr/employee/hrEmployee";
 	}
 }

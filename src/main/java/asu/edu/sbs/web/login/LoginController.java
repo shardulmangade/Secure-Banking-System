@@ -104,11 +104,14 @@ public class LoginController {
 			
 			//Redirect to home page based on role.
 			if(role.equals(IBankRoles.ROLE_EXTERNAL_USER))
-				return "redirect:/euser/home";
+				//return "redirect:/euser/home";
+				return "redirect:/customer/firstlogin";
 			if(role.equals(IBankRoles.ROLE_IT_EMPLOYEE))
 				return "redirect:/it/employee";
 			if(role.equals(IBankRoles.ROLE_IT_MANAGER))
 				return "redirect:/it/manager";
+			if(role.equals(IBankRoles.ROLE_HR_EMPLOYEE))
+				return "redirect:/hr/hremployee/hrEmployee";			
 			if(role.equals(IBankRoles.ROLE_CORPORATE_MANAGER)){
 				return "redirect:/corporate";
 			}
