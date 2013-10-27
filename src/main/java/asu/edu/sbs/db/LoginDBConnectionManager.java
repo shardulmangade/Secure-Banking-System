@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 
 import javax.sql.DataSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import asu.edu.sbs.login.service.OneTimePassword;
 @Service
 public class LoginDBConnectionManager {
 
+	private static final Logger logger = LoggerFactory.getLogger(LoginDBConnectionManager.class);
 	public final static int SUCCESS = 1;
 	public final static int FAILURE = 0;
 
@@ -51,8 +54,8 @@ public class LoginDBConnectionManager {
 
 			sqlStatement.execute();
 
-			String sOutErrorValue = sqlStatement.getString(4);
-			if(sOutErrorValue != null)
+			String sOutErrorValue = sqlStatement.getString(2);
+			if(sOutErrorValue == null)
 			{
 				ResultSet rs = sqlStatement.getResultSet();
 
@@ -75,6 +78,7 @@ public class LoginDBConnectionManager {
 			}
 			else
 			{
+				logger.error("getOTP error for user <<"+username+">> "+sOutErrorValue);
 				throw new BankStorageException(sOutErrorValue);
 			}
 		} catch (SQLException e) {
@@ -132,7 +136,7 @@ public class LoginDBConnectionManager {
 			sqlStatement.execute();
 
 			String output = sqlStatement.getString(2);
-			if(output != null)
+			if(output == null)
 			{
 				ResultSet rs = sqlStatement.getResultSet();
 
@@ -162,7 +166,11 @@ public class LoginDBConnectionManager {
 			sqlStatement.registerOutParameter(2, Types.VARCHAR);
 
 			sqlStatement.execute();
-
+			String output = sqlStatement.getString(2);
+			if(output != null)
+			{
+				logger.info("A request for user <<+"+username+">> returned no value from database" );
+			}
 			ResultSet rs = sqlStatement.getResultSet();
 
 			//Iterate through each row returned by the database
@@ -173,6 +181,10 @@ public class LoginDBConnectionManager {
 				user.setFirstName(rs.getString(2));
 				user.setLastName(rs.getString(3));
 				user.setEmail(rs.getString(4));
+				user.setDepartment(rs.getString(5));
+				user.setSsn(rs.getString(6));
+				user.setCreatedBy(rs.getString(7));
+				user.setCreatedDate(rs.getString(8));
 			}			
 		} catch (SQLException e) {
 			throw new BankStorageException(e);

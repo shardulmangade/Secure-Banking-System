@@ -24,7 +24,7 @@ BEGIN
 	 
 		THEN 
 			
-			SELECT username, firstname, lastname, emailid from tbl_all_users where username = inusername;
+			SELECT username, firstname, lastname, emailid, department, ssn, createdby, createddate from tbl_all_users where username = inusername;
 	
 	ELSE 
 			SET errorMessage = "No such user exists. This action has been logged. Please don't try to hack into the system !!!";
@@ -32,4 +32,3 @@ BEGIN
 
 END$$
 DELIMITER ;
-
