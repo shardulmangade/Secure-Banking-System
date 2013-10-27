@@ -13,6 +13,8 @@ public class SignUpEmployee {
 	private String lastName;
 	@NotBlank
 	private String userName;
+	@NotBlank
+	private String MerchantName;
 	
 	@Email @NotBlank
 	private String emailId;
@@ -70,6 +72,12 @@ public class SignUpEmployee {
 		this.password = password;
 	}
 
-	
+	public String getMerchantName() {
+		return MerchantName;
+	}
+
+	public void setMerchantName(String MerchantName) {
+		this.MerchantName = MerchantName;
+	}
 		
 }

@@ -50,6 +50,18 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 		sqlstatement.setString(5,department );
 		sqlstatement.execute();									
 }
+
+public void saveNewMerchantRequest(String userName, String merchantName, String emailId, String department) throws Exception
+{
+					
+		connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.ALL_NEW_EMPLOYEE_REQUESTS + "(?,?,?,?)" );
+		sqlstatement.setString(1,userName );
+		sqlstatement.setString(2,merchantName );
+		sqlstatement.setString(3,emailId );
+		sqlstatement.setString(4,department );
+		sqlstatement.execute();									
+}
 	
 	public void deleteEmployeeRequest(String UserName) throws Exception
 	{
@@ -130,7 +142,8 @@ public void saveNewEmployeeRequest(String UserName,String firstName,String lastN
 			return -1;
 		}
 	}
-	
+
+
 }
 
 

@@ -103,13 +103,13 @@ public class SignupMerchantController {
 			System.out.println("\n Inside Employee signup post controller");
 			if(result.hasErrors())
 			{
-				return new ModelAndView("signup/signupemployee", "signupuser",employee);
+				return new ModelAndView("signup/signup", "signupuser",employee);
 				//return new ModelAndView("hr/employee/hrEmployee","signupuser",employee);
 			}		 
 					
 			mav.setViewName("signup/saveData");
 			message= "Your request has been submitted for approval";
-			//salesmanager.saveNewMerchantRequest(employee.getUserName(),employee.getMerchantName(),employee.getEmailId(),employee.getDepartment());
+			salesmanager.saveNewMerchantRequest(employee.getUserName(),employee.getMerchantName(),employee.getEmailId(),employee.getDepartment());
 			mav.addObject("message", message);				
 			return mav;
 		}
