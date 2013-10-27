@@ -24,7 +24,7 @@ public class CorporateDBConnectionManager {
 	public final static int SUCCESS = 1;
 	public final static int FAILURE = 0;
 	private String dbCommand;
-	private Connection connection;
+	//	private Connection connection;
 	@Autowired
 	@Qualifier("dataSource")
 	private DataSource dataSource;
@@ -39,7 +39,7 @@ public class CorporateDBConnectionManager {
 	
 	public void saveNewEmployeeRequest(SignUpEmployee employee) throws Exception
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_NEW_USER_CORPORATE + "(?,?,?,?,?,?)" );
 		sqlstatement.setString(1,employee.getUserName() );
 		sqlstatement.setString(2,employee.getFirstName() );
@@ -47,25 +47,34 @@ public class CorporateDBConnectionManager {
 		sqlstatement.setString(4,employee.getEmailId() );
 		sqlstatement.setString(5,employee.getDepartment());
 		sqlstatement.setString(6,employee.getPassword());
-		sqlstatement.execute();									
+		sqlstatement.execute();					
+		if(connection != null){
+			connection.close();
+		}
 	}
 	
 	public void deleteEmployeeRequest(String UserName) throws Exception
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.DELETE_AUTHORIZATION_REQUEST + "(?)" );
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,UserName );		
 		sqlstatement.execute();		
+		if(connection != null){
+			connection.close();
+		}
 	}	
 	
 	public void updateDepartmentOfEmployee(String UserName,String department) throws Exception 
 	{
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.UPDATE_EMPLOYEE_CORPORATE + "(?,?)" );
 		sqlstatement.setString(1,UserName );
 		sqlstatement.setString(2,department );
 		sqlstatement.execute();
+		if(connection != null){
+			connection.close();
+		}
 	}
 
 	public List<SignUpEmployee> getAllPendingUserRequests() {
@@ -93,22 +102,26 @@ public class CorporateDBConnectionManager {
 					listUsers.add(user);
 				}
 			}	
+			if(connection != null){
+				connection.close();
+			}
 		} catch (SQLException e) {
 			// TODO Use our application specific custom exception
 			e.printStackTrace();
 		}
-		
 		return listUsers;
 	}
 
 	public void deleteEmployee(String username) throws Exception {
 		
-		connection = dataSource.getConnection();
+		Connection connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.DELETE_USER_CORPORATE + "(?)" );
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,username );		
 		sqlstatement.execute();	
-		
+		if(connection != null){
+			connection.close();
+		}
 	}
 	
 }
