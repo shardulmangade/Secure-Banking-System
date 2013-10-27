@@ -44,9 +44,10 @@ public class LoginDBConnectionManager {
 	{
 		String dbCommand;
 		OneTimePassword otp = null;
+		Connection connection = null;
 
 		try {
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_OTP + "(?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
@@ -84,6 +85,15 @@ public class LoginDBConnectionManager {
 		} catch (SQLException e) {
 			throw new BankStorageException(e);
 		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}
 
 		return otp;
 	}
@@ -92,9 +102,10 @@ public class LoginDBConnectionManager {
 	{
 		//Insert the OTP for the user in the database
 		String dbCommand, sOutErrorValue;
+		Connection connection = null;
 
 		try {
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_OTP + "(?,?,?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
@@ -118,16 +129,25 @@ public class LoginDBConnectionManager {
 		} catch (SQLException e) {
 			throw new BankStorageException(e);
 		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}
 		return SUCCESS;
 	}
 
 	public String getRole(String username) throws BankStorageException
 	{
 		String dbCommand;
-
+		Connection connection = null;
 
 		try {
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 			dbCommand = DBConstants.SP_CALL + " " + DBConstants.LOGIN_GET_USER_ROLE + "(?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
@@ -149,6 +169,15 @@ public class LoginDBConnectionManager {
 		} catch (SQLException e) {
 			throw new BankStorageException(e);
 		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}
 
 		return IBankRoles.ROLE_INVALID_USER;
 	}
@@ -157,9 +186,10 @@ public class LoginDBConnectionManager {
 	{
 		String dbCommand;
 		User user = null;
+		Connection connection = null;
 
 		try {
-			Connection connection = dataSource.getConnection();
+			connection = dataSource.getConnection();
 			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_USER + "(?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
@@ -189,6 +219,16 @@ public class LoginDBConnectionManager {
 		} catch (SQLException e) {
 			throw new BankStorageException(e);
 		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}
+		
 
 		return user;
 	}
