@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.domain.Transaction;
 import asu.edu.sbs.db.TransactionDBManager;
+import asu.edu.sbs.exception.BankStorageException;
 
 @Service
 public class TransactionService {
@@ -16,7 +17,6 @@ public class TransactionService {
 	
 	public List<Transaction> getRegEmpTransactions() throws Exception
 	{
-		//transactionDBManager = new TransactionDBManager();
 		return transactionDBManager.getRegEmpTransactions(); 
 	}
 	
@@ -26,8 +26,14 @@ public class TransactionService {
 		
 	}
 	
-	public void makeUsersActive(List<String> users)
+	public void makeUsersActive(List<String> users, String requestedBy) throws BankStorageException
 	{
-		transactionDBManager.makeUsersActive(users);
+		try{
+		transactionDBManager.makeUsersActive(users, requestedBy);
+		}
+		catch(Exception e)
+		{
+			throw new BankStorageException(e);
+		}
 	}
 }

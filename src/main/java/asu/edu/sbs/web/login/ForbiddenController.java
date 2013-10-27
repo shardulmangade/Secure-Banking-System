@@ -28,4 +28,10 @@ public class ForbiddenController {
 		}
 		return "exceptions/accessissue";
 	}
+	
+	@RequestMapping(value="/errors/404.html", method = RequestMethod.GET)
+	public String errorPageHandle(ModelMap model, Principal principal) {
+
+		return "exceptions/error404";
+	}
 }

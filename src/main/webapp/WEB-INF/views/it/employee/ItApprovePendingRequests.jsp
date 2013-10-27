@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Employee Signup Page</title>
+<title>Approve Pending IT Requests Page</title>
 <style>
 .error {
 color: #ff0000;
@@ -14,7 +14,7 @@ font-style: italic;
 
 </head>
 <body>
-
+<P> ${message}</P>
 <form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/it/handlePendingRequestsResponse.html" >
 <c:choose>
 <c:when test="${not empty userRequests}">

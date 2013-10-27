@@ -5,9 +5,9 @@
 	<title>Transactions</title>
 </head>
 <body>
-<h3>
-	Welcome , Below are the your all transactions:
-</h3>
+	Want to leave ${username}?
+	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
+	<h3>${username},</h3>
 
 <c:choose>
 <c:when test="${not empty listTransactions}">
