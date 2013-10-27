@@ -68,8 +68,9 @@ public class customerController {
 	}
 	
 	@RequestMapping(value = "/customer/mainpage", method = RequestMethod.GET)
-	public String customerMainPage(Locale locale, Model model) {
-		System.out.println("Inside customer post Controller .............");				
+	public String customerMainPage(Locale locale, Model model,Principal principal) {
+		System.out.println("Inside customer post Controller .............");
+		model.addAttribute("message", principal.getName());
 		return "customer/mainpage";
 	}
 	
@@ -77,7 +78,7 @@ public class customerController {
 	@RequestMapping(value = "/customer/transaction", method = RequestMethod.POST)
 	public String customerTransaction(Locale locale, Model model, Principal principle) {
 		System.out.println("Inside customer transaction Controller .............");
-		List<Credit> listTransactions=  customerManager.getAllTransaction("girish");
+		List<Credit> listTransactions=  customerManager.getAllTransaction(principle.getName());
 		
 		model.addAttribute("listTransactions", listTransactions);
 		return "customer/viewtransaction";

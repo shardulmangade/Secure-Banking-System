@@ -117,6 +117,8 @@ public class LoginController {
 				return "redirect:/it/manager";
 			if(role.equals(IBankRoles.ROLE_HR_EMPLOYEE))
 				return "redirect:/hr/hremployee/hrEmployee";			
+			if(role.equals(IBankRoles.ROLE_HR_MANAGER))
+				return "redirect:/hr/hrmanager/manager/op1";
 			if(role.equals(IBankRoles.ROLE_CORPORATE_MANAGER))
 				return "redirect:/corporate";
 			if(role.equals(IBankRoles.ROLE_TRANSACTION_EMPLOYEE))
