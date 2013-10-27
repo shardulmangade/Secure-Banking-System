@@ -19,3 +19,4 @@ values("sysad","ROLE_EXTERNAL_USER",substring_index(user(),'@',1), curdate(),sub
 
 insert into tbl_user_role
 values("corporate","ROLE_CORPORATE_MANAGER",substring_index(user(),'@',1), curdate(),substring_index(user(),'@',1), curdate());
+
