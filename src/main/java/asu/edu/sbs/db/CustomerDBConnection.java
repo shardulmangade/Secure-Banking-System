@@ -90,6 +90,8 @@ public class CustomerDBConnection {
 		sqlstatement.setString(3,credit.getFromaccount() );
 		sqlstatement.setString(4,credit.getToacccount() );
 		sqlstatement.setDouble(5, credit.getAmount());
+		//saving the encrypted request
+		sqlstatement.setBytes(6, credit.getSignedRequest());
 		sqlstatement.execute();
 		int updateCount = sqlstatement.getUpdateCount();
 		if (connection!=null)

@@ -10,7 +10,7 @@
 	type="text/css" />
 </head>
 <body>
-	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 	<script src="/sundevilbank/resources/js/bootstrap.js"></script>
 	<script src="/sundevilbank/resources/js/custom.js"></script>
 	<div class="container">

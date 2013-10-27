@@ -1,11 +1,15 @@
 package asu.edu.sbs.web.customer;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.Signature;
 import java.util.List;
 import java.util.Locale;
 
@@ -36,9 +40,9 @@ public class customerController {
 		try{
 			System.out.println("Inside first login Controller .............");
 			//generate private and public keys here
-			KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("DSA", "SUN");
-			SecureRandom sRandom = SecureRandom.getInstance("SHA1PRNG", "SUN");
-			keyGenerator.initialize(1024,  sRandom);
+			KeyPairGenerator keyGenerator = KeyPairGenerator.getInstance("DSA");
+			//SecureRandom sRandom = SecureRandom.getInstance("SHA1PRNG", "SUN");
+			keyGenerator.initialize(1024);
 			KeyPair keyPair = keyGenerator.generateKeyPair();
 			privateKey = keyPair.getPrivate();
 			publicKey = keyPair.getPublic();
@@ -92,33 +96,39 @@ public class customerController {
 		String message = null;
 				
 		try {
-		
-		if(request.getParameter("userNametext") !=null && request.getParameter("accountNumbertext") !=null && request.getParameter("amounttext")!=null ){
-			String userName=request.getParameter("userNametext");
-			String accountNumber = request.getParameter("accountNumbertext");
-			Double amount= Double.parseDouble(request.getParameter("amounttext"));
-			Credit credit = new Credit();
-			if (customerManager.validateRecepientUser(userName, accountNumber))
-			{
-//			credit.setFromCustomer("admin");
-//			credit.setFromaccount("9876543210");
-			credit.setFromCustomer(principal.getName());
-			customerManager.getAccountNumberForCustomer(principal.getName());
-			credit.setFromaccount("9876543210");	
-			credit.setToacccount(accountNumber);
-			credit.setAmount(amount);
-			credit.setToCustomer(userName);
-			customerManager.insertNewTransaction(credit);
-			message = "Your Transaction is successfully processed.";
-			}  else {
-			message = "There was error in processing your transaction.Please check username and accountNumber again";
-			}
-		}		
-		} catch (Exception e)
-		{
+			if(request.getParameter("userNametext") !=null && request.getParameter("accountNumbertext") !=null && request.getParameter("amounttext")!=null ){
+				String userName=request.getParameter("userNametext");
+				String accountNumber = request.getParameter("accountNumbertext");
+				Double amount= Double.parseDouble(request.getParameter("amounttext"));
+				Credit credit = new Credit();
+				if (customerManager.validateRecepientUser(userName, accountNumber)){
+					credit.setFromCustomer(principal.getName());
+					credit.setFromaccount(customerManager.getAccountNumberForCustomer(principal.getName()));	
+					credit.setToacccount(accountNumber);
+					credit.setAmount(amount);
+					credit.setToCustomer(userName);
+					//customerManager.insertNewTransaction(credit);
+					//sign with private key
+					String buffer = customerManager.getSignedRequest(this.privateKey, credit);			
+					//buffer = buffer.substring(0, buffer.length() - 1) + "1";
+					//credit.setSignedRequest(buffer);
+					boolean verify = customerManager.verifyRequest(credit, buffer, publicKey);
+					//set the public key concerned to the user for the transaction
+					//credit.setPublicKey(this.publicKey.);
+					//store to db
+					if(verify){
+						customerManager.insertNewTransaction(credit);
+					}else{
+						message = "The User is not Authentic!";
+					}
+					message = "Your Transaction is successfully processed.";
+				}else {
+					message = "There was error in processing your transaction.Please check username and accountNumber again";
+				}
+			}		
+		} catch (Exception e){
 			e.printStackTrace();
-			message = "Sorry .we are unable to process your transaction right now";
-			
+			message = "Sorry .we are unable to process your transaction right now";			
 		}
 		model.addAttribute("message", message);
 		return "customer/performTransaction";
