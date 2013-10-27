@@ -94,20 +94,21 @@ public class ItEmployeeController {
 				// Delete from the tbl_it_pending
 				try {
 					//ToDo: Add customer to customer tables
-					User user=itEmployee.getUser(username);
+					User user=itEmployee.getPendingUserRequest(username);
 					OneTimePassword otpInstance = new OneTimePassword();
 					String password = otpInstance.getPassword();
 					Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-				    String hashedPass = encoder.encodePassword(password, null);//change thi
+				    String hashedPass = encoder.encodePassword(password, null);
+				    // Insert into customers table
 					itEmployee.insertValidUser(user, password, name);
 					//send email
 					enManager.sendPasswordCustomer(user, otpInstance.getPassword());
-					itEmployee.deleteEmployeeRequest(username);
+					itEmployee.deleteItPendingRequest(username);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				// Insert into customers table
+				
 			}
 			return "it/employee/requestsApproved";
 		}
@@ -117,7 +118,7 @@ public class ItEmployeeController {
 			{
 				// Delete from the tbl_it_pending
 				try {
-					itEmployee.deleteEmployeeRequest(username);
+					itEmployee.deleteItPendingRequest(username);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -22,7 +22,7 @@ public class ItEmployee {
 	{
 		return itdbconnection.getAllPendingUserRequests();		
 	}
-	public void deleteEmployeeRequest(String UserName)  throws Exception
+	public void deleteItPendingRequest(String UserName)  throws Exception
 	{
 			itdbconnection.deleteItPendingRequest(UserName);
 	}
@@ -30,9 +30,9 @@ public class ItEmployee {
 	{
 		logindbconnection.insertValidUser(user, firstTimePassword, insertedbyUsername);		
 	}
-	public User getUser(String userName)throws BankStorageException
+	public User getPendingUserRequest(String userName)throws BankStorageException
 	{
-		return logindbconnection.getUser(userName);		
+		return itdbconnection.getPendingUserRequest(userName);		
 	}	
 	
 }
