@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <header>
-	<h2>Ups... sorry, something went wrong.</h2>
+	<h2>Looks like you are snooping around !</h2>
 	<span class="byline">Access Error</span>
 </header>
 
