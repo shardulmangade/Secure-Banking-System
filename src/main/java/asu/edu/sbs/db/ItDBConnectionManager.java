@@ -56,11 +56,12 @@ public class ItDBConnectionManager {
 				while(result.next())
 				{
 					user = new User();
-					user.setUsername(result.getString(1));
-					user.setAccountType(result.getString(2));
-					user.setFirstName(result.getString(3));
-					user.setLastName(result.getString(4));
-					user.setEmail(result.getString(5));
+					user.setUsername(result.getString("username"));
+					user.setDepartment(result.getString("department"));
+					user.setFirstName(result.getString("firstname"));
+					user.setLastName(result.getString("lastname"));
+					user.setEmail(result.getString("emailid"));
+					user.setSsn(result.getString("ssn"));
 					//user.setDateOfBirth(result.getString(6));
 					listUsers.add(user);
 				}
@@ -93,7 +94,7 @@ public class ItDBConnectionManager {
 		User user = null;
 		try {
 			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.IT_ALL_PENDING_USER_REQUESTS + "(?)";
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.IT_PENDING_USER_REQUEST + "(?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,userName );
 			sqlStatement.execute();
@@ -103,11 +104,12 @@ public class ItDBConnectionManager {
 			if(result.isBeforeFirst())
 			{
 				user = new User();
-				user.setUsername(result.getString(1));
-				user.setAccountType(result.getString(2));
-				user.setFirstName(result.getString(3));
-				user.setLastName(result.getString(4));
-				user.setEmail(result.getString(5));
+				user.setUsername(result.getString("username"));
+				user.setDepartment(result.getString("department"));
+				user.setFirstName(result.getString("firstname"));
+				user.setLastName(result.getString("lastname"));
+				user.setEmail(result.getString("emailid"));
+				user.setSsn(result.getString("ssn"));
 				//ToDo Fetch SSN
 			}	
 		} catch (SQLException e) {
