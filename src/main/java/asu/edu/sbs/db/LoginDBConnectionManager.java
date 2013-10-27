@@ -306,7 +306,7 @@ public class LoginDBConnectionManager {
 	{
 		if(newRole == null || newDepartmentName == null)
 			throw new BankAccessException();
-		
+
 		String dbCommand;
 		Connection connection = null;
 
@@ -321,7 +321,7 @@ public class LoginDBConnectionManager {
 			sqlStatement.registerOutParameter(5, Types.VARCHAR);
 
 			sqlStatement.execute();
-			String output = sqlStatement.getString(4);
+			String output = sqlStatement.getString(5);
 			if(output == null)
 				return SUCCESS;		
 			else
@@ -339,8 +339,18 @@ public class LoginDBConnectionManager {
 				}
 		}	
 	}
-	
-	public int insertValidUser(User user, String randomPassword, String insertedbyUsername) throws BankStorageException
+
+	/**
+	 * Insert a new user with his/her first time password.
+	 * IMPORTANT: The role of the user has to be set in the User object.
+	 * 
+	 * @param user
+	 * @param firstTimePassword
+	 * @param insertedbyUsername
+	 * @return
+	 * @throws BankStorageException
+	 */
+	public int insertValidUser(User user, String firstTimePassword, String insertedbyUsername) throws BankStorageException
 	{
 		String dbCommand;
 		Connection connection = null;
@@ -350,13 +360,39 @@ public class LoginDBConnectionManager {
 			dbCommand = DBConstants.SP_CALL + " " + DBConstants.INSERT_TO_ALL_USERS_TABLE + "(?,?,?,?,?,?,?,?,?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,user.getUsername());
-			sqlStatement.setString(2,randomPassword);
-			sqlStatement.setString(3,IBankRoles.ROLE_VALID_USER);
-//			sqlStatement.setString(4,user.);
-			sqlStatement.registerOutParameter(5, Types.VARCHAR);
+			sqlStatement.setString(2,firstTimePassword);
+			sqlStatement.setString(3,user.getRole());
+
+			if(user.getFirstName() != null)
+				sqlStatement.setString(4,user.getFirstName());
+			else
+				sqlStatement.setString(4,"Not provided");
+
+			if(user.getLastName() != null)
+				sqlStatement.setString(5,user.getLastName());
+			else
+				sqlStatement.setString(5,"Not provided");
+
+			if(user.getEmail() != null)
+				sqlStatement.setString(6,user.getEmail());
+			else
+				sqlStatement.setString(6,"diging.momo@gmail.com");
+
+			if(user.getDepartment() != null)
+				sqlStatement.setString(7,user.getDepartment());
+			else
+				sqlStatement.setString(7,null);
+
+			if(user.getSsn() != null)
+				sqlStatement.setString(8,user.getSsn());
+			else
+				sqlStatement.setString(8,null);
+			
+			sqlStatement.setString(9,insertedbyUsername);
+			sqlStatement.registerOutParameter(10, Types.VARCHAR);
 
 			sqlStatement.execute();
-			String output = sqlStatement.getString(4);
+			String output = sqlStatement.getString(10);
 			if(output == null)
 				return SUCCESS;		
 			else

@@ -6,11 +6,20 @@ public class User {
 	private String accountType;  
 	private String firstName;
 	private String lastName;
+	private String role;
 	private String email;
 	private String department;
 	private String ssn;
 	private String createdBy;
 	private String createdDate;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	public String getSsn() {
 		return ssn;
