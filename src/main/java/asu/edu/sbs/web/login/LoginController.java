@@ -120,6 +120,8 @@ public class LoginController {
 			if(role.equals(IBankRoles.ROLE_CORPORATE_MANAGER)){
 				return "redirect:/corporate";
 			}
+			if(role.equals(IBankRoles.ROLE_EXTERNAL_MERCHANT))
+				return "redirect:/merchant/merchant/mainpage";
 			//TODO: add default case
 				
 		}
