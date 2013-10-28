@@ -28,6 +28,14 @@ OUT errorMessage  varchar(200)
 )
 BEGIN
      
+	IF EXISTS(SELECT 1 FROM tbl_it_pending_user_requests WHERE username = inusername)
+	 
+		THEN 
+		
+			SET errorMessage = "UserName already requested by a customer";
+
+	END IF;
+
 	 IF NOT EXISTS(SELECT 1 FROM tbl_all_users WHERE username = inusername)
 	 
 		THEN 
