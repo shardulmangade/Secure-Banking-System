@@ -412,6 +412,64 @@ public class LoginDBConnectionManager {
 		}	
 	}
 
+	public int insertValidCustomer(User user, String insertedbyUsername) throws BankStorageException
+	{
+		String dbCommand;
+		Connection connection = null;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.SALES_ALL_CUSTOMER_REQUESTS + "(?,?,?,?,?,?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,user.getUsername());
+			if(user.getFirstName() != null)
+				sqlStatement.setString(2,user.getFirstName());
+			else
+				sqlStatement.setString(2,"Not provided");
+
+			if(user.getLastName() != null)
+				sqlStatement.setString(3,user.getLastName());
+			else
+				sqlStatement.setString(3,"Not provided");
+
+			if(user.getEmail() != null)
+				sqlStatement.setString(4,user.getEmail());
+			else
+				sqlStatement.setString(4,"diging.momo@gmail.com");
+
+			if(user.getDepartment() != null)
+				sqlStatement.setString(5,user.getDepartment());
+			else
+				sqlStatement.setString(5,null);
+
+			if(user.getSsn() != null)
+				sqlStatement.setString(6,user.getSsn());
+			else
+				sqlStatement.setString(6,null);
+			
+			sqlStatement.setString(7,insertedbyUsername);
+			sqlStatement.registerOutParameter(8, Types.VARCHAR);
+
+			sqlStatement.execute();
+			String output = sqlStatement.getString(8);
+			if(output == null)
+				return SUCCESS;		
+			else
+				throw new BankStorageException(output);
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}	
+	}
+
 	public String getRoleTobechanged(String department, String role) {
 		
 		System.out.println("newrole "+role);

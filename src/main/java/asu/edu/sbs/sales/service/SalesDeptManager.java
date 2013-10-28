@@ -36,6 +36,11 @@ public class SalesDeptManager {
 			return (loginmanager.insertValidUser(user, password, createdBy));	
 	}
 	
+	public int insertValidCustomer(User user, String createdBy) throws BankStorageException
+	{		
+			return (loginmanager.insertValidCustomer(user, createdBy));	
+	}
+	
 	public void deleteEmployeeRequest(String UserName)  throws Exception
 	{
 		salesdbconnection.deleteEmployeeRequest(UserName);
