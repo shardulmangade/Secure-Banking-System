@@ -73,7 +73,12 @@ public class HrManagerController {
 				{
 					//return new ModelAndView("hr/newhremployee", "signupemployee",employee);
 					//return savedMav;
-					return new ModelAndView("hr/manager/manager","signupemployee",user);
+					//return new ModelAndView("hr/manager/manager","signupemployee",user);
+					message = "Validation Errors observed.Please go back and fill valid information";
+					mav.addObject("message", message);
+					mav.setViewName("signup/saveData");
+					return mav;
+					//return new ModelAndView("signup/saveData", "signupemployee",user);
 				}		 
 						
 				mav.setViewName("signup/saveData");
