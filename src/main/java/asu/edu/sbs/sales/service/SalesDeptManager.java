@@ -5,16 +5,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import asu.edu.sbs.db.LoginDBConnectionManager;
 import asu.edu.sbs.db.SalesDBConnectionManager;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankStorageException;
 
 @Service
 public class SalesDeptManager {
 
 	@Autowired
 	private SalesDBConnectionManager salesdbconnection;
-	
+	@Autowired
+	private LoginDBConnectionManager loginmanager;
+		
 	public void  saveNewEmployeeRequest(String UserName,String firstName,String lastName ,String emailId,String department) throws Exception
 	{
 			System.out.println("\n In SalesDb connection manager");
@@ -25,6 +29,11 @@ public class SalesDeptManager {
 	{
 			System.out.println("\n In SalesDb merchant connection manager");
 			salesdbconnection.saveNewMerchantRequest( UserName, MerchantName , emailId, department);
+	}
+	
+	public int insertValidUser(User user, String password, String createdBy) throws BankStorageException
+	{		
+			return (loginmanager.insertValidUser(user, password, createdBy));	
 	}
 	
 	public void deleteEmployeeRequest(String UserName)  throws Exception
