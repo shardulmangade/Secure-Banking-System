@@ -350,8 +350,9 @@ public class LoginDBConnectionManager {
 	 * @param insertedbyUsername
 	 * @return
 	 * @throws BankStorageException
+	 * @throws BankAccessException 
 	 */
-	public int insertValidUser(User user, String firstTimePassword, String insertedbyUsername) throws BankStorageException
+	public int insertValidUser(User user, String firstTimePassword, String insertedbyUsername) throws BankStorageException, BankAccessException
 	{
 		String dbCommand;
 		Connection connection = null;
@@ -397,7 +398,7 @@ public class LoginDBConnectionManager {
 			if(output == null)
 				return SUCCESS;		
 			else
-				throw new BankStorageException(output);
+				throw new BankAccessException(output);
 		} catch (SQLException e) {
 			throw new BankStorageException(e);
 		}
