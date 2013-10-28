@@ -158,6 +158,33 @@ public class CorporateMultiAuthDBConnectionManager {
 		return SUCCESS;
 	}
 	
+	public int denyDeactivationOfManager(String managerUsername, String ceoUsername) throws BankStorageException
+	{
+		String dbCommand;
+		Connection connection = null;
+		
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.CORPORATE_DENY_DEACTIVATION_OF_MANAGER + "(?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			
+			sqlStatement.setString(1,managerUsername);
+			sqlStatement.registerOutParameter(2, Types.VARCHAR);	
+			
+			sqlStatement.execute();
+			String sOutErrorValue = sqlStatement.getString(2);
+			
+			if(sOutErrorValue != null)	
+			{
+				logger.error("The ceo user <<"+ceoUsername+">> tried to deny an invalid manager <"+managerUsername+">");
+				throw new BankStorageException(sOutErrorValue);
+			}
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+
+		return SUCCESS;
+	}
 	
 
 }

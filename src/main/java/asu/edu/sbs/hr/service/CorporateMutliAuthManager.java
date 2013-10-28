@@ -30,4 +30,8 @@ public class CorporateMutliAuthManager {
 		 return corporatedbConnection.getAllPendingDeactivateManagerRequests(ceoUsername); 
 	}
 	
+	public int denyDeactivationOfManager(String managerUsername, String ceoUsername) throws BankStorageException
+	{
+		return corporatedbConnection.denyDeactivationOfManager(managerUsername, ceoUsername);
+	}
 }

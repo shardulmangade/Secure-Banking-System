@@ -30,6 +30,7 @@ public interface DBConstants
 	public final static String CORPORATE_GET_PENDING_MANAGER_DEACTIVATE_REQUESTS_CEO1 = "sp_getDeactivateRequestsCEO1";
 	public final static String CORPORATE_GET_PENDING_MANAGER_DEACTIVATE_REQUESTS_CEO2 = "sp_getDeactivateRequestsCEO2";
 	public final static String CORPORATE_GET_PENDING_MANAGER_DEACTIVATE_REQUESTS_CEO3 = "sp_getDeactivateRequestsCEO3";
+	public final static String CORPORATE_DENY_DEACTIVATION_OF_MANAGER = "sp_denyDeactivationOfManager";
 	
 	public final static String ALL_NEW_EMPLOYEE_REQUESTS = "sp_insertAllnewEmployeeRequests";
 	public final static String ALL_NEW_EMPLOYEE_PASSWORD_REQUESTS = "sp_insertAllnewEmployeePasswordRequests";

@@ -31,12 +31,18 @@ public class CorporateMutliAuthController {
 	
 	@RequestMapping(value = "/corporate/deactivate/{username}", method = RequestMethod.GET)
 	public String deactivateManager(@PathVariable("username") String managerUsername, Model model, Principal principal) throws BankStorageException {	
-		System.out.println("Inside deactivate....."+managerUsername);
 
 		corporateManager.deactivateManager(managerUsername, principal.getName());
-		//TODO: success or failure message
-		
-		model.addAttribute("managersList",corporateManager.getAllActiveManagers());
+
 		return "redirect:/corporate";
 	}
+	
+	@RequestMapping(value = "/corporate/denydeactivation/{username}", method = RequestMethod.GET)
+	public String denyDeactivationOfManager(@PathVariable("username") String managerUsername, Model model, Principal principal) throws BankStorageException {	
+
+		corporateManager.denyDeactivationOfManager(managerUsername, principal.getName());
+		
+		return "redirect:/corporate";
+	}
+	
 }

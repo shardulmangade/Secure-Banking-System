@@ -71,7 +71,7 @@ List of active managers who are deactivated by other CEOs and waiting for your a
 		<td>${user.email}</td>
 		<td>${user.department}</td>
 		<td>${user.createdBy}</td>
-		<td><a href="${pageContext.servletContext.contextPath}/corporate/deactivate/${user.username}">Deactivate</a></td>
+		<td><a href="${pageContext.servletContext.contextPath}/corporate/deactivate/${user.username}">Approve</a> or <a href="${pageContext.servletContext.contextPath}/corporate/denydeactivation/${user.username}">Deny</a></td>
   	</tr>
 	</c:forEach>
 </table>
