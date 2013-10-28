@@ -11,6 +11,7 @@ Notes: Shall we keep the merchant account number public viewable by customer.
 ********************************************/
 create table tbl_merchant_pending_transactions
 (
+transactionID varchar(10) not null,
 fromusername varchar(100) not null,
 fromaccount varchar(100) not null,
 certificate varchar(200) not null,
