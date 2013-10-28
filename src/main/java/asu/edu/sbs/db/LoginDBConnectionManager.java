@@ -302,7 +302,7 @@ public class LoginDBConnectionManager {
 	 * @throws BankStorageException
 	 * @throws BankAccessException 
 	 */
-	public int updateUserRole(String newRole, String newDepartmentName, String username, String updatedbyName) throws BankStorageException, BankAccessException
+	public int updateUserRole(String newRole,String olddepartment, String newDepartmentName, String username, String updatedbyName) throws BankStorageException, BankAccessException
 	{
 		if(newRole == null || newDepartmentName == null)
 			throw new BankAccessException();
@@ -312,16 +312,17 @@ public class LoginDBConnectionManager {
 
 		try {
 			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_ROLE + "(?,?,?,?,?)";
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_ROLE + "(?,?,?,?,?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
-			sqlStatement.setString(2,newDepartmentName);
-			sqlStatement.setString(3,newRole);
-			sqlStatement.setString(4,updatedbyName);
-			sqlStatement.registerOutParameter(5, Types.VARCHAR);
+			sqlStatement.setString(2,olddepartment);
+			sqlStatement.setString(3,newDepartmentName);
+			sqlStatement.setString(4,newRole);
+			sqlStatement.setString(5,updatedbyName);
+			sqlStatement.registerOutParameter(6, Types.VARCHAR);
 
 			sqlStatement.execute();
-			String output = sqlStatement.getString(5);
+			String output = sqlStatement.getString(6);
 			if(output == null)
 				return SUCCESS;		
 			else
@@ -410,5 +411,47 @@ public class LoginDBConnectionManager {
 				}
 		}	
 	}
+
+	public String getRoleTobechanged(String department, String role) {
+		
+		System.out.println("newrole "+role);
+		System.out.println("dept "+department);
+		
+		if (department.equals("TM"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_TRANSACTION_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_TRANSACTION_EMPLOYEE";
+		} else if (department.equals("HR"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_HR_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_HR_EMPLOYEE";
+		} else if (department.equals("IT"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_IT_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_IT_EMPLOYEE";
+		} else if (department.equals("CM"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_COPRPORATE_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_COPRPORATE_EMPLOYEE";
+		} else if (department.equals("sales"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_SALES_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_SALES_EMPLOYEE";
+		}
+		
+		return null;
+	}
+
+	
 
 }

@@ -146,6 +146,25 @@ public class ItDBConnectionManager {
 			throw new InvalidActivityException();
 	}
 
+	public void insertCustomerAccNo(String UserName,String accountNo,Double balance,String createdBy) throws Exception
+	{
+		String dbCommand;
+		Connection connection =null;
+		connection = dataSource.getConnection();
+		
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_CUSTOMER_ACC_NO + "(?,?,?,?,?)");
+		System.out.println("\n"+sqlstatement);
+		sqlstatement.setString(1,UserName );
+		sqlstatement.setString(2,accountNo );
+		sqlstatement.setDouble(3,balance);
+		sqlstatement.setString(4,createdBy);
+		sqlstatement.execute();
+		if(connection!=null)
+			connection.close();
+		if (sqlstatement.getUpdateCount()==0)
+			throw new InvalidActivityException();
+	}	
+	
 	public void deleteItEmployee(String UserName) throws Exception 
 	{
 		Connection connection =null;

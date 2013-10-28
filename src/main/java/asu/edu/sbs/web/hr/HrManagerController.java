@@ -32,7 +32,7 @@ public class HrManagerController {
 	
 	@Autowired
 	HrDeptManager hrmanager;
-	ModelAndView savedMav;
+	
 	@Autowired
 	private EmailNotificationManager enManager;
 		
@@ -54,6 +54,7 @@ public class HrManagerController {
 		
 		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST)
 		public ModelAndView newHrEmployeeGet(Locale locale, Model model,Principal principal) {
+			ModelAndView savedMav;
 			System.out.println("Inside hr manager get Controller .............");							
 			savedMav = new ModelAndView("hr/newhremployee", "signupemployee", new User());
 			model.addAttribute("username", principal.getName());
@@ -133,7 +134,8 @@ public class HrManagerController {
 				{					
 					message = "Employee "+ userName+ " has been deleted after approval of corporate level manager";
 					hrmanager.deleteHrEmployee(userName);					
-				} else  if (status==0){
+				} else  if (status==0)
+				{
 					message= "Employee "+ userName+ " delete request has not beeen approved by corporate level manager yet";											
 				} else if (status==-1)
 				{
@@ -174,22 +176,30 @@ public class HrManagerController {
 			department.put("CM", "Company Managment department");
 			model.addAttribute("departmentList", department);		
 			model.addAttribute("username", principal.getName());
-			return new ModelAndView("hr/transferhremployee", "signupemployee", new SignUpEmployee());
+			
+			Map <String,String> roleList = new LinkedHashMap<String,String>();			
+			roleList.put("manager", "manager");
+			roleList.put("employee", "employee");
+			model.addAttribute("roleList", roleList);					
+						
+			return new ModelAndView("hr/transferhremployee", "signupemployee", new User());
 		}
 		
 		@RequestMapping(value = "/transferemployee/op1" ,method = RequestMethod.POST)
-		public String transferHrEmployee( SignUpEmployee employee,Model model,HttpServletRequest request,Principal principal)
+		public String transferHrEmployee( User user,Model model,HttpServletRequest request,Principal principal)
 		{
 			System.out.println("\n Inside delete empployee post controller");
-			String message,department = null ;
+			String message,department = null,username=null ;
+			String roleToBeupdated =null;
+			username=request.getParameter("userNametext");
 									
 			try{												
-				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
-				hrmanager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
+				message= "Employee "+ username+ " has been transfered";																	
+				roleToBeupdated = hrmanager.getRoleTobechanged(user.getDepartment(),user.getRole());
+				hrmanager.updateUserRole(roleToBeupdated,"HR",user.getDepartment(),username ,principal.getName());
 				model.addAttribute("message", message);
 				model.addAttribute("username", principal.getName());
-				return ("signup/saveData");
-				
+				return ("signup/saveData");								
 				
 			} catch (Exception e) {
 				
