@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,7 +22,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.hr.service.HrDeptManager;
+import asu.edu.sbs.login.service.OneTimePassword;
 
 @Controller
 @RequestMapping(value= "/hr/hrmanager")
@@ -30,6 +33,8 @@ public class HrManagerController {
 	@Autowired
 	HrDeptManager hrmanager;
 	ModelAndView savedMav;
+	@Autowired
+	private EmailNotificationManager enManager;
 		
 		@RequestMapping(value = "manager/op1", method = RequestMethod.GET)
 		public String addnewHrEmployee(Locale locale, Model model,Principal principal) {
@@ -50,7 +55,7 @@ public class HrManagerController {
 		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST)
 		public ModelAndView newHrEmployeeGet(Locale locale, Model model,Principal principal) {
 			System.out.println("Inside hr manager get Controller .............");							
-			savedMav = new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
+			savedMav = new ModelAndView("hr/newhremployee", "signupemployee", new User());
 			model.addAttribute("username", principal.getName());
 			return savedMav;
 		}
@@ -58,7 +63,7 @@ public class HrManagerController {
 		@RequestMapping(value = "/newhremployee/op1", method = RequestMethod.POST)
 		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes,Principal principal) {
 			System.out.println("INSIDE hr manager post Controller .............");
-			
+			OneTimePassword otp = new OneTimePassword() ;
 			String message ;
 			ModelAndView mav = new ModelAndView();
 			try{				
@@ -74,7 +79,13 @@ public class HrManagerController {
 				message= "Your request has been submitted for approval";
 				user.setDepartment("HR");
 				user.setRole("ROLE_HR_EMPLOYEE");				
-				hrmanager.insertValidUser(user,"admin",principal.getName());
+				user.setCreatedBy(principal.getName());				
+				Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+				String password = otp.getPassword();
+				String hashedPassword = passwordEncoder.encodePassword(otp.getPassword(), null);
+				
+				hrmanager.insertValidUser(user,hashedPassword,principal.getName());
+				enManager.sendPassword(user, password);
 				mav.addObject("message", message);								
 				mav.addObject("username", principal.getName());
 				return mav;

@@ -30,10 +30,13 @@
 								<ul class="nav nav-list">
 									<li><a class="active" style="cursor: pointer;"
 										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/transaction')">View
-											all my transactions </a></li>
+											my transactions </a></li>
 									<li><a style="cursor: pointer;"
 										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/newtransaction')">
-											Make new Transfer Transaction </a></li>
+											Make new Transfer </a></li>
+									<li><a style="cursor: pointer;"
+										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/newMerchantTransaction')">
+											Pay to Merchant </a></li>
 								</ul>
 							</div>
 						</div>

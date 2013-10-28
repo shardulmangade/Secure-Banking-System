@@ -80,18 +80,6 @@ public class CustomerManager {
 			byte[] realSig = null;
 			byte[] buffer = new byte[1024];
 			try{
-				//sign the data
-//				Signature dsa = Signature.getInstance("SHA1withDSA", "SUN");				
-//				dsa.initSign(privateKey);
-//				String toEncrypt = credit.getStringForEncryption();
-//				InputStream is = new ByteArrayInputStream(toEncrypt.getBytes());
-//				BufferedInputStream bufin = new BufferedInputStream(is);			
-//				int len;
-//				while ((len = bufin.read(buffer)) >= 0) {
-//				    dsa.update(buffer, 0, len);
-//				}
-//				bufin.close();
-//				realSig = dsa.sign();
 				Signature dsa = Signature.getInstance("SHA1withDSA");				
 				dsa.initSign(privateKey);
 				String toEncrypt = credit.getStringForEncryption();
@@ -114,25 +102,25 @@ public class CustomerManager {
 		 * @param request
 		 * @return
 		 */
-		public boolean verifyRequest(Credit credit, String request, PublicKey publicKey){
-			boolean result = true;
-			try{
-				Signature sig = Signature.getInstance("SHA1withDSA");
-				sig.initVerify(publicKey);
-				sig.update(credit.getStringForEncryption().getBytes());
-				result = sig.verify(getBytes(request));			
-				
-			}catch(Exception ex){
-				try {
-					throw new BankStorageException(ex);
-				} catch (BankStorageException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+	public boolean verifyRequest(Credit credit, String request, PublicKey publicKey){
+		boolean result = true;
+		try{
+			Signature sig = Signature.getInstance("SHA1withDSA");
+			sig.initVerify(publicKey);
+			sig.update(credit.getStringForEncryption().getBytes());
+			result = sig.verify(getBytes(request));			
+			
+		}catch(Exception ex){
+			try {
+				throw new BankStorageException(ex);
+			} catch (BankStorageException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			return result;
 		}
-		
+		return result;
+	}
+	
 	 private static String getString( byte[] bytes )
 	  {
 	   StringBuffer sb = new StringBuffer();

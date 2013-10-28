@@ -12,6 +12,8 @@
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
 <div class="container">
+Want to leave ${username}?
+	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 	<header class="page-header"><!-- We can add navigation bar here--><h1>Welcome Manager</h1>	</header>
 	<!-- End of header -->
 	<div class = "row" id="main-content">	

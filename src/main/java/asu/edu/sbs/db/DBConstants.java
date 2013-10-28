@@ -3,6 +3,10 @@ package asu.edu.sbs.db;
 public interface DBConstants 
 {
 	public final static String SP_CALL = "call";
+	public final static String ceo1 = "corporate";
+	public final static String ceo2 = "corporate2";
+	public final static String ceo3 = "corporate3";
+	
 	
 	//Sales Stored Procedures
 	public final static String SALES_ALL_USER_REQUESTS = "sp_getAllSalesUserRequests";
@@ -20,6 +24,13 @@ public interface DBConstants
 	
 	//Corporate 
 	public final static String CORPORATE_GET_ALL_ACTIVE_MANAGERS = "sp_getAllActiveManagers";
+	public final static String CORPORATE_DEACTIVATE_MANAGER_BY_CEO1 = "sp_deactivateManagerCEO1";
+	public final static String CORPORATE_DEACTIVATE_MANAGER_BY_CEO2 = "sp_deactivateManagerCEO2";
+	public final static String CORPORATE_DEACTIVATE_MANAGER_BY_CEO3 = "sp_deactivateManagerCEO3";
+	public final static String CORPORATE_GET_PENDING_MANAGER_DEACTIVATE_REQUESTS_CEO1 = "sp_getDeactivateRequestsCEO1";
+	public final static String CORPORATE_GET_PENDING_MANAGER_DEACTIVATE_REQUESTS_CEO2 = "sp_getDeactivateRequestsCEO2";
+	public final static String CORPORATE_GET_PENDING_MANAGER_DEACTIVATE_REQUESTS_CEO3 = "sp_getDeactivateRequestsCEO3";
+	public final static String CORPORATE_DENY_DEACTIVATION_OF_MANAGER = "sp_denyDeactivationOfManager";
 	
 	public final static String ALL_NEW_EMPLOYEE_REQUESTS = "sp_insertAllnewEmployeeRequests";
 	public final static String ALL_NEW_EMPLOYEE_PASSWORD_REQUESTS = "sp_insertAllnewEmployeePasswordRequests";

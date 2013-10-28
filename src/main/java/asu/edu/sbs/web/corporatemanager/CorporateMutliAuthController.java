@@ -1,5 +1,6 @@
 package asu.edu.sbs.web.corporatemanager;
 
+import java.security.Principal;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,21 +18,31 @@ public class CorporateMutliAuthController {
 
 	@Autowired
 	private CorporateMutliAuthManager corporateManager;
+	public final static int SUCCESS = 1;
+	public final static int FAILURE = 0;
 	
 
 	@RequestMapping(value = "/corporate/allactivemanagers", method = RequestMethod.POST)
-	public String getAllActiveManagers(Locale locale, Model model) throws BankStorageException {	
+	public String getAllActiveManagers(Locale locale, Model model, Principal principal) throws BankStorageException {	
 		model.addAttribute("managersList",corporateManager.getAllActiveManagers());
+		model.addAttribute("managersPendingList",corporateManager.getAllPendingDeactivateManagerRequests(principal.getName()));
 		return "corporate/allmanagers";
 	}
 	
 	@RequestMapping(value = "/corporate/deactivate/{username}", method = RequestMethod.GET)
-	public String deactivateManager(@PathVariable("username") String username, Locale locale, Model model) throws BankStorageException {	
-		System.out.println("Inside deactivate....."+username);
-		//TODO: pass on delete request
-		//TODO: success or failure message
-		
-		model.addAttribute("managersList",corporateManager.getAllActiveManagers());
+	public String deactivateManager(@PathVariable("username") String managerUsername, Model model, Principal principal) throws BankStorageException {	
+
+		corporateManager.deactivateManager(managerUsername, principal.getName());
+
 		return "redirect:/corporate";
 	}
+	
+	@RequestMapping(value = "/corporate/denydeactivation/{username}", method = RequestMethod.GET)
+	public String denyDeactivationOfManager(@PathVariable("username") String managerUsername, Model model, Principal principal) throws BankStorageException {	
+
+		corporateManager.denyDeactivationOfManager(managerUsername, principal.getName());
+		
+		return "redirect:/corporate";
+	}
+	
 }
