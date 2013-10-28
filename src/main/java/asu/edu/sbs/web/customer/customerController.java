@@ -35,6 +35,9 @@ public class customerController {
 	private PrivateKey privateKey ;
 	private PublicKey publicKey ;
 	
+	/**
+	 * This method generates the private key and public key per session for a user
+	 */
 	@RequestMapping(value = "/customer/firstlogin", method = RequestMethod.GET)
 	public String firstLogin(Locale locale, Model model) {
 		try{
@@ -54,7 +57,7 @@ public class customerController {
 	}
 	
 	/**
-	 * dummy method delete this later
+	 * dummy method delete this later while cleaning. This basically tests the private key and public key generation per user per session
 	 * @param locale
 	 * @param model
 	 * @return
@@ -74,7 +77,9 @@ public class customerController {
 		return "customer/mainpage";
 	}
 	
-	
+	/**
+	 * This method shows transaction to customer.
+	 */
 	@RequestMapping(value = "/customer/transaction", method = RequestMethod.POST)
 	public String customerTransaction(Locale locale, Model model, Principal principle) {
 		System.out.println("Inside customer transaction Controller .............");
@@ -91,6 +96,9 @@ public class customerController {
 		return "customer/maketransaction";
 	}
 	
+	/**
+	 * This method performs transaction for a customer
+	 */
 	@RequestMapping(value = "/customer/performTransaction", method = RequestMethod.POST)
 	public String performTransaction( Locale locale, Model model, Principal principle,HttpServletRequest request,Principal principal) {
 		System.out.println("Inside new transaction Controller .............");
@@ -108,11 +116,9 @@ public class customerController {
 					credit.setToacccount(accountNumber);
 					credit.setAmount(amount);
 					credit.setToCustomer(userName);
-					//customerManager.insertNewTransaction(credit);
+					
 					//sign with private key
 					String buffer = customerManager.getSignedRequest(this.privateKey, credit);			
-					//buffer = buffer.substring(0, buffer.length() - 1) + "1";
-					//credit.setSignedRequest(buffer);
 					boolean verify = customerManager.verifyRequest(credit, buffer, publicKey);
 					//set the public key concerned to the user for the transaction
 					//credit.setPublicKey(this.publicKey.);
@@ -134,6 +140,38 @@ public class customerController {
 		model.addAttribute("message", message);
 		return "customer/performTransaction";
 	}
+	
+	/**
+	 * This method performs the PKI function for payment to merchant from a customer
+	 * First it signs the reuquest and stores it in merchant transaction table.
+	 * When merchant cliks on his view transaction option, then each request is verified and rendered on screen for merchant
+	 *
+	 */
+	@RequestMapping(value = "/customer/performMerchantTransaction", method = RequestMethod.POST)
+	public String performMerchantTransaction( Locale locale, Model model, Principal principle,HttpServletRequest request,Principal principal) {
+	
+		System.out.println("[Info] Inside customer to  merchant transfer Controller .............");
+		String message = null;
+		try{
+			
+			//sign the request
+			
+			//store the transaction in db
+		}catch(Exception ex){
+			ex.printStackTrace();
+			message = "Sorry .we are unable to process your transaction for merchant now";		
+		}
+		return "customer/performTransaction";
+	}
+	/**
+	 * This method renders the page for payment to merchant for a customer
+	 */
+	@RequestMapping(value = "/customer/newMerchantTransaction", method = RequestMethod.POST)
+	public String newMerchantTransaction(Locale locale, Model model, Principal principle) {
+		System.out.println("[Info] Inside new merchant transaction Controller ");						
+		return "customer/merchanttransfer";
+	}
+	
 	
 	
 }

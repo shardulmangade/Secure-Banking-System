@@ -1,5 +1,6 @@
 package asu.edu.sbs.web.sales;
 
+import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -36,36 +37,40 @@ public class SalesManagerController {
 	ModelAndView savedMav1;
 		
 		@RequestMapping(value = "/manager", method = RequestMethod.GET)
-		public String addnewSalesEmployee(Locale locale, Model model) {
-			System.out.println("Inside Sales manager Controller .............");				
+		public String addnewSalesEmployee(Locale locale, Model model,Principal principal) {
+			System.out.println("Inside Sales manager Controller .............");
+			model.addAttribute("username", principal.getName());
 			return "sales/manager/manager";
 		} 
 		
-		/*@RequestMapping(value = "sales/salesmanager", method = RequestMethod.POST)
-		public String addnewsalesEmployeePost(Locale locale, Model model) {
+		@RequestMapping(value = "sales/salesmanager", method = RequestMethod.POST)
+		public String addnewsalesEmployeePost(Locale locale, Model model,Principal principal) {
 			System.out.println("Inside sales manager post Controller .............");				
+			model.addAttribute("username", principal.getName());	
 			return "sales/manager/salesmanager";
-		}*/
+		}
 		
 		
 		@RequestMapping(value = "/newsalesemployee", method = RequestMethod.POST)
-		public ModelAndView newSalesEmployeeGet(Locale locale, Model model) {
-			System.out.println("Inside Sales manager get Controller .............");							
+		public ModelAndView newSalesEmployeeGet(Locale locale, Model model, Principal principal) {
+			System.out.println("Inside Sales manager get Controller .............");
+			model.addAttribute("username", principal.getName());
 			savedMav = new ModelAndView("sales/newsalesemployee", "signupemployee", new SignUpEmployee());
 			
 			return savedMav;
 		}
 		
 		@RequestMapping(value = "/newsalesexternalemployee", method = RequestMethod.POST)
-		public ModelAndView newSalesExternalEmployeeGet(Locale locale, Model model) {
-			System.out.println("Inside Sales employee get Controller .............");							
+		public ModelAndView newSalesExternalEmployeeGet(Locale locale, Model model, Principal principal) {
+			System.out.println("Inside Sales employee get Controller .............");					
+			model.addAttribute("username", principal.getName());
 			savedMav1 = new ModelAndView("sales/newsalesexternalemployee", "signupexternalemployee", new SignUpExternalEmployee());
 			
 			return savedMav1;
 		}
 		
 		@RequestMapping(value = "/newsalesemployee/op1", method = RequestMethod.POST)
-		public ModelAndView newSalesEmployeePost(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes) {
+		public ModelAndView newSalesEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes, Principal principal) {
 			System.out.println("INSIDE Sales manager post Controller .............");
 			String message ;
 			ModelAndView mav = new ModelAndView();
@@ -73,17 +78,17 @@ public class SalesManagerController {
 				System.out.println("\n Inside Employee signup post controller");
 				if(result.hasErrors())
 				{
-					//return new ModelAndView("hr/newhremployee", "signupemployee",employee);
-					//return savedMav;
-					return new ModelAndView("sales/manager/manager","signupemployee",employee);
+					return new ModelAndView("sales/manager/manager","signupemployee",user);
 				}		 
 						
 				mav.setViewName("signup/saveData");
 				message= "Your request has been submitted for approval";
-				employee.setDepartment("Sales");
-				employee.setPassword("temppassword");
-				salesmanager.addNewSalesEmployee(employee);
-				mav.addObject("message", message);				
+				user.setDepartment("Sales");
+				user.setRole("ROLE_SALES_EMPLOYEE");
+				salesmanager.insertValidUser(user,"admin",principal.getName());
+				mav.addObject("message", message);								
+				mav.addObject("username", principal.getName());
+				//user.setPassword("temppassword");
 				return mav;
 			}
 		 catch (Exception e) {
@@ -93,27 +98,30 @@ public class SalesManagerController {
 			{
 				message = "Username already Exists.Choose a different username";
 				mav.addObject("message", message);
-				mav.setViewName("signup/saveData");		
+				mav.setViewName("signup/saveData");
+				mav.addObject("username",principal.getName() );
 				return mav;
 			} else
 			{
 				message = "Error in saving your data.Please try again";
 				mav.addObject("message", message);
-				mav.setViewName("signup/saveData");		
+				mav.setViewName("signup/saveData");
+				mav.addObject("username",principal.getName() );
 				return mav;					
 			}
 		  } 
 		}
 		
 		@RequestMapping(value = "/deletesalesemployee/op1" ,method = RequestMethod.POST)
-		public String deleteEmployeeGet(Model model,HttpServletRequest request)
+		public String deleteEmployeeGet(Model model,HttpServletRequest request, Principal principal)
 		{
+			model.addAttribute("username", principal.getName());
 			return  ("sales/deletesalesemployee");
 		}
 			
 		
 		@RequestMapping(value = "/deletesalesemployee" ,method = RequestMethod.POST)
-		public String deleteEmployeePost(Model model,HttpServletRequest request)
+		public String deleteEmployeePost(Model model,HttpServletRequest request, Principal principal)
 		{
 			System.out.println("\n Inside delete employee post controller");
 			String message = null ,userName;
@@ -132,7 +140,8 @@ public class SalesManagerController {
 					message= "Employee "+ userName+ " delete request has beeen sent for approval to corporate level manager";						
 					salesmanager.insertDeleteRequesttoCM(userName,"Sales",false);
 				}
-				model.addAttribute("message", message);							
+				model.addAttribute("message", message);	
+				model.addAttribute("username", principal.getName());
 				return ("signup/saveData");
 				
 			} catch (Exception e) {
@@ -140,13 +149,15 @@ public class SalesManagerController {
 				{
 					e.printStackTrace();		
 					message = "Error occured in deleting employee .Please use valid username";
-					model.addAttribute("message", message);							
+					model.addAttribute("message", message);		
+					model.addAttribute("username", principal.getName());
 					return ("signup/saveData");
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending delete request";
-				model.addAttribute("message", message);				
+				model.addAttribute("message", message);		
+				model.addAttribute("username", principal.getName());
 				return ("signup/saveData");
 				}
 			 }		
@@ -154,19 +165,20 @@ public class SalesManagerController {
 		
 		
 		@RequestMapping(value = "/transfersalesemployee" ,method = RequestMethod.POST)
-		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request)
+		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request, Principal principal)
 		{								
 			Map <String,String> department = new LinkedHashMap<String,String>();			
 			department.put("HR", "HR department");
 			department.put("TM", "Transaction Management department");
 			department.put("IT", "IT & Tech Support department");
 			department.put("CM", "Company Managment department");
-			model.addAttribute("departmentList", department);			
+			model.addAttribute("departmentList", department);		
+			model.addAttribute("username", principal.getName());
 			return new ModelAndView("sales/transfersalesemployee", "signupemployee", new SignUpEmployee());
 		}
 		
 		@RequestMapping(value = "/transfersalesemployee/op1" ,method = RequestMethod.POST)
-		public String transferSalesEmployee( SignUpEmployee employee,Model model,HttpServletRequest request)
+		public String transferSalesEmployee( SignUpEmployee employee,Model model,HttpServletRequest request, Principal principal)
 		{
 			System.out.println("\n Inside delete empployee post controller");
 			String message,department = null ;
@@ -174,7 +186,8 @@ public class SalesManagerController {
 			try{												
 				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
 				salesmanager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
-				model.addAttribute("message", message);							
+				model.addAttribute("message", message);	
+				model.addAttribute("username", principal.getName());
 				return ("signup/saveData");
 				
 			} catch (Exception e) {
@@ -183,13 +196,15 @@ public class SalesManagerController {
 				{
 					e.printStackTrace();		
 					message = "Error occured in transferring employee .Please use valid username";
-					model.addAttribute("message", message);							
+					model.addAttribute("message", message);	
+					model.addAttribute("username", principal.getName());
 					return ("signup/saveData");
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending transfer request";
-				model.addAttribute("message", message);				
+				model.addAttribute("message", message);		
+				model.addAttribute("username", principal.getName());
 				return ("signup/saveData");
 				}
 			 }		
