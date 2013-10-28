@@ -53,7 +53,8 @@ public class MerchantDBConnectionManager {
 				transaction.setToMerchantacccount(rs.getString("tomerchantaccount"));
 				transaction.setFromCustomer(rs.getString("fromusername"));
 				transaction.setToMerchant(rs.getString("tomerchantname"));
-				transaction.setCertificate(rs.getString("certificate"));				
+				transaction.setTransactionId(rs.getString("transactionid"));
+				transaction.setCertificate(rs.getBlob("signedrequest"));
 				transaction.setAmount(rs.getDouble("amount"));
 				listTransactions.add(transaction);
 			}
