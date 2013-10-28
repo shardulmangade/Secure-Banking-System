@@ -9,6 +9,7 @@ import asu.edu.sbs.db.LoginDBConnectionManager;
 import asu.edu.sbs.db.SalesDBConnectionManager;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.exception.BankStorageException;
 
 @Service
@@ -31,7 +32,7 @@ public class SalesDeptManager {
 			salesdbconnection.saveNewMerchantRequest( UserName, MerchantName , emailId, department);
 	}
 	
-	public int insertValidUser(User user, String password, String createdBy) throws BankStorageException
+	public int insertValidUser(User user, String password, String createdBy) throws BankStorageException, BankAccessException
 	{		
 			return (loginmanager.insertValidUser(user, password, createdBy));	
 	}

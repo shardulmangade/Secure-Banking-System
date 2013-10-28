@@ -38,7 +38,7 @@ public class HrDeptManager {
 	}
 	
 	
-	public int insertValidUser(User user, String password, String createdBy) throws BankStorageException
+	public int insertValidUser(User user, String password, String createdBy) throws BankStorageException, BankAccessException
 	{		
 			return (loginmanager.insertValidUser(user, password, createdBy));	
 	}

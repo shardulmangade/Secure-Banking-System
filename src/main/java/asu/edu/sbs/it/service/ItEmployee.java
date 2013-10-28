@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import asu.edu.sbs.db.ItDBConnectionManager;
 import asu.edu.sbs.db.LoginDBConnectionManager;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.exception.BankStorageException;
 
 @Service
@@ -26,7 +27,7 @@ public class ItEmployee {
 	{
 			itdbconnection.deleteItPendingRequest(UserName);
 	}
-	public void insertValidUser(User user, String firstTimePassword, String insertedbyUsername)throws BankStorageException
+	public void insertValidUser(User user, String firstTimePassword, String insertedbyUsername)throws BankStorageException, BankAccessException
 	{
 		logindbconnection.insertValidUser(user, firstTimePassword, insertedbyUsername);		
 	}
