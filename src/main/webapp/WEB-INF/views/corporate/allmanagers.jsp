@@ -20,13 +20,15 @@ font-style: italic;
 List of active managers:<br>
 <table border="1">
 	<tr>
-		<td>Username</td>
+		
+		<td><div class ="pull-center">Username</div></td>
 		<td>First Name</td>
 		<td>Last Name</td>
 		<td>Email</td>
 		<td>Department</td>
 		<td>Created By</td>
-		<td>Action</td>
+		<td><div class ="pull-center">Action</div></td>
+		</div>
 	</tr>
 	<c:forEach var="user" items="${managersList}">
 	<tr>
@@ -39,6 +41,7 @@ List of active managers:<br>
 		<td><a href="${pageContext.servletContext.contextPath}/corporate/deactivate/${user.username}">Deactivate</a></td>
   	</tr>
 	</c:forEach>
+	
 </table>
 <br><br>
 

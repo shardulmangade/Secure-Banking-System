@@ -33,7 +33,9 @@ public class CorporateManager {
 			System.out.println(hashedPass);
 			corporateDbconnection.saveNewEmployeeRequest(employee);
 			//send email
-			enManager.sendPassword(employee, otpInstance.getPassword());
+			
+			//TO BE CHNAGED BY APURV LATER
+			//enManager.sendPassword(employee, otpInstance.getPassword());
 	}
 	
 	public void deleteEmployeeRequest(String UserName)  throws Exception
