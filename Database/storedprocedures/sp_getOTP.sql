@@ -15,11 +15,10 @@ DROP PROCEDURE IF EXISTS sp_getOTP;
 DELIMITER $$
 CREATE PROCEDURE sp_getOTP(
 IN inusername VARCHAR(100),
-OUT errorMessage      VARCHAR(50)
+OUT errorMessage      VARCHAR(100)
 )
 BEGIN
      
- -- check if the workspace exists
 	 IF EXISTS(SELECT 1 FROM tbl_all_users WHERE username = inusername)
 	 
 		THEN 

@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import asu.edu.sbs.domain.SignUpEmployee;
+import asu.edu.sbs.domain.User;
 import asu.edu.sbs.hr.service.HrDeptManager;
 
 @Controller
@@ -55,7 +56,7 @@ public class HrManagerController {
 		}
 		
 		@RequestMapping(value = "/newhremployee/op1", method = RequestMethod.POST)
-		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes,Principal principal) {
+		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes,Principal principal) {
 			System.out.println("INSIDE hr manager post Controller .............");
 			
 			String message ;
@@ -66,14 +67,14 @@ public class HrManagerController {
 				{
 					//return new ModelAndView("hr/newhremployee", "signupemployee",employee);
 					//return savedMav;
-					return new ModelAndView("hr/manager/manager","signupemployee",employee);
+					return new ModelAndView("hr/manager/manager","signupemployee",user);
 				}		 
 						
 				mav.setViewName("signup/saveData");
 				message= "Your request has been submitted for approval";
-				employee.setDepartment("HR");
-				employee.setPassword("temppassword");
-				hrmanager.addNewHrEmployee(employee);
+				user.setDepartment("HR");
+				user.setRole("ROLE_HR_EMPLOYEE");				
+				hrmanager.insertValidUser(user,"admin",principal.getName());
 				mav.addObject("message", message);								
 				mav.addObject("username", principal.getName());
 				return mav;
@@ -86,8 +87,7 @@ public class HrManagerController {
 				message = "Username already Exists.Choose a different username";
 				mav.addObject("message", message);
 				mav.setViewName("signup/saveData");
-				mav.addObject("username",principal.getName() );
-				//model.addAttribute("username", principal.getName());				
+				mav.addObject("username",principal.getName() );			
 				return mav;
 			} else
 			{
@@ -95,7 +95,6 @@ public class HrManagerController {
 				mav.addObject("message", message);
 				mav.setViewName("signup/saveData");
 				mav.addObject("username",principal.getName() );
-				//model.addAttribute("username", principal.getName());
 				return mav;					
 			}
 		  } 
