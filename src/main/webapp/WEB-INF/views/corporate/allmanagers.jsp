@@ -15,10 +15,9 @@ font-style: italic;
 </head>
 <body>
 
-<form:form method="POST" commandName="signupemployee"  action="${pageContext.request.contextPath}/corporate/pending" >
 <c:choose>
 <c:when test="${not empty managersList}">
-List of active managers:
+List of active managers:<br>
 <table border="1">
 	<tr>
 		<td>Username</td>
@@ -41,13 +40,47 @@ List of active managers:
   	</tr>
 	</c:forEach>
 </table>
-<br>
+<br><br>
 
 </c:when>
 <c:otherwise>
 	No Active managers are available !
+	<br><br>
 </c:otherwise>
 </c:choose>
-</form:form>
+
+
+<c:choose>
+<c:when test="${not empty managersPendingList}">
+List of active managers who are deactivated by other CEOs and waiting for your approval:<br>
+<table border="1">
+	<tr>
+		<td>Username</td>
+		<td>First Name</td>
+		<td>Last Name</td>
+		<td>Email</td>
+		<td>Department</td>
+		<td>Created By</td>
+		<td>Action</td>
+	</tr>
+	<c:forEach var="user" items="${managersPendingList}">
+	<tr>
+		<td>${user.username}</td>
+		<td>${user.firstName}</td>
+		<td>${user.lastName}</td>
+		<td>${user.email}</td>
+		<td>${user.department}</td>
+		<td>${user.createdBy}</td>
+		<td><a href="${pageContext.servletContext.contextPath}/corporate/deactivate/${user.username}">Deactivate</a></td>
+  	</tr>
+	</c:forEach>
+</table>
+<br>
+
+</c:when>
+<c:otherwise>
+	You have no Pending Manager deactivation requests !
+</c:otherwise>
+</c:choose>
 </body>
 </html>
