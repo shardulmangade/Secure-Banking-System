@@ -25,7 +25,7 @@
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '/sundevilbank/it/op1')"> View Pending Requests</a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '../../signupuser/deleteemployee/op1')"> View Transactions </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/it/op2')"> Delete Customer </a></li>
 								
 							</ul>
 						</div>

@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.mysql.jdbc.PreparedStatement;
 
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankStorageException;
 
 @Service
 public class ItDBConnectionManager {
@@ -177,6 +179,43 @@ public class ItDBConnectionManager {
 		if (sqlstatement.getUpdateCount()==0)
 			throw new InvalidActivityException();
 	}
+	
+	public int deleteCustomerAccNo(String userName) throws BankStorageException
+	{
+		String dbCommand;
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.DELETE_CUSTOMER_ACC_NO + "(?,?,?)";
+			CallableStatement sqlstatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlstatement.setString(1,userName);			
+			sqlstatement.registerOutParameter(2, Types.VARCHAR);
+			sqlstatement.execute();
+			
+			String output = sqlstatement.getString(2);
+			if(output == null)
+				return SUCCESS;		
+			else
+				throw new BankStorageException(output);
+			
+		} catch (SQLException e) {
+			// TODO Use our application specific custom exception
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+			{
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 
 	public void updateDepartmentOfEmployee(String UserName,String department) throws Exception 
 	{
