@@ -20,18 +20,19 @@ public class SalesDeptManager {
 	@Autowired
 	private LoginDBConnectionManager loginmanager;
 		
-	public void  saveNewEmployeeRequest(String UserName,String firstName,String lastName ,String emailId,String department) throws Exception
+	public void  saveNewEmployeeRequest(String UserName,String firstName,String lastName ,String emailId,String department, String insertedbyUsername) throws Exception
 	{
 			System.out.println("\n In SalesDb connection manager");
-			salesdbconnection.saveNewEmployeeRequest( UserName, firstName, lastName , emailId, department);
+			User user = new User();
+			user.setUsername(UserName);
+			user.setFirstName(firstName);
+			user.setLastName(lastName);
+			user.setEmail(emailId);
+			user.setDepartment(department);
+			salesdbconnection.saveNewEmployeeRequest(user,insertedbyUsername);
+			
 	}
-	
-	public void  saveNewMerchantRequest(String UserName,String MerchantName ,String emailId,String department) throws Exception
-	{
-			System.out.println("\n In SalesDb merchant connection manager");
-			salesdbconnection.saveNewMerchantRequest( UserName, MerchantName , emailId, department);
-	}
-	
+		
 	public int insertValidUser(User user, String password, String createdBy) throws BankStorageException, BankAccessException
 	{		
 			return (loginmanager.insertValidUser(user, password, createdBy));	

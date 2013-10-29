@@ -10,7 +10,8 @@ public interface DBConstants
 	
 	//Sales Stored Procedures
 	public final static String SALES_ALL_USER_REQUESTS = "sp_getAllSalesUserRequests";
-	public final static String SALES_ALL_CUSTOMER_REQUESTS = "sp_getAllSalesCustomerRequests";
+	//public final static String SALES_ALL_CUSTOMER_REQUESTS = "sp_getAllSalesCustomerRequests";
+	public final static String SALES_ALL_CUSTOMER_REQUESTS = "sp_insertValidCustomer";
 	
 	
 	//Login Stored Procedures

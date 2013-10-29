@@ -1,5 +1,6 @@
 package asu.edu.sbs.signup;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -95,7 +96,7 @@ public class SignupMerchantController {
 //	}
 	
 	@RequestMapping(value = "/SignupEmployeePost" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes)
+	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes, Principal principal)
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
@@ -109,7 +110,8 @@ public class SignupMerchantController {
 					
 			mav.setViewName("signup/saveData");
 			message= "Your request has been submitted for approval";
-			salesmanager.saveNewMerchantRequest(employee.getUserName(),employee.getMerchantName(),employee.getEmailId(),employee.getDepartment());
+			String insertedbyUsername = principal.getName();
+			salesmanager.saveNewEmployeeRequest(employee.getUserName(),employee.getMerchantName(),employee.getMerchantName(),employee.getEmailId(),employee.getDepartment(),insertedbyUsername);
 			mav.addObject("message", message);				
 			return mav;
 		}
