@@ -71,5 +71,14 @@ public class SalesDeptManager {
 	{
 		return salesdbconnection.getDeleteApprovalStatus(userName,department);
 	}
+
+	public String getRoleTobechanged(String department, String role) {
+		// TODO Auto-generated method stub
+		return (loginmanager.getRoleTobechanged( department,  role));
+	}
+	public void updateUserRole(String role,String olddepartment, String department, String username,String changedby) throws BankStorageException, BankAccessException {
+		// TODO Auto-generated method stub
+		loginmanager.updateUserRole(role,olddepartment, department,username ,changedby);
+	}
 	
 }

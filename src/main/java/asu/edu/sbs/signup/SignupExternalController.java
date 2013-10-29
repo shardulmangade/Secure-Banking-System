@@ -69,7 +69,7 @@ public class SignupExternalController {
 	@RequestMapping(value = "/signupemployee/op1" ,method = RequestMethod.POST)
 	public ModelAndView getDataEmployee(Locale locale , Model model)
 	{
-		System.out.println("\n Inside Employee signup controller");		
+		System.out.println("\n Inside External user signup controller");		
 		
 		Map <String,String> department = new LinkedHashMap<String,String>();
 		department.put("HR", "HR department");
