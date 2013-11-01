@@ -142,6 +142,45 @@ public class LoginDBConnectionManager {
 		}
 		return SUCCESS;
 	}
+	
+	public int updatePassword(String username, String password) throws BankStorageException
+	{
+		//Insert the password for the user in the database
+		String dbCommand, sOutErrorValue;
+		Connection connection = null;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_PASSWORD + "(?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,username);
+			sqlStatement.setString(2,password);	
+			sqlStatement.registerOutParameter(3, Types.VARCHAR);
+
+			sqlStatement.execute();
+
+			sOutErrorValue = sqlStatement.getString(3);
+
+			//SQL exception has occurred			
+			if(sOutErrorValue != null)
+			{
+				throw new BankStorageException(sOutErrorValue);
+			}
+
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}
+		return SUCCESS;
+	}
 
 	public String getRole(String username) throws BankStorageException
 	{
