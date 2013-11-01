@@ -26,6 +26,7 @@
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '${pageContext.request.contextPath}/sales/salesmanager/newsalesemployee')">Add a new Sales employee  </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/sales/salesmanager/deletesalesemployee/op1')"> Delete an employee </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/sales/salesmanager/transfersalesemployee')"> Transfer Sales employee</a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>

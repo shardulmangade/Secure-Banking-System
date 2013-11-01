@@ -37,6 +37,9 @@
 									<li><a style="cursor: pointer;"
 										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/newMerchantTransaction')">
 											Pay to Merchant </a></li>
+									<li><a style="cursor: pointer;"
+										onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')">
+											Change Password </a></li>
 								</ul>
 							</div>
 						</div>
