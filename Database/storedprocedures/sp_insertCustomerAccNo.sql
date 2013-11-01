@@ -1,3 +1,4 @@
+/******************************************
 Create By     : Shardul Mangade
 
 Modified Date : 10/27/2013
@@ -9,7 +10,7 @@ DELIMITER $$
 CREATE PROCEDURE sp_insertCustomerAccNo(
 IN userName VARCHAR(100),
 IN accountno varchar(10),
-IN balance DOUBLE NOT NULL,
+IN balance DOUBLE,
 IN createdby VARCHAR(100),
 IN createddate VARCHAR(100),
 OUT errorMessage      VARCHAR(50)

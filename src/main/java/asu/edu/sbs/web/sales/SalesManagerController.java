@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.User;
@@ -84,8 +85,8 @@ public class SalesManagerController {
 				mav.setViewName("signup/saveData");
 				message= "Your request has been submitted for approval";
 				user.setDepartment("Sales");
-				user.setRole("ROLE_SALES_EMPLOYEE");
-				salesmanager.insertValidUser(user,"admin",principal.getName());
+				user.setRole(IBankRoles.ROLE_SALES_EMPLOYEE);
+				salesmanager.insertValidCustomer(user,principal.getName());
 				mav.addObject("message", message);								
 				mav.addObject("username", principal.getName());
 				//user.setPassword("temppassword");
@@ -174,24 +175,33 @@ public class SalesManagerController {
 			department.put("CM", "Company Managment department");
 			model.addAttribute("departmentList", department);		
 			model.addAttribute("username", principal.getName());
+			
+			Map <String,String> roleList = new LinkedHashMap<String,String>();			
+			roleList.put("manager", "manager");
+			roleList.put("employee", "employee");
+			model.addAttribute("roleList", roleList);	
+			
 			return new ModelAndView("sales/transfersalesemployee", "signupemployee", new SignUpEmployee());
 		}
 		
 		@RequestMapping(value = "/transfersalesemployee/op1" ,method = RequestMethod.POST)
-		public String transferSalesEmployee( SignUpEmployee employee,Model model,HttpServletRequest request, Principal principal)
+		public String transferSalesEmployee(User user,Model model,HttpServletRequest request, Principal principal)
 		{
 			System.out.println("\n Inside delete empployee post controller");
-			String message,department = null ;
+			String message,department = null ,username = null;
+			String roleToBeupdated =null;
+			username=request.getParameter("userNametext");
 									
 			try{												
-				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
-				salesmanager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
-				model.addAttribute("message", message);	
+				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";		
+				roleToBeupdated = salesmanager.getRoleTobechanged(user.getDepartment(),user.getRole());
+				salesmanager.updateUserRole(roleToBeupdated,"SALES",user.getDepartment(),username ,principal.getName());
+				model.addAttribute("message", message);
 				model.addAttribute("username", principal.getName());
-				return ("signup/saveData");
+				return ("signup/saveData");	
 				
-			} catch (Exception e) {
-				
+				} catch (Exception e) {
+					
 				if(e instanceof InvalidActivityException )
 				{
 					e.printStackTrace();		

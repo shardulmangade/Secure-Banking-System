@@ -1,5 +1,6 @@
 package asu.edu.sbs.signup;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -76,14 +77,17 @@ public class SignupMerchantController {
 	@RequestMapping(value = "/signupemployee/op2" ,method = RequestMethod.POST)
 	public ModelAndView getDataEmployee(Locale locale , Model model)
 	{
-		System.out.println("\n Inside Employee Merchant signup controller");		
+		System.out.println("\n Inside External Merchant signup controller");		
 		
 		Map <String,String> department = new LinkedHashMap<String,String>();
-		department.put("HR", "HR department");
+		department.put("Customer", "External user");
+		department.put("Merchant", "External Merchant");
+		
+		/*department.put("HR", "HR department");
 		department.put("sales", "Sales department");
 		department.put("TM", "Transaction Management department");
 		department.put("IT", "IT & Tech Support department");
-		department.put("CM", "Company Managment department");
+		department.put("CM", "Company Managment department");*/
 		model.addAttribute("departmentList", department);
 		return new ModelAndView("signup/signupmerchant", "signupusermerchant", new SignUpMerchantEmployee());
 	}
@@ -95,7 +99,7 @@ public class SignupMerchantController {
 //	}
 	
 	@RequestMapping(value = "/SignupEmployeePost" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes)
+	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes, Principal principal)
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
@@ -109,7 +113,8 @@ public class SignupMerchantController {
 					
 			mav.setViewName("signup/saveData");
 			message= "Your request has been submitted for approval";
-			salesmanager.saveNewMerchantRequest(employee.getUserName(),employee.getMerchantName(),employee.getEmailId(),employee.getDepartment());
+			String insertedbyUsername = principal.getName();
+			salesmanager.saveNewEmployeeRequest(employee.getUserName(),employee.getMerchantName(),employee.getMerchantName(),employee.getEmailId(),employee.getDepartment(),insertedbyUsername);
 			mav.addObject("message", message);				
 			return mav;
 		}

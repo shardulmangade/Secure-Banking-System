@@ -11,12 +11,12 @@ font-style: italic;
 
 </head>
 <body>
-<P>  Registration Form for External Users </P>
+<P>  Registration Form for External Merchants </P>
 <form:form method="POST" commandName="signupusermerchant"  action="${pageContext.request.contextPath}/signupuser/signupPost.html" >
 
  <table>
     <tr>
-        <td><form:label path="MerchantName">FirstName</form:label></td>
+        <td><form:label path="MerchantName">Merchant Name</form:label></td>
         <td><form:input path="MerchantName"/></td>
         <td><form:errors path="MerchantName" cssClass="error" /></td>
     </tr>
@@ -30,7 +30,21 @@ font-style: italic;
         <td><form:input path="emailId" /></td>
         <td><form:errors path="emailId" cssClass="error" /></td>
     </tr>
+    <tr>
+        <td><form:label path="ssn">SSN</form:label></td>
+        <td><form:input class = "form-control" path="ssn" /></td>
+        <td><form:errors path="ssn" cssClass="error" /></td>
+    </tr> 
     
+    <tr>   	    
+   	    <td> Department : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
+   	    <td> <form:select path = "department">
+   	     <form:option value="NONE" label="--- Select ---" />
+   	     <form:options items="${departmentList}"/>
+   	     </form:select>  	    
+   	     <td><form:errors path="department" cssClass="error" /></td>
+       
+    </tr>
     <tr>
     <td colspan="2">
             <input type="submit" value="Submit"/>

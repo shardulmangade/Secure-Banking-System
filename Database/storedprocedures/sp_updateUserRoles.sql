@@ -15,6 +15,7 @@ DROP PROCEDURE IF EXISTS sp_updateUserRoles;
 DELIMITER $$
 CREATE PROCEDURE sp_updateUserRoles(
 IN inusername VARCHAR(100),
+IN olddepartment VARCHAR(100),
 IN newdepartmentname VARCHAR(100),
 IN newrole VARCHAR(100),
 IN inupdatedby VARCHAR(100),
@@ -22,7 +23,7 @@ OUT errorMessage      VARCHAR(100)
 )
 BEGIN
      
-	 IF EXISTS(SELECT 1 FROM tbl_all_users WHERE username = inusername and roles = "ROLE_VALID_USER")
+	 IF EXISTS(SELECT 1 FROM tbl_all_users WHERE username = inusername and roles = "ROLE_VALID_USER" and department = olddepartment)
 	 
 		THEN 
 

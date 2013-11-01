@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import asu.edu.sbs.db.CustomerDBConnection;
 import asu.edu.sbs.db.SalesDBConnectionManager;
 import asu.edu.sbs.domain.Credit;
+import asu.edu.sbs.domain.MerchantCredit;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.exception.BankStorageException;
 
@@ -98,7 +99,7 @@ public class CustomerManager {
 		}
 		
 		/**
-		 * verify request 
+		 * verify signed request 
 		 * @param request
 		 * @return
 		 */
@@ -120,6 +121,31 @@ public class CustomerManager {
 		}
 		return result;
 	}
+	
+	/**
+	 * Sign the request for merchant
+	 */
+	public String getSignedRequest(PrivateKey privateKey, MerchantCredit credit) {
+		byte[] realSig = null;
+		byte[] buffer = new byte[1024];
+		try{
+			Signature dsa = Signature.getInstance("SHA1withDSA");				
+			dsa.initSign(privateKey);
+			String toEncrypt = credit.getStringForEncryption();
+			dsa.update(credit.getStringForEncryption().getBytes());
+			realSig = dsa.sign();
+			
+		}catch(Exception ex){
+			try {
+				throw new BankStorageException(ex);
+			} catch (BankStorageException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return getString(realSig);
+	}
+	
 	
 	 private static String getString( byte[] bytes )
 	  {
@@ -147,4 +173,29 @@ public class CustomerManager {
 	   }
 	   return bos.toByteArray();
 	  }
+
+
+	 /**
+	  * This method validates the merchant based on user. Basically this methods checks if the username is present in the database 
+	  * @param userName
+	  * @return
+	  */
+	public boolean validateMerchant(String userName) throws Exception{
+		
+		return (customerdbconnection.validateMerchant(userName));
+	}
+
+	/**
+	 * this method gets the account number for given username. This typically deals with merrchant
+	 * @param name
+	 * @return
+	 */
+
+	public String getAccountNumberForMerchant(String name) throws Exception{
+		
+		return (customerdbconnection.getAccountNumberForMerchant(name));
+	}
+
+
+	
 }

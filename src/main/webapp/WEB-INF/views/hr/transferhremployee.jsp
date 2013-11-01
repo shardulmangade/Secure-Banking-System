@@ -28,7 +28,17 @@ font-style: italic;
    	     <td><form:errors path="department" cssClass="error" /></td>
        
     </tr>
-      
+
+   <tr>   	    
+   	    <td> Select Role which you want to give  : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
+   	    <td> <form:select path = "role">
+        <form:option value="NONE" label="--- Select ---" />
+        <form:options items="${roleList}"/>
+        </form:select>  	    
+        <td><form:errors path="role" cssClass="error" /></td>
+       
+    </tr>
+        
     <tr>
 	    <td colspan="2">
 	    	<div class ="pull-right">

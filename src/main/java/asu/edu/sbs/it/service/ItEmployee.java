@@ -29,7 +29,7 @@ public class ItEmployee {
 	{
 			itdbconnection.deleteItPendingRequest(UserName);
 	}
-	public void insertValidUser(User user, String firstTimePassword, String insertedbyUsername)throws BankStorageException
+	public void insertValidUser(User user, String firstTimePassword, String insertedbyUsername)throws BankStorageException, BankAccessException
 	{
 		logindbconnection.insertValidUser(user, firstTimePassword, insertedbyUsername);		
 	}

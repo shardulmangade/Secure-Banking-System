@@ -36,7 +36,20 @@ font-style: italic;
         <td><form:input class = "form-control" path="emailId" /></td>
         <td><form:errors path="emailId" cssClass="error" /></td>
     </tr>
-      
+     <tr>
+        <td><form:label path="ssn">SSN</form:label></td>
+        <td><form:input class = "form-control" path="ssn" /></td>
+        <td><form:errors path="ssn" cssClass="error" /></td>
+    </tr>
+    <tr>   	    
+   	    <td> Department : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
+   	    <td> <form:select path = "department">
+   	     <form:option value="NONE" label="--- Select ---" />
+   	     <form:options items="${departmentList}"/>
+   	     </form:select>  	    
+   	     <td><form:errors path="department" cssClass="error" /></td>
+       
+    </tr> 
     <tr>
 	    <td colspan="2">
 	    	<div class ="pull-right">

@@ -10,11 +10,15 @@ public interface DBConstants
 	
 	//Sales Stored Procedures
 	public final static String SALES_ALL_USER_REQUESTS = "sp_getAllSalesUserRequests";
+	//public final static String SALES_ALL_CUSTOMER_REQUESTS = "sp_getAllSalesCustomerRequests";
+	public final static String SALES_ALL_CUSTOMER_REQUESTS = "sp_insertValidCustomer";
+	
 	
 	//Login Stored Procedures
 	public final static String LOGIN_GET_USER_ROLE = "sp_getUserRole";
 	public final static String GET_OTP = "sp_getOTP";
 	public final static String UPDATE_OTP = "sp_updateOTP";
+	public final static String UPDATE_PASSWORD = "sp_updatePassowrd";
 	
 	//All users Stored Procedures
 	public final static String GET_USER_FROM_ALL_USERS_TABLE = "sp_getUser";
@@ -46,6 +50,7 @@ public interface DBConstants
 	public final static String IT_ALL_PENDING_USER_REQUESTS = "sp_getAllItPendingUserRequests";
 	public final static String INSERT_CUSTOMER_NEW_TRANSACTIONS = "sp_insertCustomerTransactions";
 	public final static String VALIDATE_RECIPIENT_USER = "sp_validateRecepientUser";
+	public final static String VALIDATE_RECIPIENT_MERCHANT = "sp_validateRecepientMerchant";
 	public final static String GET_BALANCE_OF_CUSTOMER = "sp_getbalanceofCustomer";
 	public final static String UPDATE_BALANCE_OF_CUSTOMER = "sp_updatebalanceofCustomer";
 	public final static String DELETE_IT_PENDING_REQUESTS = "sp_deleteItPendingRequests";

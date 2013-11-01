@@ -10,7 +10,7 @@
 <body>
 	Want to leave ${username}?
 	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
 <div class="container">
@@ -25,7 +25,7 @@
 				            <ul class="nav nav-list">				
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hremployee/signupemployee/op1')"> Add an employee to payroll</a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hremployee/deleteemployee/op1')"> Delete an employee from payroll </a></li>
-								
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>

@@ -10,6 +10,7 @@ import asu.edu.sbs.db.LoginDBConnectionManager;
 import asu.edu.sbs.db.SalesDBConnectionManager;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.exception.BankStorageException;
 
 @Service
@@ -37,7 +38,7 @@ public class HrDeptManager {
 	}
 	
 	
-	public int insertValidUser(User user, String password, String createdBy) throws BankStorageException
+	public int insertValidUser(User user, String password, String createdBy) throws BankStorageException, BankAccessException
 	{		
 			return (loginmanager.insertValidUser(user, password, createdBy));	
 	}
@@ -61,5 +62,16 @@ public class HrDeptManager {
 	{
 		return hrdbconnection.getDeleteApprovalStatus(userName,department);
 	}
+
+	public void updateUserRole(String role,String olddepartment, String department, String username,String changedby) throws BankStorageException, BankAccessException {
+		// TODO Auto-generated method stub
+		loginmanager.updateUserRole(role,olddepartment, department,username ,changedby);
+	}
+
+	public String getRoleTobechanged(String department, String role) {
+		
+		return (loginmanager.getRoleTobechanged( department,  role));
+	}
+	
 	
 }

@@ -1,5 +1,7 @@
 package asu.edu.sbs.domain;
 
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -16,6 +18,11 @@ public class SignUpMerchantEmployee {
 	private String department;
 	
 	private String password;
+	
+	@NotBlank @Size(min = 10, max= 10)
+	private String ssn;
+	
+	private String role;
 	
 	public String getMerchantName() {
 		return MerchantName;
@@ -57,5 +64,18 @@ public class SignUpMerchantEmployee {
 		this.password = password;
 	}
 
-	
+	public String getSsn() {
+		return ssn;
+	}
+
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
+	}
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 }
