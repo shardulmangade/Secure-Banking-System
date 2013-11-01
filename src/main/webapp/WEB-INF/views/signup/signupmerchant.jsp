@@ -16,7 +16,7 @@ font-style: italic;
 
  <table>
     <tr>
-        <td><form:label path="MerchantName">FirstName</form:label></td>
+        <td><form:label path="MerchantName">Merchant Name</form:label></td>
         <td><form:input path="MerchantName"/></td>
         <td><form:errors path="MerchantName" cssClass="error" /></td>
     </tr>

@@ -80,11 +80,14 @@ public class SignupMerchantController {
 		System.out.println("\n Inside External Merchant signup controller");		
 		
 		Map <String,String> department = new LinkedHashMap<String,String>();
-		department.put("HR", "HR department");
+		department.put("Customer", "External user");
+		department.put("Merchant", "External Merchant");
+		
+		/*department.put("HR", "HR department");
 		department.put("sales", "Sales department");
 		department.put("TM", "Transaction Management department");
 		department.put("IT", "IT & Tech Support department");
-		department.put("CM", "Company Managment department");
+		department.put("CM", "Company Managment department");*/
 		model.addAttribute("departmentList", department);
 		return new ModelAndView("signup/signupmerchant", "signupusermerchant", new SignUpMerchantEmployee());
 	}
