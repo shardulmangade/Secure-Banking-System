@@ -22,7 +22,7 @@ public class ForbiddenController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
 
-		for (GrantedAuthority ga : authorities) {;
+		for (GrantedAuthority ga : authorities) {
 			if (ga.getAuthority().equals(IBankRoles.ROLE_VALID_USER))
 				return "redirect:/auth/otpcheck";
 			else if(ga.getAuthority().equals(IBankRoles.ROLE_INVALID_USER))

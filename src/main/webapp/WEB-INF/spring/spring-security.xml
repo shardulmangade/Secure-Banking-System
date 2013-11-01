@@ -26,7 +26,7 @@
             	<intercept-url pattern="/transactions/regularEmployee/**" access="hasRole('ROLE_TRANSACTION_EMPLOYEE')"/>
 				<intercept-url pattern="/transaction/transactionManager/**" access="hasRole('ROLE_TRANSACTION_MANAGER')"/>
 				<intercept-url pattern="/merchant/**" access="hasRole('ROLE_EXTERNAL_MERCHANT')"/>	                
-                <intercept-url pattern="/pwdchange/**" access="hasAnyRole('ROLE_CORPORATE_MANAGER','ROLE_IT_EMPLOYEE','ROLE_IT_MANAGER','ROLE_HR_EMPLOYEE','ROLE_HR_MANAGER','ROLE_SALES_EMPLOYEE','ROLE_SALES_MANAGER','ROLE_EXTERNAL_USER','ROLE_TRANSACTION_EMPLOYEE','ROLE_TRANSACTION_MANAGER','ROLE_EXTERNAL_MERCHANT')"/>
+                <intercept-url pattern="/pwdchange/**" access="hasAnyRole('ROLE_IT_EMPLOYEE','ROLE_IT_MANAGER','ROLE_HR_EMPLOYEE','ROLE_HR_MANAGER','ROLE_SALES_EMPLOYEE','ROLE_SALES_MANAGER','ROLE_EXTERNAL_USER','ROLE_TRANSACTION_EMPLOYEE','ROLE_TRANSACTION_MANAGER','ROLE_EXTERNAL_MERCHANT')"/>
                 
                 <!-- <intercept-url pattern="/**" access="denyAll" />-->
                 

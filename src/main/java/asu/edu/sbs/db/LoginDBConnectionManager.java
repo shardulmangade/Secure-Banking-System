@@ -143,7 +143,7 @@ public class LoginDBConnectionManager {
 		return SUCCESS;
 	}
 	
-	public int updatePassword(String username, String password) throws BankStorageException
+	public int changePassword(String username, String password) throws BankStorageException
 	{
 		//Insert the password for the user in the database
 		String dbCommand, sOutErrorValue;

@@ -3,6 +3,7 @@ package asu.edu.sbs.login.service;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.db.LoginDBConnectionManager;
@@ -84,18 +85,26 @@ public class LoginManager {
 		return FAILURE;
 	}
 
-	public int resendOTP(String username) throws BankStorageException
+	
+	public int changePassword(String username, String newPassword) throws BankStorageException
 	{
-		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
-		//Fetch user from database
-		User user = loginDBConnection.getUser(username);
-
-		//Send OTP to user
-		if(user != null)
-		{
-			return emailManager.sendOTP(user, storedOTP); 
-		}
-		
-		return FAILURE;
+		Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+		String hashedPassword = passwordEncoder.encodePassword(newPassword, null);
+		return loginDBConnection.changePassword(username, hashedPassword);
 	}
+	
+//	public int resendOTP(String username) throws BankStorageException
+//	{
+//		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
+//		//Fetch user from database
+//		User user = loginDBConnection.getUser(username);
+//
+//		//Send OTP to user
+//		if(user != null)
+//		{
+//			return emailManager.sendOTP(user, storedOTP); 
+//		}
+//		
+//		return FAILURE;
+//	}
 }

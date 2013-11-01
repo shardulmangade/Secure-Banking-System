@@ -27,7 +27,6 @@ Want to leave ${username}?
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op3')"> Transfer </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op4')"> View Pending Request </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/allactivemanagers')"> Deactivate Manager </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>
