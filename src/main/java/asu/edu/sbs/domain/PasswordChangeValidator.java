@@ -18,6 +18,12 @@ public class PasswordChangeValidator implements Validator {
 	{
 		ValidationUtils.rejectIfEmptyOrWhitespace(err, "newPassword", "Password field Cannot be empty");
 		ValidationUtils.rejectIfEmptyOrWhitespace(err, "confirmNewPassword", "You have to confirm your password");
+		PasswordChange pwd = (PasswordChange)obj;
+		
+		if(!pwd.getNewPassword().equals(pwd.getConfirmNewPassword()))
+		{			
+			err.reject("Passwords do not match");
+		}
 	}
 
 }
