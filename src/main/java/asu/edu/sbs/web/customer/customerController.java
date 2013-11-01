@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import asu.edu.sbs.customer.service.CustomerManager;
 import asu.edu.sbs.domain.Credit;
+import asu.edu.sbs.domain.MerchantCredit;
 
 @Scope(value="session")
 @Controller
@@ -153,10 +154,29 @@ public class customerController {
 		System.out.println("[Info] Inside customer to  merchant transfer Controller .............");
 		String message = null;
 		try{
+			String userName=request.getParameter("userNametext");
+			Double amount= Double.parseDouble(request.getParameter("amounttext"));
+			MerchantCredit credit = new MerchantCredit();
 			
-			//sign the request
+			if(request.getParameter("userNametext") !=null && request.getParameter("amounttext")!=null ){
+				//sign the request
+				if (customerManager.validateMerchant(userName)){
+					credit.setFromusername(principal.getName());
+					credit.setFromaccount(customerManager.getAccountNumberForMerchant(principal.getName()));	
+					credit.setAmount(amount);
+					credit.setTomerchantaccount(userName);
+					
+					//sign with private key
+					String buffer = customerManager.getSignedRequest(this.privateKey, credit);			
+					//save the signed request to merchants table and the public key
+					//credit.setSignedRequest(buffer);
+					//credit.setPublicKey(publicKey.getEncoded());
+					//customerManager.saveManagerTransaction();
+					
+				}
+				//store the transaction in db
+			}
 			
-			//store the transaction in db
 		}catch(Exception ex){
 			ex.printStackTrace();
 			message = "Sorry .we are unable to process your transaction for merchant now";		
