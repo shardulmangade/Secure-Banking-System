@@ -26,7 +26,7 @@
 				            <ul class="nav nav-list">				
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '/sundevilbank/it/op1')"> View Pending Requests</a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/it/op2')"> Delete Customer </a></li>
-								
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>

@@ -26,7 +26,7 @@
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hrmanager/newhremployee')">Add a new HR employee  </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hrmanager/deletehremployee/op1')"> Delete an employee </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hrmanager/transferemployee')"> Transfer HR employee</a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/pwd')"> Change Password </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>

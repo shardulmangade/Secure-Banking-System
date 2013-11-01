@@ -13,9 +13,8 @@ font-style: italic;
 
 </head>
 <body>
-<P>  Password Change </P>
+<P>  Password Change : Both text fields should match and not be empty. </P>
 <br>
-<c:if test="${not empty success}">Your password was changed successfully !!!</c:if>
 <form:form method="POST" action="${pageContext.request.contextPath}/pwdchange" >
 
  <table>
