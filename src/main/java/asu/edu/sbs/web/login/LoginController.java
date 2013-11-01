@@ -19,8 +19,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import asu.edu.sbs.domain.IBankRoles;
+import asu.edu.sbs.domain.PasswordChange;
 import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.login.service.LoginManager;
@@ -182,6 +184,21 @@ public class LoginController {
 
 		return "home";
 
+	}
+	
+	@RequestMapping(value = "/pwd", method = RequestMethod.POST)
+	public ModelAndView passwordChange(Principal principal) {
+		ModelAndView model = new ModelAndView("pwdchange","command",new PasswordChange());
+		return model;
+	}
+	
+	@RequestMapping(value = "/pwdchange", method = RequestMethod.POST)
+	public String passwordChangeRequest(Principal principal) {
+		
+		System.out.println("Inside pwd change req controller......");
+		return "home";
+//		ModelAndView model = new ModelAndView("pwdchange","command",new PasswordChange());
+//		return model;
 	}
 
 }
