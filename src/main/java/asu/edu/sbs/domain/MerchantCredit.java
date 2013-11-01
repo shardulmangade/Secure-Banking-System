@@ -8,8 +8,8 @@ public class MerchantCredit {
 	private String fromusername;
 	private String tomerchantname;
 	private Double amount;
-	private byte[] signedRequest;
-	private String publicKey;
+	private String signedRequest;
+	private byte[] publicKey;
 	
 	public String getTransactionID() {
 		return transactionID;
@@ -47,16 +47,16 @@ public class MerchantCredit {
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
-	public byte[] getSignedRequest() {
+	public String getSignedRequest() {
 		return signedRequest;
 	}
-	public void setSignedRequest(byte[] signedRequest) {
+	public void setSignedRequest(String signedRequest) {
 		this.signedRequest = signedRequest;
 	}
-	public String getPublicKey() {
+	public byte[] getPublicKey() {
 		return publicKey;
 	}
-	public void setPublicKey(String publicKey) {
+	public void setPublicKey(byte[] publicKey) {
 		this.publicKey = publicKey;
 	}
 	public String getStringForEncryption(){

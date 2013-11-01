@@ -172,6 +172,8 @@ public class customerController {
 					//credit.setSignedRequest(buffer);
 					//credit.setPublicKey(publicKey.getEncoded());
 					//customerManager.saveManagerTransaction();
+					credit.setSignedRequest(buffer); //sest signed request as string
+					credit.setPublicKey(this.publicKey.getEncoded()); //sest public key as bytes
 					
 				}
 				//store the transaction in db
