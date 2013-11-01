@@ -280,13 +280,8 @@ public class LoginController {
 	@RequestMapping(value = "/pwdchange", method = RequestMethod.POST)
 	public String passwordChangeRequest(@Validated @ModelAttribute("command")PasswordChange pwd, BindingResult result,  Principal principal, Model model) throws BankStorageException {
 
-		System.out.println("Inside pwd change req controller......");
-		System.out.println(pwd.getNewPassword());
-		System.out.println(pwd.getConfirmNewPassword());
-
 		if(result.hasErrors())
 		{
-			System.out.println("errorrrrr..........");
 			model.addAttribute("error", true);
 		}
 		else
