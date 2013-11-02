@@ -1,44 +1,80 @@
 package asu.edu.sbs.domain;
 
+import javax.validation.constraints.Size;
+
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 public class SignUpMerchantEmployee {
 
 	@NotBlank
-	private String MerchantName;
+	private String username;
 	@NotBlank
-	private String userName;
+	private String firstName;
+	//@NotBlank
+	private String lastName;
 	
-	@Email @NotBlank
-	private String emailId;
+	private String role;
+	@Email
+	@Size(max=50)
+	@NotBlank
+	private String email;
 	
 	private String department;
 	
-	private String password;
+	//@NotBlank @Size(min = 10, max= 10)
+	private String ssn;
 	
-	public String getMerchantName() {
-		return MerchantName;
+	private String createdBy;
+	private String createdDate;
+
+	public String getRole() {
+		return role;
 	}
 
-	public void setMerchantName(String MerchantName) {
-		this.MerchantName = MerchantName;
+	public void setRole(String role) {
+		this.role = role;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getSsn() {
+		return ssn;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setSsn(String ssn) {
+		this.ssn = ssn;
 	}
 
-	public String getEmailId() {
-		return emailId;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getDepartment() {
@@ -49,13 +85,20 @@ public class SignUpMerchantEmployee {
 		this.department = department;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getCreatedBy() {
+		return createdBy;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
 	}
 
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
+	}
 	
 }

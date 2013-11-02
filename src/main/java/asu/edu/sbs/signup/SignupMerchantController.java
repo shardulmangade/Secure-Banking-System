@@ -28,6 +28,7 @@ import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpMerchantEmployee;
 import asu.edu.sbs.domain.SignUpUser;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
+import asu.edu.sbs.domain.User;
 import asu.edu.sbs.hr.service.HrDeptManager;
 import asu.edu.sbs.sales.service.SalesDeptManager;
 
@@ -56,7 +57,7 @@ public class SignupMerchantController {
 	}
 	
 	@RequestMapping(value = "/signupPost" ,method = RequestMethod.POST)
-	public ModelAndView getDataPost(@Validated @ModelAttribute SignUpUser user, BindingResult result, final RedirectAttributes attributes)
+	public ModelAndView getDataPost(@Validated @ModelAttribute SignUpMerchantEmployee user, BindingResult result, final RedirectAttributes attributes)
 	{
 		System.out.println("\n Inside signup post controller");
 		if(result.hasErrors())
@@ -77,15 +78,18 @@ public class SignupMerchantController {
 	@RequestMapping(value = "/signupemployee/op2" ,method = RequestMethod.POST)
 	public ModelAndView getDataEmployee(Locale locale , Model model)
 	{
-		System.out.println("\n Inside External Merchant signup controller");		
+		System.out.println("\n Inside External Merchant signup controller -- ashwin 3");		
 		
-		Map <String,String> department = new LinkedHashMap<String,String>();
-		department.put("HR", "HR department");
+		//Map <String,String> department = new LinkedHashMap<String,String>();
+		//department.put("Customer", "External user");
+		//department.put("Merchant", "External Merchant");
+		
+		/*department.put("HR", "HR department");
 		department.put("sales", "Sales department");
 		department.put("TM", "Transaction Management department");
 		department.put("IT", "IT & Tech Support department");
-		department.put("CM", "Company Managment department");
-		model.addAttribute("departmentList", department);
+		department.put("CM", "Company Managment department");*/
+		//model.addAttribute("departmentList", department);
 		return new ModelAndView("signup/signupmerchant", "signupusermerchant", new SignUpMerchantEmployee());
 	}
 	
@@ -96,22 +100,29 @@ public class SignupMerchantController {
 //	}
 	
 	@RequestMapping(value = "/SignupEmployeePost" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes, Principal principal)
+	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpMerchantEmployee user, BindingResult result, final RedirectAttributes attributes, Principal principal)
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
 		try{				
-			System.out.println("\n Inside Employee signup post controller");
+			System.out.println("\n Inside Employee signup post controller -- ashwin 4");
+			user.setLastName("merchant last");
+			user.setDepartment("merchant");
+			user.setSsn("1111111111");
 			if(result.hasErrors())
 			{
-				return new ModelAndView("signup/signup", "signupuser",employee);
+				message = "**ERRORS** observed in validating.Please go back and enter valid information";
+				mav.addObject("message", message);
+				mav.setViewName("signup/saveData");
+				return mav;
+				//return new ModelAndView("signup/signup", "signupuser",user);
 				//return new ModelAndView("hr/employee/hrEmployee","signupuser",employee);
 			}		 
 					
 			mav.setViewName("signup/saveData");
 			message= "Your request has been submitted for approval";
 			String insertedbyUsername = principal.getName();
-			salesmanager.saveNewEmployeeRequest(employee.getUserName(),employee.getMerchantName(),employee.getMerchantName(),employee.getEmailId(),employee.getDepartment(),insertedbyUsername);
+			salesmanager.saveNewEmployeeRequest(user.getUsername(),user.getFirstName(),user.getLastName(),user.getEmail(),user.getDepartment(),user.getSsn(),insertedbyUsername);
 			mav.addObject("message", message);				
 			return mav;
 		}

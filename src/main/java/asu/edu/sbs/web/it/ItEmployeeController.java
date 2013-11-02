@@ -3,6 +3,7 @@ package asu.edu.sbs.web.it;
 import java.security.Principal;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,6 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
+import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.it.service.ItEmployee;
 import asu.edu.sbs.login.service.OneTimePassword;
 
@@ -45,7 +48,7 @@ public class ItEmployeeController {
 		System.out.println("Inside employee Controller for iiit.............");
 		
 		List<User> userRequests = itEmployee.getAllPendingUserRequests();
-		System.out.println(userRequests.get(0).getFirstName());
+		//System.out.println(userRequests.get(0).getFirstName());
 		String name = principal.getName();
 		model.addAttribute("username", name);
 		String message = "";
@@ -59,7 +62,17 @@ public class ItEmployeeController {
 		System.out.println("Inside employee Controller for it.............");
 		String name = principal.getName();
 		model.addAttribute("username", name);
-		return "it/employee/employee";
+		return "it/employee/deleteCustomer";
+	}
+	
+	@RequestMapping(value = "it/employee/deleteUser", method = RequestMethod.POST)
+	public String postDeleteUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) throws BankStorageException, BankAccessException
+	{
+		System.out.println("Inside employee Controller for it.............");
+		String name = principal.getName();
+		model.addAttribute("username", name);
+		itEmployee.deleteUser(request.getParameter("userNametext"), name);
+;		return "it/employee/employee";
 	}
 	
 	@RequestMapping(value = "it/handlePendingRequestsResponse.html", method = RequestMethod.POST)
@@ -101,6 +114,12 @@ public class ItEmployeeController {
 				    String hashedPass = encoder.encodePassword(password, null);
 				    // Insert into customers table
 					itEmployee.insertValidUser(user, password, name);
+					Random randomGenerator = new Random();
+					
+					String accountNo = Integer.toString(randomGenerator.nextInt());
+					//Shardul Critical ToDo: Integrate initial amount in form or add Debit/Credit , setting initial amount to 250
+					//Shardul Critical ToDo: Check if accountNo collision will occur and handle if required
+					itEmployee.insertCustomerAccNo(user.getUsername(), accountNo, 500.0, name);
 					//send email
 					enManager.sendPasswordCustomer(user, otpInstance.getPassword());
 					itEmployee.deleteItPendingRequest(username);

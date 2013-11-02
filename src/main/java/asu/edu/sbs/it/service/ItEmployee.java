@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.db.ItDBConnectionManager;
 import asu.edu.sbs.db.LoginDBConnectionManager;
+import asu.edu.sbs.domain.IBankRoles;
+import asu.edu.sbs.domain.IDepartments;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.exception.BankStorageException;
@@ -31,9 +33,20 @@ public class ItEmployee {
 	{
 		logindbconnection.insertValidUser(user, firstTimePassword, insertedbyUsername);		
 	}
+	public void insertCustomerAccNo(String UserName,String accountNo,Double balance,String createdBy)throws Exception
+	{
+		itdbconnection.insertCustomerAccNo(UserName, accountNo, balance, createdBy);		
+	}
 	public User getPendingUserRequest(String userName)throws BankStorageException
 	{
 		return itdbconnection.getPendingUserRequest(userName);		
+	}
+	public void deleteUser(String username, String name) throws BankStorageException, BankAccessException 
+	{
+		// TODO Auto-generated method stub
+		itdbconnection.deleteCustomerAccNo(username);
+		User duser= logindbconnection.getUser(username);
+		logindbconnection.updateUserLoginRights(false, username, name);
 	}	
 	
 }

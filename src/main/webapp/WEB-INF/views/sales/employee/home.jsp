@@ -25,6 +25,7 @@
 				            <ul class="nav nav-list">				
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '${pageContext.request.contextPath}/signupuserexternal/signupemployee/op1')"> Add an external user account</a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/signupusermerchant/signupemployee/op2')"> Add a merchant account </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>

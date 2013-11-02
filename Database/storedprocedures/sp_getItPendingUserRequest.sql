@@ -7,17 +7,17 @@ Called By     : UI (ItDBConnectionManager.java)
 
 Create By     : Shardul Mangade
 
-Modified Date : 10/18/2013
+Modified Date : 10/27/2013
 
 ********************************************/
 DROP PROCEDURE IF EXISTS sp_getAllItPendingUserRequests;
 
 DELIMITER $$
-CREATE PROCEDURE sp_getAllItPendingUserRequests()
+CREATE PROCEDURE sp_getItPendingUserRequests(IN userName VARCHAR(100))
 BEGIN
      
- SELECT username, department, firstname, lastname, emailid
-	FROM tbl_it_pending_user_requests;  
+ SELECT username, accounttype, firstname, lastname, emailid
+	FROM tbl_it_pending_user_requests WHERE tbl_it_pending_user_requests.username=userName;  
 
 END$$
 DELIMITER ;
