@@ -1,11 +1,12 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page session="false"%>
 <html>
 <head>
-	<title>Sun Devil Bank</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/sundevilbank/resources/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" />
+<title>Sun Devil Bank</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet"
+	href="/sundevilbank/resources/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" />
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
@@ -31,13 +32,13 @@
 				 </form>
 			</div>
 		</div>
-	</div> 	
-	<!-- End of main content -->
-	<footer class = "container"> 
-		<em> copyright @Group 4, for more information do not hack this site ! </em>
-	</footer>
-	<!--  end of footer -->
-</div>
+		<!-- End of main content -->
+		<footer class="container">
+			<em> copyright @Group 4, for more information do not hack this
+				site ! </em>
+		</footer>
+		<!--  end of footer -->
+	</div>
 </body>
 </html>
 

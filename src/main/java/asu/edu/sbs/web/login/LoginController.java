@@ -87,7 +87,7 @@ public class LoginController {
 			if(ga.getAuthority().equals(IBankRoles.ROLE_TRANSACTION_EMPLOYEE))
 				return "redirect:/transactions/regularEmployee/home";
 			if(ga.getAuthority().equals(IBankRoles.ROLE_TRANSACTION_MANAGER))
-				return "redirect://transactions/transactionManager/home";
+				return "redirect:/transactions/transactionManager/home";
 			if(ga.getAuthority().equals(IBankRoles.ROLE_EXTERNAL_MERCHANT))
 				return "redirect:/merchant/merchant/mainpage";
 		}

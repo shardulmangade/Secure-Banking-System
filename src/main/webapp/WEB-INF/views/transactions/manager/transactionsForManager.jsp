@@ -22,6 +22,7 @@
 				<th> To </th>
 				<th> Amount </th>
 				<th> Time </th>
+				<th> Certificate </th>
 			</tr>
 			<c:forEach var="request" items="${transactionsM}">
 				<tr>
@@ -29,6 +30,7 @@
 					<td>${request.touser}</td>
 					<td>${request.amount}</td>
 					<td>${request.timestamp}</td>
+					<td>${request.certificate}</td>
 				<tr>
 				</c:forEach>
 			</table>
