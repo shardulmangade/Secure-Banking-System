@@ -92,6 +92,7 @@ public class SignupExternalController {
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
+		mav.getModelMap().addAttribute("username", principal.getName());	
 		try{				
 			System.out.println("\n Inside Employee signup post controller --- ashwin 2");
 			user.setDepartment("customer");
@@ -104,7 +105,7 @@ public class SignupExternalController {
 				//return new ModelAndView("signup/signupemployee", "signupuser",user);
 				//return new ModelAndView("hr/employee/hrEmployee","signupuser",employee);
 			}		 
-					
+				
 			mav.setViewName("signup/saveData");
 			message= "Your request has been submitted for approval";
 			String insertedbyUsername = principal.getName();

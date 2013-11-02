@@ -25,6 +25,7 @@ import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
+import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.sales.service.SalesDeptManager;
 import asu.edu.sbs.service.TrialUserManager;
 import asu.edu.sbs.login.service.OneTimePassword;
@@ -80,6 +81,7 @@ public class SalesManagerController {
 			OneTimePassword otp = new OneTimePassword() ;
 			String message ;
 			ModelAndView mav = new ModelAndView();
+			mav.getModelMap().addAttribute("username", principal.getName());
 			try{				
 				System.out.println("\n Inside Employee signup post controller");
 				if(result.hasErrors())
@@ -142,8 +144,14 @@ public class SalesManagerController {
 			System.out.println("\n Inside delete employee post controller");
 			String message = null ,userName;
 			userName = request.getParameter("userNametext");
+			model.addAttribute("username", principal.getName());
 			int status;
-			try{				
+			
+			try{	
+				if(userName.equals(""))
+				{
+					throw new BankAccessException("Username is not valid. please enter a valid user");
+				}
 				status = salesmanager.getDeleteApprovalStatus(userName, "Sales");
 				if(status==1 )
 				{					
