@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Employee Transfer  Page</title>
+<title>Employee Signup Page</title>
 <style>
 .error {
 color: #ff0000;
@@ -12,32 +12,35 @@ font-style: italic;
 
 </head>
 <body>
-	Want to leave ${username}?
-	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
-<P> IT Employee Transfer Form </P>
-<form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/it/manager/transferemployee/op1.html" >
+<P> HR Employee Registration Form </P>
+<form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/it/manager/newitemployee/op1" >
 
-     <label for = "textboxuser"> Enter username of IT employee to be transfered</label> 
-        <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                
-    	
-  <table> 
-   <tr>   	    
-   	    <td> Select Department to which you want to transfer : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
-   	    <td> <form:select path = "department">
-   	     <form:option value="NONE" label="--- Select ---" />
-   	     <form:options items="${departmentList}"/>
-   	     </form:select>  	    
-   	     <td><form:errors path="department" cssClass="error" /></td>
-       
+ <table>
+    <tr>
+        <td><form:label path="firstName">firstName</form:label></td>
+        <td><form:input class = "form-control" path="firstName"/></td>
+        <td><form:errors path="firstName" cssClass="error" /></td>
     </tr>
-     <tr>   	    
-   	    <td> Select Role which you want to give  : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
-   	    <td> <form:select path = "role">
-        <form:option value="NONE" label="--- Select ---" />
-        <form:options items="${roleList}"/>
-        </form:select>  	    
-        <td><form:errors path="role" cssClass="error" /></td>
-       
+    <tr>
+        <td><form:label path="lastName">lastName</form:label></td>
+        <td><form:input class = "form-control" path="lastName" /></td>
+        <td><form:errors path="lastName" cssClass="error" /></td>
+    </tr>
+    <tr>
+        <td><form:label path="username">username</form:label></td>
+        <td><form:input class = "form-control" path="username" /></td>
+        <td><form:errors path="username" cssClass="error" /></td>
+    </tr>
+    <tr>
+        <td><form:label path="email">email</form:label></td>
+        <td><form:input class = "form-control" path="email" /></td>
+        <td><form:errors path="email" cssClass="error" /></td>
+    </tr>
+	
+	 <tr>
+        <td><form:label path="ssn">SSN</form:label></td>
+        <td><form:input class = "form-control" path="ssn" /></td>
+        <td><form:errors path="ssn" cssClass="error" /></td>
     </tr>
       
     <tr>

@@ -24,7 +24,7 @@
     				<div class="sidebar-nav-fixed">
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
-				<%--				<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '../../it/newitemployee')">Add a new IT employee  </a></li> --%>
+								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '../it/manager/newitemployee')">Add a new IT employee  </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '../it/manager/deleteitemployee/op1')"> Delete an employee </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '../it/manager/transferemployee')"> Transfer IT employee</a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
