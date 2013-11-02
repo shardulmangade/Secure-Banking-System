@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +30,7 @@ import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.domain.PasswordChange;
 import asu.edu.sbs.domain.PasswordChangeValidator;
 import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.login.service.LoginManager;
 
@@ -61,7 +61,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/home", method = RequestMethod.GET)
-	public String homePage(ModelMap model) {
+	public String homePage(ModelMap model)throws BankDeactivatedException {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
@@ -104,7 +104,7 @@ public class LoginController {
 	 * @throws BankStorageException 
 	 */
 	@RequestMapping(value = "/auth/otpcheck", method = RequestMethod.GET)
-	public String createOTP(ModelMap model, Principal principal) throws BankAccessException, BankStorageException {
+	public String createOTP(ModelMap model, Principal principal) throws BankAccessException, BankStorageException,BankDeactivatedException {
 
 		String name = principal.getName();
 		logger.info("The authenticated user <<"+name+">> entered the otp check stage !");
@@ -123,7 +123,7 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "/auth/otp", method = RequestMethod.POST)
-	public String validateOTP(@RequestParam(value="otp") String otp, ModelMap model, Principal principal) throws BankStorageException {
+	public String validateOTP(@RequestParam(value="otp") String otp, ModelMap model, Principal principal) throws BankStorageException,BankDeactivatedException {
 
 
 		System.out.println("The authenticated user <<"+principal.getName()+">> submitted an OTP: "+otp);	
@@ -198,7 +198,7 @@ public class LoginController {
 	
 
 	@RequestMapping(value = "/pwd", method = RequestMethod.POST)
-	public ModelAndView passwordChange(Principal principal) {
+	public ModelAndView passwordChange(Principal principal) throws BankDeactivatedException {
 		ModelAndView model = new ModelAndView("pwdchange","command",new PasswordChange());
 		return model;
 	}
