@@ -17,15 +17,15 @@ OUT errorMessage      VARCHAR(50)
 BEGIN
      
  -- check if the workspace exists
-/*	 IF EXISTS(SELECT 1 FROM tbl_customer_account_no WHERE username = userName)
+	 IF EXISTS(SELECT 1 FROM tbl_customer_account_no WHERE username = userName)
 		THEN 
 			SET errorMessage = "No such user exists. This action has been logged. Please don't try to hack into the system !!!";		
 		 
 		ELSE 
-*/
+
 						insert into tbl_customer_account_no values (userName,accountno,balance,createdby,curdate());
 
-/*	END IF;*/
+	END IF;
 
 END$$
 DELIMITER ;
