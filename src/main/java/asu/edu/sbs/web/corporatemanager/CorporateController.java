@@ -170,7 +170,14 @@ public class CorporateController {
 		String tobeReplaced = "";				
 		username=request.getParameter("userNametext");
 		try{												
-			message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";	
+			message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";
+			if(employee.getDepartment().equals("NONE") || employee.getRole().equals("NONE"))
+			{
+				message="Oops!! You seem to be lost because of some Bad Operation. Please press the Home button to return to your mainpage or Logout.";
+				model.addAttribute("message", message);
+				model.addAttribute("username", principal.getName());
+				return ("it/manager/saveData");	
+			}
 			tobeReplaced = crManager.getRoleTobechanged(employee.getDepartment(),employee.getRole());
 			crManager.updateUserRole(tobeReplaced,employee.getDepartment(),username ,principal.getName());
 			model.addAttribute("message", message);							

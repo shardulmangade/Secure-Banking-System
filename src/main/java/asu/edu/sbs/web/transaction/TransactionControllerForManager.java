@@ -254,7 +254,14 @@ public class TransactionControllerForManager {
 			username=request.getParameter("userNametext");
 									
 			try{												
-				message= "Employee "+ username + " has been transfered";					
+				message= "Employee "+ username + " has been transfered";
+				if(user.getDepartment().equals("NONE") || user.getRole().equals("NONE"))
+				{
+					message="Oops!! You seem to be lost because of some Bad Operation. Please press the Home button to return to your mainpage or Logout.";
+					model.addAttribute("message", message);
+					model.addAttribute("username", principal.getName());
+					return ("it/manager/saveData");	
+				}
 				roleToBeupdated = transManager.getRoleTobechanged(user.getDepartment(),user.getRole());
 				//transManager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
 				transManager.updateUserRole(roleToBeupdated,"TM",user.getDepartment(),username ,principal.getName());

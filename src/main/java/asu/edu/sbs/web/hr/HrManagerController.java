@@ -216,7 +216,14 @@ public class HrManagerController {
 			username=request.getParameter("userNametext");
 									
 			try{												
-				message= "Employee "+ username+ " has been transfered";																	
+				message= "Employee "+ username+ " has been transfered";
+				if(user.getDepartment().equals("NONE") || user.getRole().equals("NONE"))
+				{
+					message="Oops!! You seem to be lost because of some Bad Operation. Please press the Home button to return to your mainpage or Logout.";
+					model.addAttribute("message", message);
+					model.addAttribute("username", principal.getName());
+					return ("it/manager/saveData");	
+				}				
 				roleToBeupdated = hrmanager.getRoleTobechanged(user.getDepartment(),user.getRole());
 				hrmanager.updateUserRole(roleToBeupdated,"HR",user.getDepartment(),username ,principal.getName());
 				model.addAttribute("message", message);
