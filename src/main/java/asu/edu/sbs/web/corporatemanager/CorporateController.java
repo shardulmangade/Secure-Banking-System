@@ -123,9 +123,9 @@ public class CorporateController {
 			}		 
 					
 			mav.setViewName("signup/saveData"); // need getter methods for setView. Using saveData in signup.
-			employee.setDepartment(employee.getDepartment());
-			employee.setRole(employee.getRole());				
-			employee.setCreatedBy(principal.getName());	
+//			employee.setDepartment(employee.getDepartment());
+//			employee.setRole(employee.getRole());				
+//			employee.setCreatedBy(principal.getName());	
 			message= "Your request has been submitted for approval";
 			
 			employee.setCreatedBy(principal.getName());				
