@@ -103,12 +103,13 @@ public class CustomerDBConnection {
 	public double getbalanceofCustomer(String username) throws Exception
 	{
 		Connection connection = dataSource.getConnection();
+		double balance=0.0;
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_BALANCE_OF_CUSTOMER + "(?)" );
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,username);
 		ResultSet rs = sqlstatement.executeQuery();
-		rs.next();
-		double balance = rs.getDouble("balance");
+		if (rs.next())
+			balance = rs.getDouble("balance");
 		if (connection!=null)
 			connection.close();
 		return (balance);

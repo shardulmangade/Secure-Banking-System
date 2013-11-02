@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class User {
 
 	@NotBlank
-	@Pattern(regexp="(^[a-z0-9_-]{3,15}$")
+	//@Pattern(regexp="(^[a-z0-9_-]{3,15}$")
 	private String username;
 	@NotBlank
 	private String firstName;
