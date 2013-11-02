@@ -44,6 +44,8 @@ public class TransactionDBManager {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+	
+	
 
 	public void makeUsersActive(List<String> users, String requestedBy) throws BankStorageException
 	{
@@ -133,15 +135,16 @@ public class TransactionDBManager {
 		return users;
 	}
 
-	public List<Transaction> getRegEmpTransactions() throws Exception
+	public List<Transaction> getRegEmpTransactions(String grantedTo) throws Exception
 	{
 		//connection = dataSource.getConnection();
 		List<Transaction> transactions =null; 
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_TRANSACTIONS_OF_PERMITTED_USERS + "()";
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_TRANSACTIONS_OF_PERMITTED_USERS + "(?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,grantedTo);
 			sqlStatement.execute();
 
 			ResultSet result =  sqlStatement.getResultSet();
@@ -195,7 +198,67 @@ public class TransactionDBManager {
 		return transactions;
 	}
 
+	public List<Transaction> getTransactionsForManager() throws Exception
+	{
+		//connection = dataSource.getConnection();
+		List<Transaction> transactions =null; 
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_TRANSACTIONS_FOR_MANAGER + "()";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.execute();
 
+			ResultSet result =  sqlStatement.getResultSet();
+
+			if(result.isBeforeFirst())
+			{
+				transactions= new ArrayList<Transaction>();
+				while(result.next())
+				{
+					Transaction tran = new Transaction();
+					tran.setFromuser(result.getString(1));
+					tran.setTouser(result.getString(2));
+					tran.setAmount(result.getString(3).toString());
+					tran.setTimestamp("this moment");
+					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+					/*
+					try {
+						tran.setTimeStamp(format.parse(result.getString(4).substring(0, 19)).toString());
+					} catch (ParseException e) {
+						//This catch should never be executed. Application logic should make sure of that
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}*/
+					
+					
+					
+					
+					transactions.add(tran);
+				}
+			}
+		}
+		catch(SQLException sqex)
+		{
+			sqex.printStackTrace();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				if(connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return transactions;
+	}
 
 	//*******************
 
@@ -281,12 +344,14 @@ public class TransactionDBManager {
 
 	public int getDeleteApprovalStatus(String userName, String department) throws Exception
 	{
-		Connection connection = dataSource.getConnection();
+		Connection connection = null;
+		try{
+		 connection = dataSource.getConnection();
 		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_DELETE_REQUEST_STATUS + "(?,?)" );
 		sqlstatement.setString(1,userName );
 		sqlstatement.setString(2,department );		
 		ResultSet rs = sqlstatement.executeQuery();
-		connection.close();
+		
 		if(rs.next())
 		{
 			if(rs.getBoolean("approvedelete"))
@@ -296,7 +361,20 @@ public class TransactionDBManager {
 		}else {
 			return -1;
 		}
-
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+			
+			try{
+			if(connection!=null)
+				connection.close();
+			}catch(Exception ex)
+			{
+				ex.printStackTrace();
+			}
+			
+		}
+		return -1;
 	}
 
 	//*******************

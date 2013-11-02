@@ -11,6 +11,10 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
+
+	Want to leave ${username}?
+	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
+
 <div class="container">
 	<header class="page-header"><!-- We can add navigation bar here--><h1>Welcome Regular Employee</h1>	</header>
 	<!-- End of header -->

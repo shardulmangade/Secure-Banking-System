@@ -25,25 +25,29 @@ public class TransactionController {
 	private TransactionService transactionManager;
 	
 	@RequestMapping(value = "/transactions/regularEmployee/home", method = RequestMethod.GET)
-	public String getRegEmployeePage(Locale locale, Model model) throws Exception
+	public String getRegEmployeePage(Locale locale, Model model, Principal principal) throws Exception
 	{
+		model.addAttribute("username",principal.getName());
 		return "transactions/employee/regularEmployee";
 	}
 	
 	@RequestMapping(value = "/transactions/regularEmployee/transactions", method = RequestMethod.POST)
-	public String getTransactions(Locale locale, Model model) throws Exception
+	public String getTransactions(Locale locale, Model model, Principal principal) throws Exception
 	{
 //		transactionManager = new TransactionManager();
-		List<Transaction> transactions =  transactionManager.getRegEmpTransactions();
+		String grantedTo = principal.getName();
+		List<Transaction> transactions =  transactionManager.getRegEmpTransactions(grantedTo);
 		model.addAttribute("transactions", transactions);
+		model.addAttribute("username",principal.getName());
 		return "transactions/employee/transactionsForRegEmp";
 	}
 	
 	@RequestMapping(value="/transactions/regularEmployee/askPermission", method = RequestMethod.POST)
-	public String getUsersForPermission(Locale locale, Model model) throws Exception
+	public String getUsersForPermission(Locale locale, Model model, Principal principal) throws Exception
 	{
 		List<String> users = transactionManager.getUsersForPermission();
 		model.addAttribute("users", users);
+		model.addAttribute("username",principal.getName());
 		return "transactions/employee/askPermission";
 	}
 	
@@ -54,9 +58,9 @@ public class TransactionController {
 		List<String> users = new ArrayList<String>();
 		for(String user:request.getParameterValues("euser"))
 			users.add(user);
-		transactionManager.makeUsersActive(users, "InternalUser");
+		transactionManager.makeUsersActive(users, principal.getName());
 	//	transactionManager.makeUsersActive(users, principal.getName());
-		
+		model.addAttribute("username",principal.getName());
 		return "redirect:/transactions/regularEmployee/home";
 	}
     

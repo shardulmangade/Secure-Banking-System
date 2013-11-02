@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="/sundevilbank/resources/css/custom.css"
 	type="text/css" />
 </head>
-<body>
+<body >
 	<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 	<script src="/sundevilbank/resources/js/bootstrap.js"></script>
 	<script src="/sundevilbank/resources/js/custom.js"></script>
@@ -32,12 +32,21 @@
 									<li><a style="cursor: pointer;"
 										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/newtransaction')">
 											Make new Transfer Transaction </a></li>
+									<li><a style="cursor: pointer;"
+										onclick= "changeContent(1, '${pageContext.request.contextPath}/customer/notifications')">
+											Grant Permission for Transactions </a></li>
+													
 								</ul>
 							</div>
 						</div>
 					</td>
 					<td width="15%"></td>
 					<td width="70%">
+						<div class="hero-unit" id = 56> 
+						
+						
+						
+						</div>
 						<div class="hero-unit" id="1"></div>
 					</td>
 				</tr>

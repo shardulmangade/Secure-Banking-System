@@ -18,12 +18,10 @@ public class TransactionServiceForManager {
 	@Autowired
 	private TransactionDBManager transDBManager;
 	
-	
-	
 	public List<Transaction> getManagerTransactions() throws Exception
 	{
 		//transactionDBManager = new TransactionDBManager();
-		return transDBManager.getRegEmpTransactions(); 
+		return transDBManager.getTransactionsForManager(); 
 	}
 	
 	public void  saveNewEmployeeRequest(String UserName,String firstName,String lastName ,String emailId,String department) throws Exception

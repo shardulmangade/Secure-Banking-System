@@ -109,7 +109,7 @@ public class TransactionControllerForManager {
 		@RequestMapping(value = "/deletetransemployee/op1" ,method = RequestMethod.POST)
 		public String deleteEmployeeGet(Model model,HttpServletRequest request)
 		{
-			return  ("transactions/deletetransemployee");
+			return  ("transactions/manager/deleteTransEmployee");
 		}
 			
 		

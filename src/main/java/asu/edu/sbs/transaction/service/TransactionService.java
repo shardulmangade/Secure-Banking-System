@@ -15,9 +15,9 @@ public class TransactionService {
 	@Autowired
 	private TransactionDBManager transactionDBManager;
 	
-	public List<Transaction> getRegEmpTransactions() throws Exception
+	public List<Transaction> getRegEmpTransactions(String grantedTo) throws Exception
 	{
-		return transactionDBManager.getRegEmpTransactions(); 
+		return transactionDBManager.getRegEmpTransactions(grantedTo); 
 	}
 	
 	public List<String> getUsersForPermission() throws Exception

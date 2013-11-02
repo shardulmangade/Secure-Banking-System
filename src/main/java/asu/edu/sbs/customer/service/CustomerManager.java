@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import asu.edu.sbs.db.CustomerDBConnection;
 import asu.edu.sbs.db.SalesDBConnectionManager;
 import asu.edu.sbs.domain.Credit;
+import asu.edu.sbs.domain.Notification;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankStorageException;
 
 @Service
 public class CustomerManager {
@@ -25,6 +27,15 @@ public class CustomerManager {
 			return customerdbconnection.getAllTransaction( userName);		
 		}
 		
+		public List<Notification> getNotifications(String euser)
+		{
+			return customerdbconnection.getNotifications(euser);			
+		}
+		
+		public void grantAccess(List<String> iusers, String currentEuser) throws BankStorageException
+		{
+			customerdbconnection.grantAccess(iusers, currentEuser);
+		}
 		
 		public int insertNewTransaction(Credit credit) throws Exception
 		{			
