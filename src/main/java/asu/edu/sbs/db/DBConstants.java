@@ -65,7 +65,7 @@ public interface DBConstants
 	public final static String INSERT_TRANSACTION_PERMISSION_REQUESTS = "sp_insertTransactionPermissionRequests";
 	public final static String GET_USERS_FOR_REQUESTING_TRANSACTION_PERMISSION = "sp_getUsersForRequestingTransactionPermission";
 	public final static String GET_TRANSACTIONS_OF_PERMITTED_USERS = "sp_getTransactionsOfPermittedUsers";
-	public static final String IT_PENDING_USER_REQUEST = "sp_getAllItPendingUserRequests";
+	public static final String IT_PENDING_USER_REQUEST = "sp_getItPendingUserRequest";
 	public static final String INSERT_CUSTOMER_ACC_NO = "sp_insertCustomerAccNo";
 	public static final String DELETE_CUSTOMER_ACC_NO = "sp_deleteCustomerAccNo";
 
