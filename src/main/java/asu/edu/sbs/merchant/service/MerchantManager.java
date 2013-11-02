@@ -25,7 +25,10 @@ public class MerchantManager {
 		return customerdbconnection.getAllTransaction( userName);		
 	}
 	
-	
+	public String getAccountNumberForCustomer (String userName) throws Exception
+	{
+		return (customerdbconnection.getAccountNumberForCustomer(userName));
+	}	
 	public int insertNewTransaction(Credit credit) throws Exception
 	{			
 		double fromCustomerBalance = customerdbconnection.getbalanceofCustomer(credit.getFromCustomer());

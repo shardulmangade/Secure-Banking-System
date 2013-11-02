@@ -82,8 +82,8 @@ public class merchantController {
 			Credit credit = new Credit();
 			if (merchantManager.validateRecepientUser(userName, accountNumber))
 			{
-			credit.setFromCustomer("girish");
-			credit.setFromaccount("9876543210");
+			credit.setFromCustomer(name);
+			credit.setFromaccount(merchantManager.getAccountNumberForCustomer(principal.getName()));
 			credit.setToacccount(accountNumber);
 			credit.setAmount(amount);
 			credit.setToCustomer(userName);
