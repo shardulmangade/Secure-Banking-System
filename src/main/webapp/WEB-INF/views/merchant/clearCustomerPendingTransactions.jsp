@@ -17,9 +17,9 @@ font-style: italic;
 	Want to leave ${username}?
 	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 	<h3>${username},</h3>
-<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/it/handlePendingRequestsResponse.html" >
+<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/merchant/merchant/handlePendingRequestsResponse" >
 <c:choose>
-<c:when test="${not empty userRequests}">
+<c:when test="${not empty listTransactions}">
 <table border="1">
 	<tr>
 		<td>Username</td>
@@ -31,8 +31,8 @@ font-style: italic;
 			<input type="checkbox" name="selected" value=<c:out value="${request.username}"/>></input>  
 		</td>
 --%>
-		<td>${transaction.fromCustomer}</td>
-		<td>${transaction.ammount}</td>
+		<td>${transaction.fromusername}</td>
+		<td>${transaction.amount}</td>
   	</tr>
 	</c:forEach>
 	<tr>

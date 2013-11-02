@@ -26,8 +26,9 @@ public class LoggingAspect {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String dbLoginRole = dbconnection.getLoginRole(username);
-		
-		if(dbLoginRole == null || dbLoginRole.equals(IBankRoles.ROLE_INVALID_USER) || dbLoginRole.equals("null"))
+//		System.out.println("Aspect Role fetched from database: "+dbLoginRole);
+//		if(dbLoginRole == null || dbLoginRole.equals(IBankRoles.ROLE_INVALID_USER) || dbLoginRole.equals("null"))
+		if(dbLoginRole.equals(IBankRoles.ROLE_INVALID_USER))
 		{
 			//Automatically logout the user
 			SecurityContextHolder.clearContext();

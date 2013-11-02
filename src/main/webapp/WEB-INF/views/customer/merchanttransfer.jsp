@@ -13,8 +13,6 @@
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 
 <div class="container ">
-	<header class="page-header"><!-- We can add navigation bar here--><h3>Make a new Transaction</h3></header>
-	<!-- End of header -->
 	
 	<div class = "row" id="main-content">
 		<div class = "span4 hero-unit" id="sidebar">
@@ -24,11 +22,6 @@
 			        <label for = "textboxuser" > Enter username of Merchant</label> 
 			        <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />    
 		        </div>            
-		
-				<div>		
-					<label for = "textboxuser" > Enter account of the Merchant</label> 
-			        <input id = "textboxuser" class="form-control" type="text"  name = "accountNumbertext" />    
-		        </div>
 		        <div>
 			        <label for = "textboxuser" > Enter amount </label> 
 			        <input id = "textboxuser" class="form-control" type="text"  name = "amounttext" />                            
@@ -42,11 +35,6 @@
 			</div>
 		</div>
 	</div> 	
-	<!-- End of main content -->
-	<footer class = "container"> 
-		<em> copyright @Group 4, for more information do not hack this site ! </em>
-	</footer>
-	<!--  end of footer -->
 </div>
 </body>
 </html>

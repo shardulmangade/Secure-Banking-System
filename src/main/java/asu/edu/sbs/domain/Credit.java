@@ -1,5 +1,6 @@
 package asu.edu.sbs.domain;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -13,10 +14,10 @@ public class Credit {
 	private String fromCustomer;
 	@NotBlank
 	private String toCustomer;
-	@NotBlank 
+	@NotBlank	
 	private Double amount;
-	private byte[] signedRequest;
-	private String publicKey;
+	private String signedRequest;
+	private byte[] publicKey;
 
 	public Double getAmount() {
 		return amount;
@@ -54,17 +55,17 @@ public class Credit {
 		return result;
 	}
 	
-	public byte[] getSignedRequest() {
+	public String getSignedRequest() {
 		return signedRequest;
 	}
 	
-	public void setSignedRequest(byte[] signedRequest) {
+	public void setSignedRequest(String signedRequest) {
 		this.signedRequest = signedRequest;
 	}
-	public String getPublicKey() {
+	public byte[] getPublicKey() {
 		return publicKey;
 	}
-	public void setPublicKey(String publicKey) {
+	public void setPublicKey(byte[] publicKey) {
 		this.publicKey = publicKey;
 	}
 	
