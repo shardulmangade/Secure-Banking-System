@@ -7,7 +7,8 @@
 </sec:authorize>
 
 <header>
-	<h2>You seem to be lost! Or snooping around?</h2>
+	<h2>You seem to be lost! Or snooping around? You will be automatically redirected in few seconds...</h2>
 </header>
 
 404 Error - Page not found
+<% response.setHeader("Refresh", "8;/sundevilbank"); %>

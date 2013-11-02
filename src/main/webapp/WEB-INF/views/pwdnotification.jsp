@@ -19,7 +19,7 @@ Want to leave ${username}?
 <br>
 <c:if test="${not empty success}">Your password was <b>changed successfully</b> !!! You will be automatically redirected in few seconds...</c:if>
 <c:if test="${not empty error}">Your password was <b>not changed</b> because your password was required to match and not be empty!!! You will be automatically redirected in few seconds...</c:if>
-<% response.setHeader("Refresh", "5;/sundevilbank/home"); %>
+<% response.setHeader("Refresh", "8;/sundevilbank/home"); %>
 	
 
 </body>

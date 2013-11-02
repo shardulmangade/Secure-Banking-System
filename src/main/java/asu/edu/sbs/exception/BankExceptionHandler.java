@@ -23,6 +23,17 @@ public class BankExceptionHandler {
 //		logger.error(ex.getMessage(), ex);
 		return modelAndView;
 	}
+	
+	@ExceptionHandler(value ={ Exception.class})
+	public ModelAndView handleGeneralException(Exception ex) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("exceptions/storageissue");
+		modelAndView.addObject("ex_name", ex.getClass().getName());
+		modelAndView.addObject("ex_message", "Looks like someone is trying to do hack into our system. We have placed a temporary hold on the system. Please check back again after few minutes...");
+//		logger.error(ex.getMessage(), ex);
+		return modelAndView;
+	}
 
 	@ExceptionHandler(value ={ BankAccessException.class})
 	public ModelAndView handleUserAccessException(BankAccessException ex) {
