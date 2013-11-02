@@ -10,7 +10,7 @@
 <body>
 	Want to leave ${username}?
 	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 
 <div class="container ">
@@ -21,6 +21,7 @@
 		<div class = "span4 hero-unit" id="sidebar">
 			<div class="well" style="width:300px; margin:0 auto;">
 				 <P> ${message}</P>
+				 <p>you will be auto directed to home in 10 seconds</p>
 			</div>
 		</div>
 	</div> 	
