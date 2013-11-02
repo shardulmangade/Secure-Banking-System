@@ -416,6 +416,54 @@ public int updateUserRole(String newRole,String olddepartment, String newDepartm
 			}
 	}	
 }
+/**
+ * This is method is for corporate only.
+ * @param newRole
+ * @param olddepartment
+ * @param newDepartmentName
+ * @param username
+ * @param updatedbyName
+ * @return
+ * @throws BankStorageException
+ * @throws BankAccessException
+ */
+public int updateUserRole(String newRole, String newDepartmentName, String username, String updatedbyName) throws BankStorageException, BankAccessException
+{
+	if(newRole == null || newDepartmentName == null)
+		throw new BankAccessException();
+
+	String dbCommand;
+	Connection connection = null;
+
+	try {
+		connection = dataSource.getConnection();
+		dbCommand = DBConstants.SP_CALL + " " + DBConstants.TRANSFER_CORPORATE + "(?,?,?,?,?)";
+		CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+		sqlStatement.setString(1,username);
+		sqlStatement.setString(2,newDepartmentName);
+		sqlStatement.setString(3,newRole);
+		sqlStatement.setString(4,updatedbyName);
+		sqlStatement.registerOutParameter(5, Types.VARCHAR);
+
+		sqlStatement.execute();
+		String output = sqlStatement.getString(5);
+		if(output == null)
+			return SUCCESS;		
+		else
+			throw new BankStorageException(output);
+	} catch (SQLException e) {
+		throw new BankStorageException(e);
+	}
+	finally
+	{
+		if(connection != null)
+			try {
+				connection.close();
+			} catch (SQLException e) {
+
+			}
+	}	
+}
 
 /**
  * Insert a new user with his/her first time password.

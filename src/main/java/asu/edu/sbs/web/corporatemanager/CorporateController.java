@@ -1,5 +1,6 @@
 package asu.edu.sbs.web.corporatemanager;
 
+import java.security.Principal;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +25,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.hr.service.CorporateManager;
+import asu.edu.sbs.login.service.OneTimePassword;
 import asu.edu.sbs.web.login.LoginController;
 
 @Controller
@@ -35,6 +39,11 @@ public class CorporateController {
 	@Autowired
 	CorporateManager crManager;
 
+
+	@Autowired
+	private EmailNotificationManager enManager;
+		
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -62,7 +71,11 @@ public class CorporateController {
 		department.put("IT", "IT & Tech Support department");
 		department.put("CM", "Company Managment department");
 		model.addAttribute("departmentList", department);		
-		return new ModelAndView("corporate/transfer", "signupemployee", new SignUpEmployee());
+		Map <String,String> roleList = new LinkedHashMap<String,String>();			
+		roleList.put("manager", "manager");
+		roleList.put("employee", "employee");
+		model.addAttribute("roleList", roleList);	
+		return new ModelAndView("corporate/transfer", "signupemployee", new User());
 		
 	}
 	
@@ -89,14 +102,19 @@ public class CorporateController {
 		department.put("IT", "IT & Tech Support department");
 		department.put("CM", "Company Managment department");
 		model.addAttribute("departmentList", department);
-		return new ModelAndView("corporate/add", "signupuser", new SignUpEmployee());
+		Map <String,String> roleList = new LinkedHashMap<String,String>();			
+		roleList.put("manager", "manager");
+		roleList.put("employee", "employee");
+		model.addAttribute("roleList", roleList);	
+		return new ModelAndView("corporate/add", "signupuser", new User());
 	}	
 	
 	@RequestMapping(value = "/corporate/corporateadduser" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes)
+	public ModelAndView postDataEmployee(@ModelAttribute @Valid User employee, BindingResult result, final RedirectAttributes attributes, Principal principal)
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
+		OneTimePassword otp = new OneTimePassword() ;
 		try{				
 			System.out.println("\n Inside Employee signup post controller");
 			if(result.hasErrors())
@@ -105,8 +123,22 @@ public class CorporateController {
 			}		 
 					
 			mav.setViewName("signup/saveData"); // need getter methods for setView. Using saveData in signup.
+			employee.setDepartment(employee.getDepartment());
+			employee.setRole(employee.getRole());				
+			employee.setCreatedBy(principal.getName());	
 			message= "Your request has been submitted for approval";
-			crManager.saveNewEmployeeRequest(employee);
+			
+			employee.setCreatedBy(principal.getName());				
+			Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+			String password = otp.getPassword();
+			String hashedPassword = passwordEncoder.encodePassword(otp.getPassword(), null);
+			
+			crManager.insertValidUser(employee,hashedPassword,principal.getName());
+			enManager.sendPassword(employee, password);
+			mav.addObject("message", message);								
+			mav.addObject("username", principal.getName());
+			
+			
 			mav.addObject("message", message);				
 			return mav;
 		}catch (Exception e) {
@@ -128,48 +160,19 @@ public class CorporateController {
 			}
 		 }	
 	 }	
-	
-	/**
-	 * Functionality replaced by deactivate
-	 * 
-	 */
-//	@RequestMapping(value = "/corporate/corporatedelete" ,method = RequestMethod.POST)
-//	public String deleteEmployeePost(Model model,HttpServletRequest request)
-//	{
-//		System.out.println("\n Inside corporate delete empployee post controller");
-//		String message = null, userName;
-//		userName = request.getParameter("userNametext");
-//		try{
-//			crManager.deleteEmployee(userName);
-//			message = "User deleted successfully";
-//			model.addAttribute("message", message);							
-//			return ("corporate/saveData");			
-//		}catch(Exception e){
-//			if(e instanceof InvalidActivityException )
-//			{
-//				e.printStackTrace();		
-//				message = "Error occured in deleting employee .Please use valid username";
-//				model.addAttribute("message", message);							
-//				return ("corporate/saveData");
-//			} else {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();						
-//				message = "Error occured in sending delete request";
-//				model.addAttribute("message", message);				
-//				return ("corporate/saveData");
-//			}
-//		}
-//	}
+
 	
 	@RequestMapping(value = "/corporate/corporateUpdate" ,method = RequestMethod.POST)
-	public String transferUserCorporate(SignUpEmployee employee,Model model,HttpServletRequest request)
+	public String transferUserCorporate(User employee,Model model,HttpServletRequest request,Principal principal)
 	{
-		System.out.println("\n Inside corporate delete empployee post controller");
-		String message,department = null ;
-								
+		System.out.println("\n Inside corporate transfer empployee post controller");
+		String message,department=null,username = null ;
+		String tobeReplaced = "";				
+		username=request.getParameter("userNametext");
 		try{												
-			message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
-			crManager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
+			message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";	
+			tobeReplaced = crManager.getRoleTobechanged(employee.getDepartment(),employee.getRole());
+			crManager.updateUserRole(tobeReplaced,employee.getDepartment(),username ,principal.getName());
 			model.addAttribute("message", message);							
 			return ("corporate/saveData");
 			
