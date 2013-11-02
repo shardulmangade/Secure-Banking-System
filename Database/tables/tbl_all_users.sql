@@ -48,3 +48,11 @@ values("moheetB","9e9f217121645aedc2c4cf6996705671", null, null, "ROLE_VALID_USE
 insert into tbl_all_users 
 values("gborse","b13ea122e813b9e13fc4f5eba9f7975f", null, null, "ROLE_VALID_USER","Howard","Wolowitz","gborse@asu.edu","transaction",null,substring_index(user(),'@',1), curdate(),substring_index(user(),'@',1), curdate());
 
+#password is ashwin
+insert into tbl_all_users 
+values("ashwin","21232f297a57a5a743894a0e4a801fc3", null, null, "ROLE_VALID_USER","ashwin","krishna","n.ashwinkrishna@gmail.com","sales",null,substring_index(user(),'@',1), curdate(),substring_index(user(),'@',1), curdate());
+
+#password is auser
+insert into tbl_all_users 
+values("auser","3960edfad5d748670763a3ded95af414", null, null, "ROLE_VALID_USER","ashrith","krishna","n.ashwinkrishna@gmail.com","sales",null,substring_index(user(),'@',1), curdate(),substring_index(user(),'@',1), curdate());
+
