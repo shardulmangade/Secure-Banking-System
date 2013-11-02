@@ -11,7 +11,7 @@
 	Want to leave ${username}?
 	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 	<h3>Welcome ${username},</h3>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
 <div class="container">
@@ -25,8 +25,8 @@
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '/sundevilbank/it/op1')"> View Pending Requests</a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '../../signupuser/deleteemployee/op1')"> View Transactions </a></li>
-								
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/it/op2')"> Delete Customer </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>
