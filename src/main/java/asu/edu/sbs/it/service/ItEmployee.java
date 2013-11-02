@@ -46,8 +46,7 @@ public class ItEmployee {
 		// TODO Auto-generated method stub
 		itdbconnection.deleteCustomerAccNo(username);
 		User duser= logindbconnection.getUser(username);
-		logindbconnection.updateUserRole(IBankRoles.ROLE_INVALID_USER, duser.getDepartment(), duser.getDepartment(), username, name);
-	
+		logindbconnection.updateUserLoginRights(false, username, name);
 	}	
 	
 }
