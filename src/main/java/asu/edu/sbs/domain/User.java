@@ -1,5 +1,6 @@
 package asu.edu.sbs.domain;
 
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -9,6 +10,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class User {
 
 	@NotBlank
+	@Pattern(regexp="(^[a-z0-9_-]{3,15}$")
 	private String username;
 	@NotBlank
 	private String firstName;
@@ -24,6 +26,7 @@ public class User {
 	private String department;
 	
 	@NotBlank @Size(min = 10, max= 10)
+	@Pattern(regexp="(^$|[0-9]{10})")
 	private String ssn;
 	
 	private String createdBy;
