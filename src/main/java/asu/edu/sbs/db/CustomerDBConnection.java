@@ -15,7 +15,6 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import asu.edu.sbs.domain.Credit;
 import asu.edu.sbs.domain.MerchantCredit;
 import asu.edu.sbs.domain.User;
