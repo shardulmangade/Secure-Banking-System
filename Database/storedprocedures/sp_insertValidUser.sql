@@ -45,10 +45,10 @@ BEGIN
 				THEN 
 					
 					insert into tbl_all_users values
-					(inusername, inpassword, null, null, 'ROLE_VALID_USER', infirstname, inlastname, inemailid, indepartment, inssn, increatedby, curtime(), increatedby, curtime());
+					(inusername, inpassword, null, null, 'ROLE_VALID_USER', infirstname, inlastname, inemailid, indepartment, inssn, increatedby, curdate(), increatedby, curdate());
 
 					insert into tbl_user_role values
-					(inusername, inroles, increatedby, curtime(), increatedby, curtime());
+					(inusername, inroles, increatedby, curdate(), increatedby, curdate());
 
 			ELSE
 

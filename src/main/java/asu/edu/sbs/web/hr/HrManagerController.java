@@ -133,7 +133,11 @@ public class HrManagerController {
 			String message = null ,userName;
 			userName = request.getParameter("userNametext");
 			int status;
+			
 			try{				
+				User user = hrmanager.getUser(userName);
+				if (user.getDepartment().equals("HR"))
+				{
 				status = hrmanager.getDeleteApprovalStatus(userName, "HR");
 				if(status==1 )
 				{					
@@ -150,6 +154,13 @@ public class HrManagerController {
 				model.addAttribute("message", message);			
 				model.addAttribute("username", principal.getName());
 				return ("signup/saveData");
+				}else
+				{
+					message = "Username does not exists.Please enter valid username";
+					model.addAttribute("message", message);								
+					return ("signup/saveData");
+				}
+				
 				
 			} catch (Exception e) {
 				if(e instanceof InvalidActivityException )
@@ -192,8 +203,7 @@ public class HrManagerController {
 		
 		@RequestMapping(value = "/transferemployee/op1" ,method = RequestMethod.POST)
 		public String transferHrEmployee( User user,Model model,HttpServletRequest request,Principal principal)
-		{
-			System.out.println("\n Inside delete empployee post controller");
+		{			
 			String message,department = null,username=null ;
 			String roleToBeupdated =null;
 			username=request.getParameter("userNametext");

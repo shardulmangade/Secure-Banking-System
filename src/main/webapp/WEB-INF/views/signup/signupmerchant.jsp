@@ -31,7 +31,7 @@ font-style: italic;
         <td><form:errors path="emailId" cssClass="error" /></td>
     </tr>
     <tr>
-        <td><form:label path="ssn">SSN</form:label></td>
+        <td><form:label path="ssn">SSN(10 digit)</form:label></td>
         <td><form:input class = "form-control" path="ssn" /></td>
         <td><form:errors path="ssn" cssClass="error" /></td>
     </tr> 

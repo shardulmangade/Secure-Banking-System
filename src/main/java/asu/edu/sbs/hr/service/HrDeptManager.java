@@ -73,5 +73,7 @@ public class HrDeptManager {
 		return (loginmanager.getRoleTobechanged( department,  role));
 	}
 	
-	
+	public User getUser(String username) throws Exception {
+		return (loginmanager.getUser(username));
+	}
 }
