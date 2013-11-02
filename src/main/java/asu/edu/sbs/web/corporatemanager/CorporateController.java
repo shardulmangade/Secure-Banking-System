@@ -48,9 +48,9 @@ public class CorporateController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/corporate", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(Locale locale, Model model, Principal principal) {
 		logger.info("Welcome to corporate page, locale is {}.", locale);
-		
+		model.addAttribute("username", principal.getName());
 		return "corporate/home";
 	}
 	
