@@ -148,7 +148,7 @@ public class ItDBConnectionManager {
 	}
 	
 	
-	public User getPendingUserRequest(String userName)
+	public User getPendingUserRequest(String userName) throws BankStorageException
 	{
 		String dbCommand;
 		List<User> listUsers = null;
@@ -183,8 +183,8 @@ public class ItDBConnectionManager {
 			}	
 		} catch (SQLException e) {
 			// TODO Use our application specific custom exception
-			//throw new BankStorageException(e);
-			e.printStackTrace();
+			throw new BankStorageException(e);
+
 		}
 		finally
 		{
@@ -241,13 +241,15 @@ public class ItDBConnectionManager {
 	{
 		String dbCommand;
 		Connection connection =null;
+		try {
+
 		connection = dataSource.getConnection();
 		
 		dbCommand = DBConstants.SP_CALL + " " + DBConstants.INSERT_CUSTOMER_ACC_NO + "(?,?,?,?,?)";
 		CallableStatement sqlstatement = connection.prepareCall("{"+dbCommand+"}");
 		
 /*		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_CUSTOMER_ACC_NO + "(?,?,?,?,?)");
-*/		System.out.println("\n"+sqlstatement);
+		System.out.println("\n"+sqlstatement);*/
 		sqlstatement.setString(1,UserName );
 		sqlstatement.setString(2,accountNo );
 		sqlstatement.setDouble(3,balance);
@@ -255,10 +257,22 @@ public class ItDBConnectionManager {
 		sqlstatement.registerOutParameter(5,Types.VARCHAR);
 		sqlstatement.execute();
 
-		if (sqlstatement.getUpdateCount()==0)
-			throw new InvalidActivityException();
-		if(connection!=null)
-			connection.close();
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+			{
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
 	}	
 	
 	

@@ -162,9 +162,12 @@ public class ItEmployeeController {
 					}
 					catch (Exception e) {
 						String errorMsg = e.getMessage();
-						System.out.println(errorMsg);					
-						if(errorMsg!=null && errorMsg.equals("No such user exists. This action has been logged. Please don't try to hack into the system !!!"))
+						System.out.println(errorMsg);
+						// ToDo: Inconsistent state shall be maintained if one insert fails.
+						// ToDo: Shardul Note:Insert Acc, no must not ideally throw this message
+						if(errorMsg!=null)
 						{
+							e.printStackTrace();
 							try {
 								itEmployee.saveNewEmployeeRequest(user, name);
 							 } catch (Exception e1) {
