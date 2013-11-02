@@ -23,6 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
+import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.hr.service.HrDeptManager;
 import asu.edu.sbs.login.service.OneTimePassword;
 
@@ -133,24 +135,40 @@ public class HrManagerController {
 			String message = null ,userName;
 			userName = request.getParameter("userNametext");
 			int status;
+			
 			try{				
-				status = hrmanager.getDeleteApprovalStatus(userName, "HR");
-				if(status==1 )
-				{					
-					message = "Employee "+ userName+ " has been deleted after approval of corporate level manager";
-					hrmanager.deleteHrEmployee(userName);					
-				} else  if (status==0)
-				{
-					message= "Employee "+ userName+ " delete request has not beeen approved by corporate level manager yet";											
-				} else if (status==-1)
-				{
-					message= "Employee "+ userName+ " delete request has beeen sent for approval to corporate level manager";						
-					hrmanager.insertDeleteRequesttoCM(userName,"HR",false);
-				}
-				model.addAttribute("message", message);			
-				model.addAttribute("username", principal.getName());
-				return ("signup/saveData");
+					if (userName.equals(""))
+					{
+						throw new BankAccessException("Username is not valid .Please enter valid user");
+					}
 				
+					User user = hrmanager.getUser(userName);
+					if (user.getDepartment().equals("HR"))
+					{
+					status = hrmanager.getDeleteApprovalStatus(userName, "HR");
+					if(status==1 )
+					{					
+						message = "Employee "+ userName+ " has been deleted after approval of corporate level manager";
+						hrmanager.deleteHrEmployee(userName);					
+					} else  if (status==0)
+					{
+						message= "Employee "+ userName+ " delete request has not beeen approved by corporate level manager yet";											
+					} else if (status==-1)
+					{
+						message= "Employee "+ userName+ " delete request has beeen sent for approval to corporate level manager";						
+						hrmanager.insertDeleteRequesttoCM(userName,"HR",false);
+					}
+					model.addAttribute("message", message);			
+					model.addAttribute("username", principal.getName());
+					return ("signup/saveData");
+					}
+					else{
+					//message = "Username does not exists.Please enter valid username";
+					//model.addAttribute("message", message);
+						throw new BankStorageException();
+//					return ("signup/saveData");
+				 }				
+			 						  	
 			} catch (Exception e) {
 				if(e instanceof InvalidActivityException )
 				{
@@ -192,8 +210,7 @@ public class HrManagerController {
 		
 		@RequestMapping(value = "/transferemployee/op1" ,method = RequestMethod.POST)
 		public String transferHrEmployee( User user,Model model,HttpServletRequest request,Principal principal)
-		{
-			System.out.println("\n Inside delete empployee post controller");
+		{			
 			String message,department = null,username=null ;
 			String roleToBeupdated =null;
 			username=request.getParameter("userNametext");

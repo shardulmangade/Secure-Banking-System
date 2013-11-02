@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,9 +24,11 @@ import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.User;
-import asu.edu.sbs.hr.service.HrDeptManager;
+import asu.edu.sbs.email.EmailNotificationManager;
+import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.sales.service.SalesDeptManager;
 import asu.edu.sbs.service.TrialUserManager;
+import asu.edu.sbs.login.service.OneTimePassword;
 
 @Controller
 @RequestMapping(value= "/sales/salesmanager")
@@ -36,6 +39,8 @@ public class SalesManagerController {
 	SalesDeptManager salesmanager;
 	ModelAndView savedMav;
 	ModelAndView savedMav1;
+	@Autowired
+	private EmailNotificationManager enManager;
 		
 		@RequestMapping(value = "/manager", method = RequestMethod.GET)
 		public String addnewSalesEmployee(Locale locale, Model model,Principal principal) {
@@ -55,8 +60,8 @@ public class SalesManagerController {
 		@RequestMapping(value = "/newsalesemployee", method = RequestMethod.POST)
 		public ModelAndView newSalesEmployeeGet(Locale locale, Model model, Principal principal) {
 			System.out.println("Inside Sales manager get Controller .............");
-			model.addAttribute("username", principal.getName());
-			savedMav = new ModelAndView("sales/newsalesemployee", "signupemployee", new SignUpEmployee());
+//			model.addAttribute("username", principal.getName());
+			savedMav = new ModelAndView("sales/newsalesemployee", "signupemployee", new User());
 			
 			return savedMav;
 		}
@@ -73,20 +78,32 @@ public class SalesManagerController {
 		@RequestMapping(value = "/newsalesemployee/op1", method = RequestMethod.POST)
 		public ModelAndView newSalesEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes, Principal principal) {
 			System.out.println("INSIDE Sales manager post Controller .............");
+			OneTimePassword otp = new OneTimePassword() ;
 			String message ;
 			ModelAndView mav = new ModelAndView();
+			mav.getModelMap().addAttribute("username", principal.getName());
 			try{				
 				System.out.println("\n Inside Employee signup post controller");
 				if(result.hasErrors())
 				{
-					return new ModelAndView("sales/manager/manager","signupemployee",user);
+					message = "**ERRORS** observed in validating.Please go back and enter valid information";
+					mav.addObject("message", message);
+					mav.setViewName("signup/saveData");
+					return mav;
+					//return new ModelAndView("sales/manager/manager","signupemployee",user);
 				}		 
 						
 				mav.setViewName("signup/saveData");
 				message= "Your request has been submitted for approval";
-				user.setDepartment("Sales");
+				user.setDepartment("sales");
 				user.setRole(IBankRoles.ROLE_SALES_EMPLOYEE);
-				salesmanager.insertValidCustomer(user,principal.getName());
+				user.setCreatedBy(principal.getName());				
+				Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+				String password = otp.getPassword();
+				String hashedPassword = passwordEncoder.encodePassword(otp.getPassword(), null);
+				salesmanager.insertValidUser(user, hashedPassword, principal.getName());
+				//salesmanager.insertValidCustomer(user,principal.getName());
+				enManager.sendPassword(user, password);
 				mav.addObject("message", message);								
 				mav.addObject("username", principal.getName());
 				//user.setPassword("temppassword");
@@ -127,8 +144,14 @@ public class SalesManagerController {
 			System.out.println("\n Inside delete employee post controller");
 			String message = null ,userName;
 			userName = request.getParameter("userNametext");
+			model.addAttribute("username", principal.getName());
 			int status;
-			try{				
+			
+			try{	
+				if(userName.equals(""))
+				{
+					throw new BankAccessException("Username is not valid. please enter a valid user");
+				}
 				status = salesmanager.getDeleteApprovalStatus(userName, "Sales");
 				if(status==1 )
 				{					
@@ -181,7 +204,7 @@ public class SalesManagerController {
 			roleList.put("employee", "employee");
 			model.addAttribute("roleList", roleList);	
 			
-			return new ModelAndView("sales/transfersalesemployee", "signupemployee", new SignUpEmployee());
+			return new ModelAndView("sales/transfersalesemployee", "signupemployee", new User());
 		}
 		
 		@RequestMapping(value = "/transfersalesemployee/op1" ,method = RequestMethod.POST)
@@ -193,9 +216,9 @@ public class SalesManagerController {
 			username=request.getParameter("userNametext");
 									
 			try{												
-				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";		
+				message= "Employee "+ username+ " has been transfered";		
 				roleToBeupdated = salesmanager.getRoleTobechanged(user.getDepartment(),user.getRole());
-				salesmanager.updateUserRole(roleToBeupdated,"SALES",user.getDepartment(),username ,principal.getName());
+				salesmanager.updateUserRole(roleToBeupdated,"sales",user.getDepartment(),username ,principal.getName());
 				model.addAttribute("message", message);
 				model.addAttribute("username", principal.getName());
 				return ("signup/saveData");	

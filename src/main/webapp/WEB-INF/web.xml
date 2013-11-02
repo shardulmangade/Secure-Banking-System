@@ -9,6 +9,13 @@
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
   
+  <!-- Concurrent session management -->
+  <listener>
+    <listener-class>
+      org.springframework.security.web.session.HttpSessionEventPublisher
+    </listener-class>
+  </listener>
+  
   <!-- Spring Security -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
