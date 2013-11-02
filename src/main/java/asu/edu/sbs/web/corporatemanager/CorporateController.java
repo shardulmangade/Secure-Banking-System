@@ -48,9 +48,9 @@ public class CorporateController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/corporate", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(Locale locale, Model model, Principal principal) {
 		logger.info("Welcome to corporate page, locale is {}.", locale);
-		
+		model.addAttribute("username", principal.getName());
 		return "corporate/home";
 	}
 	
@@ -123,9 +123,9 @@ public class CorporateController {
 			}		 
 					
 			mav.setViewName("signup/saveData"); // need getter methods for setView. Using saveData in signup.
-			employee.setDepartment(employee.getDepartment());
-			employee.setRole(employee.getRole());				
-			employee.setCreatedBy(principal.getName());	
+//			employee.setDepartment(employee.getDepartment());
+//			employee.setRole(employee.getRole());				
+//			employee.setCreatedBy(principal.getName());	
 			message= "Your request has been submitted for approval";
 			
 			employee.setCreatedBy(principal.getName());				

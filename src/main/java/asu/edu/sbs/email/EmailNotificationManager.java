@@ -47,7 +47,7 @@ public class EmailNotificationManager{
 		if(user.getEmail() != null && !user.getEmail().equals(""))
 		{
 			StringBuilder message = new StringBuilder();
-			message.append("Dear User,\n\nYour temporary password is: "+   password +".\n Please change the password once you log in\n");
+			message.append("Dear User,\n\nYour temporary password is: \""+   password +"\"(without the quotes).\n Please change the password once you log in\n");
 			
 //			emailSender.sendNotificationEmail(user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());
 			EmailNotificationSender emailSender = new EmailNotificationSender(mailSender, user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());
@@ -65,7 +65,7 @@ public class EmailNotificationManager{
 		if(user.getEmail() != null && !user.getEmail().equals(""))
 		{
 			StringBuilder message = new StringBuilder();
-			message.append("Dear User,\n\nYour temporary password is: "+   password +".\n Please change the password once you log in\n");
+			message.append("Dear User,\n\nYour temporary password is: \""+   password +"\"(without the quotes).\n Please change the password once you log in\n");
 			
 //			emailSender.sendNotificationEmail(user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());
 			EmailNotificationSender emailSender = new EmailNotificationSender(mailSender, user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());
