@@ -206,7 +206,8 @@ public class LoginDBConnectionManager {
 				{	
 					if(rs.getString(1) != null && !rs.getString(1).equals(""))
 						return rs.getString(1);
-				}}		
+				}				
+			}		
 		} catch (SQLException e) {
 			throw new BankStorageException(e);
 		}

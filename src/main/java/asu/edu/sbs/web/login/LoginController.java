@@ -203,8 +203,8 @@ public class LoginController {
 		return model;
 	}
 
-	@RequestMapping(value = "/pwdchange", method = RequestMethod.POST)
-	public String passwordChangeRequest(@Validated @ModelAttribute("command")PasswordChange pwd, BindingResult result,  Principal principal, Model model) throws BankStorageException {
+	@RequestMapping(value = "/pwdchange", method = RequestMethod.POST) 
+	public String passwordChangeRequest(@Validated @ModelAttribute("command")PasswordChange pwd, BindingResult result,  Principal principal, Model model) throws BankDeactivatedException, BankStorageException {
 
 		if(result.hasErrors())
 		{
