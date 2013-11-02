@@ -16,6 +16,7 @@ public interface DBConstants
 	
 	//Login Stored Procedures
 	public final static String LOGIN_GET_USER_ROLE = "sp_getUserRole";
+	public final static String LOGIN_GET_LOGIN_USER_ROLE = "sp_getUserLoginRole";
 	public final static String GET_OTP = "sp_getOTP";
 	public final static String UPDATE_OTP = "sp_updateOTP";
 	public final static String UPDATE_PASSWORD = "sp_updatePassowrd";
@@ -65,13 +66,10 @@ public interface DBConstants
 	public final static String INSERT_TRANSACTION_PERMISSION_REQUESTS = "sp_insertTransactionPermissionRequests";
 	public final static String GET_USERS_FOR_REQUESTING_TRANSACTION_PERMISSION = "sp_getUsersForRequestingTransactionPermission";
 	public final static String GET_TRANSACTIONS_OF_PERMITTED_USERS = "sp_getTransactionsOfPermittedUsers";
-
 	public final static String GET_TRANSACTIONS_FOR_MANAGER = "sp_getTransactionsForManager";
 	public final static String GET_TRANSACTION_NOTIFICATIONS="sp_getTransactionNotifications";
 	public final static String GRANT_TRANSACTION_PERMISSION = "sp_grantTransactionPermission";
-	
-
-	public static final String IT_PENDING_USER_REQUEST = "sp_getAllItPendingUserRequests";
+	public static final String IT_PENDING_USER_REQUEST = "sp_getItPendingUserRequest";
 	public static final String INSERT_CUSTOMER_ACC_NO = "sp_insertCustomerAccNo";
 	public static final String DELETE_CUSTOMER_ACC_NO = "sp_deleteCustomerAccNo";
 

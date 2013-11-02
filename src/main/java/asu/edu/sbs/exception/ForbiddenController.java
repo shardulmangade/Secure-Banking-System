@@ -1,4 +1,4 @@
-package asu.edu.sbs.web.login;
+package asu.edu.sbs.exception;
 
 import java.security.Principal;
 import java.util.Collection;
@@ -18,6 +18,25 @@ public class ForbiddenController {
 
 	@RequestMapping(value="/forbidden", method = RequestMethod.GET)
 	public String forbiddenHandle(ModelMap model, Principal principal) {
+
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+
+		for (GrantedAuthority ga : authorities) {
+			if (ga.getAuthority().equals(IBankRoles.ROLE_VALID_USER))
+				return "redirect:/auth/otpcheck";
+			else if(ga.getAuthority().equals(IBankRoles.ROLE_INVALID_USER))
+			{
+				//Automatically logout the user
+				SecurityContextHolder.clearContext();
+				return "exceptions/accountdeactivated";
+			}
+		}
+		return "exceptions/accessissue";
+	}
+	
+	@RequestMapping(value="/forbidden", method = RequestMethod.POST)
+	public String forbiddenHandlePOST(ModelMap model, Principal principal) {
 
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();

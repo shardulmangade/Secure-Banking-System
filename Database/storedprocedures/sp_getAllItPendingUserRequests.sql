@@ -16,7 +16,7 @@ DELIMITER $$
 CREATE PROCEDURE sp_getAllItPendingUserRequests()
 BEGIN
      
- SELECT username, department, firstname, lastname, emailid
+ SELECT username, department, firstname, lastname, emailid, ssn
 	FROM tbl_it_pending_user_requests;  
 
 END$$

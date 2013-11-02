@@ -20,15 +20,16 @@ public class SalesDeptManager {
 	@Autowired
 	private LoginDBConnectionManager loginmanager;
 		
-	public void  saveNewEmployeeRequest(String UserName,String firstName,String lastName ,String emailId,String department, String insertedbyUsername) throws Exception
+	public void  saveNewEmployeeRequest(String UserName,String firstName,String lastName ,String email,String department, String ssn, String insertedbyUsername) throws Exception
 	{
 			System.out.println("\n In SalesDb connection manager");
 			User user = new User();
 			user.setUsername(UserName);
 			user.setFirstName(firstName);
 			user.setLastName(lastName);
-			user.setEmail(emailId);
+			user.setEmail(email);
 			user.setDepartment(department);
+			user.setSsn(ssn);
 			salesdbconnection.saveNewEmployeeRequest(user,insertedbyUsername);
 			
 	}
@@ -38,7 +39,7 @@ public class SalesDeptManager {
 			return (loginmanager.insertValidUser(user, password, createdBy));	
 	}
 	
-	public int insertValidCustomer(User user, String createdBy) throws BankStorageException
+	public int insertValidCustomer(User user,String createdBy) throws BankStorageException
 	{		
 			return (loginmanager.insertValidCustomer(user, createdBy));	
 	}

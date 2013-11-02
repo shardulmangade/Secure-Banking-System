@@ -142,7 +142,7 @@ public class LoginDBConnectionManager {
 		}
 		return SUCCESS;
 	}
-	
+
 	public int changePassword(String username, String password) throws BankStorageException
 	{
 		//Insert the password for the user in the database
@@ -206,7 +206,8 @@ public class LoginDBConnectionManager {
 				{	
 					if(rs.getString(1) != null && !rs.getString(1).equals(""))
 						return rs.getString(1);
-				}}		
+				}				
+			}		
 		} catch (SQLException e) {
 			throw new BankStorageException(e);
 		}
@@ -223,333 +224,369 @@ public class LoginDBConnectionManager {
 		return IBankRoles.ROLE_INVALID_USER;
 	}
 
-	/**
-	 * 
-	 * Return the user object with data in all the fields
-	 * This method will return null if the user does not exist in the table.
-	 *  
-	 * @param username
-	 * @return
-	 * @throws BankStorageException
-	 */
-	public User getUser(String username) throws BankStorageException
+
+	public String getLoginRole(String username)
 	{
 		String dbCommand;
-		User user = null;
 		Connection connection = null;
 
 		try {
 			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_USER_FROM_ALL_USERS_TABLE + "(?,?)";
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.LOGIN_GET_LOGIN_USER_ROLE + "(?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
-			sqlStatement.registerOutParameter(2, Types.VARCHAR);
 
 			sqlStatement.execute();
-			String output = sqlStatement.getString(2);
-			if(output != null)
-			{
-				logger.info("A request for user <<+"+username+">> returned no value from database" );
-			}
 			ResultSet rs = sqlStatement.getResultSet();
 
 			//Iterate through each row returned by the database
 			while(rs.next())
-			{				
-				user = new User();
-				user.setUsername(rs.getString(1));
-				user.setFirstName(rs.getString(2));
-				user.setLastName(rs.getString(3));
-				user.setEmail(rs.getString(4));
-				user.setDepartment(rs.getString(5));
-				user.setSsn(rs.getString(6));
-				user.setCreatedBy(rs.getString(7));
-				user.setCreatedDate(rs.getString(8));
-			}			
-		} catch (SQLException e) {
-			throw new BankStorageException(e);
-		}
-		finally
-		{
-			if(connection != null)
-				try {
-					connection.close();
-				} catch (SQLException e) {
+			{	
+				return rs.getString(1);
+			}		
+	} catch (SQLException e) {
+		
+	}
+	finally
+	{
+		if(connection != null)
+			try {
+				connection.close();
+			} catch (SQLException e) {
 
-				}
-		}		
-
-		return user;
+			}
 	}
 
-	/**
-	 * IMPORTANT: This is for changing user login rights. If you want to change role use updateUserRole().
-	 * 
-	 * @param canLogin					TRUE - if you want the user to login. FALSE - if you want to deactivate the user.
-	 * @param username					The user whose login right is to be changed
-	 * @param updatedbyName				The user who requests the change
-	 * @throws BankStorageException
-	 */
-	public int updateUserLoginRights(Boolean canLogin, String username, String updatedbyName) throws BankStorageException
-	{
-		String dbCommand;
-		Connection connection = null;
-		String role = null;
+	return null;
+}
 
-		if(canLogin)
-			role = IBankRoles.ROLE_VALID_USER;
-		else
-			role = IBankRoles.ROLE_INVALID_USER;
+/**
+ * 
+ * Return the user object with data in all the fields
+ * This method will return null if the user does not exist in the table.
+ *  
+ * @param username
+ * @return
+ * @throws BankStorageException
+ */
+public User getUser(String username) throws BankStorageException
+{
+	String dbCommand;
+	User user = null;
+	Connection connection = null;
 
-		try {
-			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_LOGIN_ROLE + "(?,?,?,?)";
-			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
-			sqlStatement.setString(1,username);
-			sqlStatement.setString(2,role);
-			sqlStatement.setString(3,updatedbyName);
-			sqlStatement.registerOutParameter(4, Types.VARCHAR);
+	try {
+		connection = dataSource.getConnection();
+		dbCommand = DBConstants.SP_CALL + " " + DBConstants.GET_USER_FROM_ALL_USERS_TABLE + "(?,?)";
+		CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+		sqlStatement.setString(1,username);
+		sqlStatement.registerOutParameter(2, Types.VARCHAR);
 
-			sqlStatement.execute();
-			String output = sqlStatement.getString(4);
-			if(output == null)
-				return SUCCESS;		
-			else
-				throw new BankStorageException(output);
-		} catch (SQLException e) {
-			throw new BankStorageException(e);
-		}
-		finally
+		sqlStatement.execute();
+		String output = sqlStatement.getString(2);
+		if(output != null)
 		{
-			if(connection != null)
-				try {
-					connection.close();
-				} catch (SQLException e) {
+			logger.info("A request for user <<+"+username+">> returned no value from database" );
+		}
+		ResultSet rs = sqlStatement.getResultSet();
 
-				}
+		//Iterate through each row returned by the database
+		while(rs.next())
+		{				
+			user = new User();
+			user.setUsername(rs.getString(1));
+			user.setFirstName(rs.getString(2));
+			user.setLastName(rs.getString(3));
+			user.setEmail(rs.getString(4));
+			user.setDepartment(rs.getString(5));
+			user.setSsn(rs.getString(6));
+			user.setCreatedBy(rs.getString(7));
+			user.setCreatedDate(rs.getString(8));
 		}			
+	} catch (SQLException e) {
+		throw new BankStorageException(e);
 	}
-
-	/**
-	 * Used to transfer a person or change his role.
-	 * 
-	 * @param newRole				Must be a final string from {@link IBankRoles}. NOT NULL.
-	 * @param newDepartmentName		New department name to which the user is transferred. Must be a final string from {@link IDepartments}. NOT NULL.
-	 * @param username
-	 * @param updatedbyName
-	 * @return
-	 * @throws BankStorageException
-	 * @throws BankAccessException 
-	 */
-	public int updateUserRole(String newRole,String olddepartment, String newDepartmentName, String username, String updatedbyName) throws BankStorageException, BankAccessException
+	finally
 	{
-		if(newRole == null || newDepartmentName == null)
-			throw new BankAccessException();
+		if(connection != null)
+			try {
+				connection.close();
+			} catch (SQLException e) {
 
-		String dbCommand;
-		Connection connection = null;
+			}
+	}		
 
-		try {
-			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_ROLE + "(?,?,?,?,?,?)";
-			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
-			sqlStatement.setString(1,username);
-			sqlStatement.setString(2,olddepartment);
-			sqlStatement.setString(3,newDepartmentName);
-			sqlStatement.setString(4,newRole);
-			sqlStatement.setString(5,updatedbyName);
-			sqlStatement.registerOutParameter(6, Types.VARCHAR);
+	return user;
+}
 
-			sqlStatement.execute();
-			String output = sqlStatement.getString(6);
-			if(output == null)
-				return SUCCESS;		
-			else
-				throw new BankStorageException(output);
-		} catch (SQLException e) {
-			throw new BankStorageException(e);
-		}
-		finally
-		{
-			if(connection != null)
-				try {
-					connection.close();
-				} catch (SQLException e) {
+/**
+ * IMPORTANT: This is for changing user login rights. If you want to change role use updateUserRole().
+ * 
+ * @param canLogin					TRUE - if you want the user to login. FALSE - if you want to deactivate the user.
+ * @param username					The user whose login right is to be changed
+ * @param updatedbyName				The user who requests the change
+ * @throws BankStorageException
+ */
+public int updateUserLoginRights(Boolean canLogin, String username, String updatedbyName) throws BankStorageException
+{
+	String dbCommand;
+	Connection connection = null;
+	String role = null;
 
-				}
-		}	
+	if(canLogin)
+		role = IBankRoles.ROLE_VALID_USER;
+	else
+		role = IBankRoles.ROLE_INVALID_USER;
+
+	try {
+		connection = dataSource.getConnection();
+		dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_LOGIN_ROLE + "(?,?,?,?)";
+		CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+		sqlStatement.setString(1,username);
+		sqlStatement.setString(2,role);
+		sqlStatement.setString(3,updatedbyName);
+		sqlStatement.registerOutParameter(4, Types.VARCHAR);
+
+		sqlStatement.execute();
+		String output = sqlStatement.getString(4);
+		if(output == null)
+			return SUCCESS;		
+		else
+			throw new BankStorageException(output);
+	} catch (SQLException e) {
+		throw new BankStorageException(e);
 	}
-
-	/**
-	 * Insert a new user with his/her first time password.
-	 * IMPORTANT: The role of the user has to be set in the User object.
-	 * 
-	 * @param user
-	 * @param firstTimePassword
-	 * @param insertedbyUsername
-	 * @return
-	 * @throws BankStorageException
-	 * @throws BankAccessException 
-	 */
-	public int insertValidUser(User user, String firstTimePassword, String insertedbyUsername) throws BankStorageException, BankAccessException
+	finally
 	{
-		String dbCommand;
-		Connection connection = null;
+		if(connection != null)
+			try {
+				connection.close();
+			} catch (SQLException e) {
 
-		try {
-			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.INSERT_TO_ALL_USERS_TABLE + "(?,?,?,?,?,?,?,?,?,?)";
-			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
-			sqlStatement.setString(1,user.getUsername());
-			sqlStatement.setString(2,firstTimePassword);
-			sqlStatement.setString(3,user.getRole());
+			}
+	}			
+}
 
-			if(user.getFirstName() != null)
-				sqlStatement.setString(4,user.getFirstName());
-			else
-				sqlStatement.setString(4,"Not provided");
+/**
+ * Used to transfer a person or change his role.
+ * 
+ * @param newRole				Must be a final string from {@link IBankRoles}. NOT NULL.
+ * @param newDepartmentName		New department name to which the user is transferred. Must be a final string from {@link IDepartments}. NOT NULL.
+ * @param username
+ * @param updatedbyName
+ * @return
+ * @throws BankStorageException
+ * @throws BankAccessException 
+ */
+public int updateUserRole(String newRole,String olddepartment, String newDepartmentName, String username, String updatedbyName) throws BankStorageException, BankAccessException
+{
+	if(newRole == null || newDepartmentName == null)
+		throw new BankAccessException();
 
-			if(user.getLastName() != null)
-				sqlStatement.setString(5,user.getLastName());
-			else
-				sqlStatement.setString(5,"Not provided");
+	String dbCommand;
+	Connection connection = null;
 
-			if(user.getEmail() != null)
-				sqlStatement.setString(6,user.getEmail());
-			else
-				sqlStatement.setString(6,"diging.momo@gmail.com");
+	try {
+		connection = dataSource.getConnection();
+		dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_ROLE + "(?,?,?,?,?,?)";
+		CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+		sqlStatement.setString(1,username);
+		sqlStatement.setString(2,olddepartment);
+		sqlStatement.setString(3,newDepartmentName);
+		sqlStatement.setString(4,newRole);
+		sqlStatement.setString(5,updatedbyName);
+		sqlStatement.registerOutParameter(6, Types.VARCHAR);
 
-			if(user.getDepartment() != null)
-				sqlStatement.setString(7,user.getDepartment());
-			else
-				sqlStatement.setString(7,null);
-
-			if(user.getSsn() != null)
-				sqlStatement.setString(8,user.getSsn());
-			else
-				sqlStatement.setString(8,null);
-			
-			sqlStatement.setString(9,insertedbyUsername);
-			sqlStatement.registerOutParameter(10, Types.VARCHAR);
-
-			sqlStatement.execute();
-			String output = sqlStatement.getString(10);
-			if(output == null)
-				return SUCCESS;		
-			else
-				throw new BankAccessException(output);
-		} catch (SQLException e) {
-			throw new BankStorageException(e);
-		}
-		finally
-		{
-			if(connection != null)
-				try {
-					connection.close();
-				} catch (SQLException e) {
-
-				}
-		}	
+		sqlStatement.execute();
+		String output = sqlStatement.getString(6);
+		if(output == null)
+			return SUCCESS;		
+		else
+			throw new BankStorageException(output);
+	} catch (SQLException e) {
+		throw new BankStorageException(e);
 	}
-
-	public int insertValidCustomer(User user, String insertedbyUsername) throws BankStorageException
+	finally
 	{
-		String dbCommand;
-		Connection connection = null;
+		if(connection != null)
+			try {
+				connection.close();
+			} catch (SQLException e) {
 
-		try {
-			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.SALES_ALL_CUSTOMER_REQUESTS + "(?,?,?,?,?,?,?,?)";
-			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
-			sqlStatement.setString(1,user.getUsername());
-			if(user.getFirstName() != null)
-				sqlStatement.setString(2,user.getFirstName());
-			else
-				sqlStatement.setString(2,"Not provided");
+			}
+	}	
+}
 
-			if(user.getLastName() != null)
-				sqlStatement.setString(3,user.getLastName());
-			else
-				sqlStatement.setString(3,"Not provided");
+/**
+ * Insert a new user with his/her first time password.
+ * IMPORTANT: The role of the user has to be set in the User object.
+ * 
+ * @param user
+ * @param firstTimePassword
+ * @param insertedbyUsername
+ * @return
+ * @throws BankStorageException
+ * @throws BankAccessException 
+ */
+public int insertValidUser(User user, String firstTimePassword, String insertedbyUsername) throws BankStorageException, BankAccessException
+{
+	String dbCommand;
+	Connection connection = null;
 
-			if(user.getEmail() != null)
-				sqlStatement.setString(4,user.getEmail());
-			else
-				sqlStatement.setString(4,"diging.momo@gmail.com");
+	try {
+		connection = dataSource.getConnection();
+		dbCommand = DBConstants.SP_CALL + " " + DBConstants.INSERT_TO_ALL_USERS_TABLE + "(?,?,?,?,?,?,?,?,?,?)";
+		CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+		sqlStatement.setString(1,user.getUsername());
+		sqlStatement.setString(2,firstTimePassword);
+		sqlStatement.setString(3,user.getRole());
 
-			if(user.getDepartment() != null)
-				sqlStatement.setString(5,user.getDepartment());
-			else
-				sqlStatement.setString(5,null);
+		if(user.getFirstName() != null)
+			sqlStatement.setString(4,user.getFirstName());
+		else
+			sqlStatement.setString(4,"Not provided");
 
-			if(user.getSsn() != null)
-				sqlStatement.setString(6,user.getSsn());
-			else
-				sqlStatement.setString(6,null);
-			
-			sqlStatement.setString(7,insertedbyUsername);
-			sqlStatement.registerOutParameter(8, Types.VARCHAR);
+		if(user.getLastName() != null)
+			sqlStatement.setString(5,user.getLastName());
+		else
+			sqlStatement.setString(5,"Not provided");
 
-			sqlStatement.execute();
-			String output = sqlStatement.getString(8);
-			if(output == null)
-				return SUCCESS;		
-			else
-				throw new BankStorageException(output);
-		} catch (SQLException e) {
-			throw new BankStorageException(e);
-		}
-		finally
-		{
-			if(connection != null)
-				try {
-					connection.close();
-				} catch (SQLException e) {
+		if(user.getEmail() != null)
+			sqlStatement.setString(6,user.getEmail());
+		else
+			sqlStatement.setString(6,"diging.momo@gmail.com");
 
-				}
-		}	
+		if(user.getDepartment() != null)
+			sqlStatement.setString(7,user.getDepartment());
+		else
+			sqlStatement.setString(7,null);
+
+		if(user.getSsn() != null)
+			sqlStatement.setString(8,user.getSsn());
+		else
+			sqlStatement.setString(8,null);
+
+		sqlStatement.setString(9,insertedbyUsername);
+		sqlStatement.registerOutParameter(10, Types.VARCHAR);
+
+		sqlStatement.execute();
+		String output = sqlStatement.getString(10);
+		if(output == null)
+			return SUCCESS;		
+		else
+			throw new BankAccessException(output);
+	} catch (SQLException e) {
+		throw new BankStorageException(e);
+	}
+	finally
+	{
+		if(connection != null)
+			try {
+				connection.close();
+			} catch (SQLException e) {
+
+			}
+	}	
+}
+
+public int insertValidCustomer(User user, String insertedbyUsername) throws BankStorageException
+{
+	String dbCommand;
+	Connection connection = null;
+
+	try {
+		connection = dataSource.getConnection();
+		dbCommand = DBConstants.SP_CALL + " " + DBConstants.SALES_ALL_CUSTOMER_REQUESTS + "(?,?,?,?,?,?,?,?)";
+		CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+		sqlStatement.setString(1,user.getUsername());
+		if(user.getFirstName() != null)
+			sqlStatement.setString(2,user.getFirstName());
+		else
+			sqlStatement.setString(2,"Not provided");
+
+		if(user.getLastName() != null)
+			sqlStatement.setString(3,user.getLastName());
+		else
+			sqlStatement.setString(3,"Not provided");
+
+		if(user.getEmail() != null)
+			sqlStatement.setString(4,user.getEmail());
+		else
+			sqlStatement.setString(4,"diging.momo@gmail.com");
+
+		if(user.getDepartment() != null)
+			sqlStatement.setString(5,user.getDepartment());
+		else
+			sqlStatement.setString(5,null);
+
+		if(user.getSsn() != null)
+			sqlStatement.setString(6,user.getSsn());
+		else
+			sqlStatement.setString(6,null);
+
+		sqlStatement.setString(7,insertedbyUsername);
+		sqlStatement.registerOutParameter(8, Types.VARCHAR);
+
+		sqlStatement.execute();
+		String output = sqlStatement.getString(8);
+		if(output == null)
+			return SUCCESS;		
+		else
+			throw new BankStorageException(output);
+	} catch (SQLException e) {
+		throw new BankStorageException(e);
+	}
+	finally
+	{
+		if(connection != null)
+			try {
+				connection.close();
+			} catch (SQLException e) {
+
+			}
+	}	
+}
+
+public String getRoleTobechanged(String department, String role) {
+
+	System.out.println("newrole "+role);
+	System.out.println("dept "+department);
+
+	if (department.equals("TM"))
+	{
+		if(role.equals("manager"))
+			return "ROLE_TRANSACTION_MANAGER";
+		else if (role.equals("employee"))
+			return "ROLE_TRANSACTION_EMPLOYEE";
+	} else if (department.equals("HR"))
+	{
+		if(role.equals("manager"))
+			return "ROLE_HR_MANAGER";
+		else if (role.equals("employee"))
+			return "ROLE_HR_EMPLOYEE";
+	} else if (department.equals("IT"))
+	{
+		if(role.equals("manager"))
+			return "ROLE_IT_MANAGER";
+		else if (role.equals("employee"))
+			return "ROLE_IT_EMPLOYEE";
+	} else if (department.equals("CM"))
+	{
+		if(role.equals("manager"))
+			return "ROLE_COPRPORATE_MANAGER";
+		else if (role.equals("employee"))
+			return "ROLE_COPRPORATE_EMPLOYEE";
+	} else if (department.equals("sales"))
+	{
+		if(role.equals("manager"))
+			return "ROLE_SALES_MANAGER";
+		else if (role.equals("employee"))
+			return "ROLE_SALES_EMPLOYEE";
 	}
 
-	public String getRoleTobechanged(String department, String role) {
-		
-		System.out.println("newrole "+role);
-		System.out.println("dept "+department);
-		
-		if (department.equals("TM"))
-		{
-			if(role.equals("manager"))
-				return "ROLE_TRANSACTION_MANAGER";
-			else if (role.equals("employee"))
-				return "ROLE_TRANSACTION_EMPLOYEE";
-		} else if (department.equals("HR"))
-		{
-			if(role.equals("manager"))
-				return "ROLE_HR_MANAGER";
-			else if (role.equals("employee"))
-				return "ROLE_HR_EMPLOYEE";
-		} else if (department.equals("IT"))
-		{
-			if(role.equals("manager"))
-				return "ROLE_IT_MANAGER";
-			else if (role.equals("employee"))
-				return "ROLE_IT_EMPLOYEE";
-		} else if (department.equals("CM"))
-		{
-			if(role.equals("manager"))
-				return "ROLE_COPRPORATE_MANAGER";
-			else if (role.equals("employee"))
-				return "ROLE_COPRPORATE_EMPLOYEE";
-		} else if (department.equals("sales"))
-		{
-			if(role.equals("manager"))
-				return "ROLE_SALES_MANAGER";
-			else if (role.equals("employee"))
-				return "ROLE_SALES_EMPLOYEE";
-		}
-		
-		return null;
-	}
+	return null;
+}
 
-	
+
 
 }
