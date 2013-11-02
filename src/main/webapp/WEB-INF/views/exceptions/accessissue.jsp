@@ -7,7 +7,7 @@
 		href="<c:url value="/j_spring_security_logout" />"> Logout</a><br><br>
 </sec:authorize>
 <header>
-	<h2>Looks like you are snooping around !</h2>
+	<h2>Looks like you are snooping around ! You will be automatically redirected in few seconds...</h2>
 	<span class="byline">Access Error</span>
 </header>
 
@@ -20,3 +20,4 @@
 	</c:otherwise>
 	</c:choose>
 </section>
+<% response.setHeader("Refresh", "8;/sundevilbank"); %>
