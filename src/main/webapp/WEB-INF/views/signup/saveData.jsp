@@ -28,6 +28,7 @@
 	</footer>
 	<!--  end of footer -->
 </div>
+<% response.setHeader("Refresh", "10;/sundevilbank/home"); %>
 </body>
 </html>
 
