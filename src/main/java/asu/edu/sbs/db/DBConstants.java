@@ -3,9 +3,9 @@ package asu.edu.sbs.db;
 public interface DBConstants 
 {
 	public final static String SP_CALL = "call";
-	public final static String ceo1 = "corporate";
-	public final static String ceo2 = "corporate2";
-	public final static String ceo3 = "corporate3";
+	public final static String ceo1 = "sjobs.sbs";
+	public final static String ceo2 = "mmayer.sbs";
+	public final static String ceo3 = "gborse.sbs";
 	
 	
 	//Sales Stored Procedures

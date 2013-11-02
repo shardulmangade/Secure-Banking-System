@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" />
 </head>
 <body>
+	<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 	Want to leave ${username}?
 	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 	<h3>Welcome, ${username}</h3>

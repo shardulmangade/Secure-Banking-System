@@ -18,7 +18,7 @@ public class LoggingAspect {
 
 	@Autowired
 	private LoginDBConnectionManager dbconnection; 
-	
+
 	@Around("within(asu.edu.sbs.web..*)")
 	public Object logBefore(ProceedingJoinPoint joinPoint) throws Throwable {
 
@@ -26,15 +26,16 @@ public class LoggingAspect {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String dbLoginRole = dbconnection.getLoginRole(username);
-//		System.out.println("Aspect Role fetched from database: "+dbLoginRole);
-//		if(dbLoginRole == null || dbLoginRole.equals(IBankRoles.ROLE_INVALID_USER) || dbLoginRole.equals("null"))
-		if(dbLoginRole.equals(IBankRoles.ROLE_INVALID_USER))
-		{
-			//Automatically logout the user
-			SecurityContextHolder.clearContext();
-			throw new BankDeactivatedException("Looks like someone deactivated your account after you logged in. Your only option now is to logout securely !");
-		}
-			
+		//		System.out.println("Aspect Role fetched from database: "+dbLoginRole);
+		//		if(dbLoginRole == null || dbLoginRole.equals(IBankRoles.ROLE_INVALID_USER) || dbLoginRole.equals("null"))
+		if(dbLoginRole != null)
+			if(dbLoginRole.equals(IBankRoles.ROLE_INVALID_USER))
+			{
+				//Automatically logout the user
+				SecurityContextHolder.clearContext();
+				throw new BankDeactivatedException("Looks like someone deactivated your account after you logged in. Your only option now is to logout securely !");
+			}
+
 		Object obj = joinPoint.proceed();
 		return obj;
 

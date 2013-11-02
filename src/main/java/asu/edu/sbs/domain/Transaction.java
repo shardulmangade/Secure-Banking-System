@@ -6,6 +6,8 @@ public class Transaction {
 	private String touser;
 	private String amount;
 	private String timestamp;
+	private String certificate;
+	
 	public String getFromuser() {
 		return fromuser;
 	}
@@ -29,6 +31,12 @@ public class Transaction {
 	}
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
+	}
+	public String getCertificate() {
+		return certificate;
+	}
+	public void setCertificate(String certificate) {
+		this.certificate = certificate;
 	}
 	
 	
