@@ -1,5 +1,5 @@
 /*******************************************
-Name          : sp_getAllItPendingUserRequests
+Name          : sp_getItPendingUserRequest
 
 Description   : Used to get all the pending user requests
 
@@ -10,13 +10,13 @@ Create By     : Shardul Mangade
 Modified Date : 10/27/2013
 
 ********************************************/
-DROP PROCEDURE IF EXISTS sp_getAllItPendingUserRequests;
+DROP PROCEDURE IF EXISTS sp_getItPendingUserRequest;
 
 DELIMITER $$
-CREATE PROCEDURE sp_getItPendingUserRequests(IN userName VARCHAR(100))
+CREATE PROCEDURE sp_getItPendingUserRequest(IN userName VARCHAR(100))
 BEGIN
      
- SELECT username, accounttype, firstname, lastname, emailid
+ SELECT username, department, firstname, lastname, emailid
 	FROM tbl_it_pending_user_requests WHERE tbl_it_pending_user_requests.username=userName;  
 
 END$$

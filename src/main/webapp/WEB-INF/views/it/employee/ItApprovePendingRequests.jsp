@@ -22,7 +22,6 @@ font-style: italic;
 	<tr>
 		<td>Select</td>
 		<td>Username</td>
-		<td>Account Type</td>
 		<td>First Name</td>
 		<td>Last Name</td>
 		<td>Email</td>
@@ -34,7 +33,6 @@ font-style: italic;
 			<input type="checkbox" name="selected" value=<c:out value="${request.username}"/>></input>  
 		</td>
 		<td>${request.username}</td>
-		<td>${request.accountType}</td>
 		<td>${request.firstName}</td>
 		<td><c:out value="${request.lastName}"></c:out></td>
 		<td>${request.email}</td>

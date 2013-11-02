@@ -15,18 +15,20 @@
 	<h2>Transactions</h2>
 	
 	<c:choose>
-		<c:when test="${not empty transactions}">
+		<c:when test="${not empty transactionsM}">
 			<table border="1">
 			<tr>
-				<th> Transaction ID</th>
-				<th> Description </th>
-				<th> TimeStamp </th>
+				<th> From </th>
+				<th> To </th>
+				<th> Amount </th>
+				<th> Time </th>
 			</tr>
-			<c:forEach var="request" items="${transactions}">
+			<c:forEach var="request" items="${transactionsM}">
 				<tr>
-					<td>${request.transactionID}</td>
-					<td>${request.description}</td>
-					<td>${request.time}</td>
+					<td>${request.fromuser}</td>
+					<td>${request.touser}</td>
+					<td>${request.amount}</td>
+					<td>${request.timestamp}</td>
 				<tr>
 				</c:forEach>
 			</table>

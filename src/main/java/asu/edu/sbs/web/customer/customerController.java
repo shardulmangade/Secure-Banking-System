@@ -9,7 +9,11 @@ import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+
+import java.util.ArrayList;
+
 import java.security.Signature;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +28,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import asu.edu.sbs.customer.service.CustomerManager;
 import asu.edu.sbs.domain.Credit;
+
+import asu.edu.sbs.domain.Notification;
+
 import asu.edu.sbs.domain.MerchantCredit;
+
 
 @Scope(value="session")
 @Controller
@@ -36,9 +44,34 @@ public class customerController {
 	private PrivateKey privateKey ;
 	private PublicKey publicKey ;
 	
+
+	
+	@RequestMapping(value = "/customer/notifications", method = RequestMethod.POST)
+	public String getNotifications(Locale locale, Model model, Principal principal) 
+	{
+		List<Notification> notifications = customerManager.getNotifications(principal.getName());
+		model.addAttribute("notifications", notifications);
+		return "/customer/notifications";
+	}
+	
+	
+	@RequestMapping(value = "/customers/grantaccess", method = RequestMethod.POST)
+	public String grantAccess(Locale locale, Model model, HttpServletRequest request, Principal principal) throws Exception
+	{
+		List<String> iusers = new ArrayList<String>();
+		for(String iuser:request.getParameterValues("iuser"))
+			iusers.add(iuser);
+		customerManager.grantAccess(iusers, principal.getName());
+	//	transactionManager.makeUsersActive(users, principal.getName());
+		
+		return "redirect:/customer/mainpage";
+	}
+	
+	
 	/**
 	 * This method generates the private key and public key per session for a user
 	 */
+
 	@RequestMapping(value = "/customer/firstlogin", method = RequestMethod.GET)
 	public String firstLogin(Locale locale, Model model) {
 		try{
@@ -57,19 +90,6 @@ public class customerController {
 		return "redirect:/customer/mainpage";
 	}
 	
-	/**
-	 * dummy method delete this later while cleaning. This basically tests the private key and public key generation per user per session
-	 * @param locale
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/customer/print", method = RequestMethod.GET)
-	public String printOTP(Locale locale, Model model) {
-		System.out.println("PRIVATE KEY  " + this.privateKey);
-		System.out.println("PUBLIC KEY  " + this.publicKey);
-				
-		return "redirect:/customer/mainpage";
-	}
 	
 	@RequestMapping(value = "/customer/mainpage", method = RequestMethod.GET)
 	public String customerMainPage(Locale locale, Model model,Principal principal) {
@@ -122,7 +142,8 @@ public class customerController {
 					String buffer = customerManager.getSignedRequest(this.privateKey, credit);			
 					boolean verify = customerManager.verifyRequest(credit, buffer, publicKey);
 					//set the public key concerned to the user for the transaction
-					//credit.setPublicKey(this.publicKey.);
+					credit.setSignedRequest(buffer);
+					credit.setPublicKey(this.publicKey.getEncoded());
 					//store to db
 					if(verify){
 						customerManager.insertNewTransaction(credit);
@@ -162,21 +183,18 @@ public class customerController {
 				//sign the request
 				if (customerManager.validateMerchant(userName)){
 					credit.setFromusername(principal.getName());
-					credit.setFromaccount(customerManager.getAccountNumberForMerchant(principal.getName()));	
+					credit.setFromaccount(customerManager.getAccountNumberForCustomer(principal.getName()));	
+					credit.setTomerchantname(userName);
+					credit.setTomerchantaccount(customerManager.getAccountNumberForMerchant(userName));
 					credit.setAmount(amount);
-					credit.setTomerchantaccount(userName);
-					
 					//sign with private key
 					String buffer = customerManager.getSignedRequest(this.privateKey, credit);			
 					//save the signed request to merchants table and the public key
-					//credit.setSignedRequest(buffer);
-					//credit.setPublicKey(publicKey.getEncoded());
-					//customerManager.saveManagerTransaction();
-					credit.setSignedRequest(buffer); //sest signed request as string
-					credit.setPublicKey(this.publicKey.getEncoded()); //sest public key as bytes
-					
+					credit.setSignedRequest(buffer); //set signed request as string
+					credit.setPublicKey(this.publicKey.getEncoded()); //set public key as bytes
+					//Insert this request into merchants db
+					customerManager.insertTransactionMerchant(credit);
 				}
-				//store the transaction in db
 			}
 			
 		}catch(Exception ex){

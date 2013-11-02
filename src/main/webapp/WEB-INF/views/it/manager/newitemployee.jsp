@@ -12,8 +12,8 @@ font-style: italic;
 
 </head>
 <body>
-<P> Transactions Employee Registration Form </P>
-<form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/transactions/transactionManager/newtransemployee/op1" >
+<P> HR Employee Registration Form </P>
+<form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/it/manager/newitemployee/op1" >
 
  <table>
     <tr>
@@ -27,22 +27,22 @@ font-style: italic;
         <td><form:errors path="lastName" cssClass="error" /></td>
     </tr>
     <tr>
-        <td><form:label path="username">userName</form:label></td>
+        <td><form:label path="username">username</form:label></td>
         <td><form:input class = "form-control" path="username" /></td>
         <td><form:errors path="username" cssClass="error" /></td>
     </tr>
     <tr>
-        <td><form:label path="email">emailId</form:label></td>
+        <td><form:label path="email">email</form:label></td>
         <td><form:input class = "form-control" path="email" /></td>
         <td><form:errors path="email" cssClass="error" /></td>
     </tr>
-    
-    <tr>
+	
+	 <tr>
         <td><form:label path="ssn">SSN</form:label></td>
         <td><form:input class = "form-control" path="ssn" /></td>
         <td><form:errors path="ssn" cssClass="error" /></td>
     </tr>
-   
+      
     <tr>
 	    <td colspan="2">
 	    	<div class ="pull-right">

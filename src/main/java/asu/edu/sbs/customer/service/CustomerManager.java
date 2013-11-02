@@ -8,6 +8,7 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
 import java.util.List;
+import java.util.Random;
 import java.util.StringTokenizer;
 
 import javax.activity.InvalidActivityException;
@@ -17,9 +18,14 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.db.CustomerDBConnection;
+import asu.edu.sbs.db.LoginDBConnectionManager;
 import asu.edu.sbs.db.SalesDBConnectionManager;
 import asu.edu.sbs.domain.Credit;
+
+import asu.edu.sbs.domain.Notification;
+
 import asu.edu.sbs.domain.MerchantCredit;
+
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.exception.BankStorageException;
 
@@ -30,11 +36,23 @@ public class CustomerManager {
 		@Autowired
 		private CustomerDBConnection customerdbconnection;
 		
+		@Autowired
+		private LoginDBConnectionManager loginDBmanager;
+		
 		public List<Credit> getAllTransaction(String userName)
 		{
 			return customerdbconnection.getAllTransaction( userName);		
 		}
 		
+		public List<Notification> getNotifications(String euser)
+		{
+			return customerdbconnection.getNotifications(euser);			
+		}
+		
+		public void grantAccess(List<String> iusers, String currentEuser) throws BankStorageException
+		{
+			customerdbconnection.grantAccess(iusers, currentEuser);
+		}
 		
 		public int insertNewTransaction(Credit credit) throws Exception
 		{			
@@ -43,9 +61,7 @@ public class CustomerManager {
 			double newfromBalance=0,newtobalance=0;
 			if (fromCustomerBalance > 0)
 			{
-				newfromBalance= fromCustomerBalance-credit.getAmount();
-				
-				
+				newfromBalance= fromCustomerBalance-credit.getAmount();				
 				if(newfromBalance >=0) {
 					newtobalance = toCustomerBalance +credit.getAmount(); 
 					System.out.println("newfromBalance"+newfromBalance);
@@ -181,8 +197,18 @@ public class CustomerManager {
 	  * @return
 	  */
 	public boolean validateMerchant(String userName) throws Exception{
+		boolean result = false;
+		String userRole = loginDBmanager.getLoginRole(userName);
 		
-		return (customerdbconnection.validateMerchant(userName));
+		if(userRole.equals("ROLE_VALID_USER"))
+			result = true;
+		else 
+			return false;
+		
+		userRole = loginDBmanager.getRole(userName);
+		if(userRole.equals("ROLE_EXTERNAL_MERCHANT"))
+			result = true;
+		return result;
 	}
 
 	/**
@@ -194,6 +220,24 @@ public class CustomerManager {
 	public String getAccountNumberForMerchant(String name) throws Exception{
 		
 		return (customerdbconnection.getAccountNumberForMerchant(name));
+	}
+
+
+	/**
+	 * This method inserts the Merchant transaction
+	 * @param credit
+	 */
+	public boolean insertTransactionMerchant(MerchantCredit credit)throws Exception {
+		boolean result = false;
+		long min = 1l;
+		long max = 999999999l;
+		Long random = max + (long)(Math.random()*((max - min) + 1));	
+		String transactionID = random.toString();
+		credit.setTransactionID(transactionID);
+		if(credit != null){
+			result = customerdbconnection.insertMerchantTransaction(credit);
+		}
+		return result;
 	}
 
 

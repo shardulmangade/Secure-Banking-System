@@ -1,6 +1,7 @@
 package asu.edu.sbs.web.merchant;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import asu.edu.sbs.customer.service.CustomerManager;
 import asu.edu.sbs.domain.Credit;
+import asu.edu.sbs.domain.MerchantCredit;
 import asu.edu.sbs.domain.MerchantTransaction;
 import asu.edu.sbs.merchant.service.MerchantManager;
 import asu.edu.sbs.sales.service.SalesDeptManager;
@@ -52,8 +54,7 @@ public class merchantController {
 	public String clearPendingTransaction(Locale locale, Model model, Principal principal) {
 		System.out.println("Inside merchant transaction Controller .............");
 		String name = principal.getName();
-		List<MerchantTransaction> listTransactions=  merchantManager.getAllPendingTransaction("girish");
-		
+		List<MerchantCredit> listTransactions=  merchantManager.getPendingRequest(name);		
 		model.addAttribute("listTransactions", listTransactions);
 		model.addAttribute("username",name);
 		return "merchant/clearCustomerPendingTransactions";
@@ -82,8 +83,8 @@ public class merchantController {
 			Credit credit = new Credit();
 			if (merchantManager.validateRecepientUser(userName, accountNumber))
 			{
-			credit.setFromCustomer("girish");
-			credit.setFromaccount("9876543210");
+			credit.setFromCustomer(name);
+			credit.setFromaccount(merchantManager.getAccountNumberForCustomer(principal.getName()));
 			credit.setToacccount(accountNumber);
 			credit.setAmount(amount);
 			credit.setToCustomer(userName);
@@ -102,6 +103,30 @@ public class merchantController {
 		model.addAttribute("message", message);
 		model.addAttribute("username",name);
 		return "merchant/performTransaction";
+	}
+	
+	/**
+	 * This method handles the pending request 
+	 */
+	@RequestMapping(value = "/merchant/handlePendingRequestsResponse", method = RequestMethod.POST)
+	public String approvePendingReq( Locale locale, Model model, Principal principal,HttpServletRequest request) {	
+		System.out.println("Inside aprove transaction Controller .............");
+		String userName = principal.getName();
+		String message = null;				
+		try {
+			//verify sig for each request
+			ArrayList<MerchantCredit> requestList = merchantManager.getPendingRequest(userName);
+			merchantManager.verifyAprrove(requestList);
+			//add transaction to customer table
+			//change account balance
+		} catch (Exception e){
+			e.printStackTrace();
+			message = "Sorry .we are unable to process your transaction right now";			
+		}
+		model.addAttribute("message", message);
+		//model.addAttribute("username",name);
+		return "merchant/performTransaction";
+		
 	}
 	
 	

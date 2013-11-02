@@ -1,21 +1,30 @@
 package asu.edu.sbs.db;
 
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-
 import asu.edu.sbs.domain.Credit;
+import asu.edu.sbs.domain.MerchantCredit;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankStorageException;
+import asu.edu.sbs.login.service.OneTimePassword;
+import asu.edu.sbs.domain.Notification;
+import asu.edu.sbs.domain.Transaction;
+import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankStorageException;
+
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -37,8 +46,93 @@ public class CustomerDBConnection {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-
 	
+	public void grantAccess(List<String> iusers, String currentEuser) throws BankStorageException
+	{
+		String dbCommand = null;
+		Connection connection = null;
+
+		try{
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL+" "+DBConstants.GRANT_TRANSACTION_PERMISSION + "(?,?)";
+			for(String iuser:iusers){
+				try
+				{
+					CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+					sqlStatement.setString(1,iuser);
+					sqlStatement.setString(2, currentEuser);
+					sqlStatement.execute();
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+	
+			}
+		}
+		catch(SQLException e){
+			throw new BankStorageException(e);
+		}
+		catch(Exception e){
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			try {
+				if(connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public List<Notification> getNotifications(String euser)
+	{
+		List<Notification> notifications= null;
+		String dbCommand = null;
+		Connection connection = null;
+		try 
+		{
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL+" "+DBConstants.GET_TRANSACTION_NOTIFICATIONS + "(?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,euser);
+			sqlStatement.execute();
+
+			ResultSet result =  sqlStatement.getResultSet();
+
+			if(result.isBeforeFirst())
+			{
+				notifications= new ArrayList<Notification>();
+				while(result.next())
+				{
+					Notification notification = new Notification();
+					notification.setRequestedBy(result.getString(1));
+					notifications.add(notification);
+				}
+			}
+		}
+		catch(SQLException sqex)
+		{
+			sqex.printStackTrace();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try {
+				if(connection != null)
+					connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	return notifications;
+	}
 	
 	public List<Credit> getAllTransaction(String userName) {
 		Connection connection = null;
@@ -83,7 +177,7 @@ public class CustomerDBConnection {
 	public int insertNewTransaction(Credit credit) throws Exception
 	{
 		Connection connection = dataSource.getConnection();
-		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_CUSTOMER_NEW_TRANSACTIONS + "(?,?,?,?,?)" );
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_CUSTOMER_NEW_TRANSACTIONS + "(?,?,?,?,?,?,?)" );
 		System.out.println("\n"+sqlstatement);
 		sqlstatement.setString(1,credit.getFromCustomer());
 		sqlstatement.setString(2,credit.getToCustomer());
@@ -91,7 +185,8 @@ public class CustomerDBConnection {
 		sqlstatement.setString(4,credit.getToacccount() );
 		sqlstatement.setDouble(5, credit.getAmount());
 		//saving the encrypted request
-		sqlstatement.setBytes(6, credit.getSignedRequest());
+		sqlstatement.setBytes(6, credit.getPublicKey());
+		sqlstatement.setString(7, credit.getSignedRequest());
 		sqlstatement.execute();
 		int updateCount = sqlstatement.getUpdateCount();
 		if (connection!=null)
@@ -195,6 +290,64 @@ public class CustomerDBConnection {
 			connection.close();		
 		return accountNumber;
 	}
+
+	/**
+	 * method to insert merchant trasaction into database
+	 * This method is used for PKI scenario
+	 * @param credit
+	 * @return
+	 */
+	public boolean insertMerchantTransaction(MerchantCredit credit) throws Exception {
+		boolean result = true;
+		Connection connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_MERCHANT_TRANSACTION + "(?,?,?,?,?,?,?,?)" );
+		System.out.println("\n"+sqlstatement);
+		
+		sqlstatement.setString(1,credit.getTransactionID());
+		sqlstatement.setString(2,credit.getFromusername());
+		sqlstatement.setString(3,credit.getFromaccount() );
+		sqlstatement.setBytes(4,credit.getPublicKey());
+		sqlstatement.setString(5,credit.getSignedRequest());
+		sqlstatement.setString(6,credit.getTomerchantname() );
+		sqlstatement.setString(7, credit.getTomerchantaccount());
+		sqlstatement.setDouble(8, credit.getAmount());
+		sqlstatement.execute();
+		int updateCount = sqlstatement.getUpdateCount();
+		if (connection!=null)
+			connection.close();
+		if(updateCount == 0)
+			result = false;
+		return result;
+	}
+	
+	/**
+	 * This method uses merchant credit to update database
+	 * @param credit
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertNewTransaction(MerchantCredit credit) throws Exception
+	{
+		Connection connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_CUSTOMER_NEW_TRANSACTIONS + "(?,?,?,?,?,?,?)" );
+		System.out.println("\n"+sqlstatement);
+		sqlstatement.setString(1,credit.getFromusername());
+		sqlstatement.setString(2,credit.getTomerchantname());
+		sqlstatement.setString(3,credit.getFromaccount());
+		sqlstatement.setString(4,credit.getTomerchantaccount());
+		sqlstatement.setDouble(5, credit.getAmount());
+		//saving the encrypted request
+		sqlstatement.setBytes(6, credit.getPublicKey());
+		sqlstatement.setString(7, credit.getSignedRequest());
+		sqlstatement.execute();
+		int updateCount = sqlstatement.getUpdateCount();
+		if (connection!=null)
+			connection.close();
+		return (updateCount);
+		
+	}
+	
+
 }
 
 		

@@ -31,3 +31,10 @@ values('moheetB','ROLE_TRANSACTION_EMPLOYEE','root',now(),'root',curtime());
 insert into sundevilbank.tbl_user_role 
 values('gborse','ROLE_TRANSACTION_MANAGER','root',now(),'root',curtime());
 
+insert into tbl_user_role
+values("ashwin","ROLE_SALES_MANAGER",substring_index(user(),'@',1), curdate(),substring_index(user(),'@',1), curdate());
+
+insert into tbl_user_role
+values("auser","ROLE_SALES_EMPLOYEE",substring_index(user(),'@',1), curdate(),substring_index(user(),'@',1), curdate());
+
+

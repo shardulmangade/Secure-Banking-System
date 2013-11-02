@@ -11,8 +11,12 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
+
+	Want to leave ${username}?
+<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
+
 <div class="container">
-	<header class="page-header"><!-- We can add navigation bar here--><h1>HR Manager</h1>	</header>
+	<header class="page-header"><!-- We can add navigation bar here--><h1>Transactions Manager</h1>	</header>
 	<!-- End of header -->
 	<div class = "row" id="main-content">	
     	<table style="width:100%">
@@ -23,7 +27,7 @@
 				            <ul class="nav nav-list">
 				            	<li><a class= "active" style="cursor: pointer;"  onclick="changeContent(1, 'transactionsForManager')"> View Transactions  </a></li>			
 								<li><a style="cursor: pointer;"  onclick="changeContent(1, 'newTransEmployee')">Add New Transactions Employee  </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, 'deleteTransEmployee')"> Delete Transactions Employee </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, 'deletetransemployee/op1')"> Delete Transactions Employee </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, 'transferTransEmployee')"> Transfer Transactions Employee</a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
 							</ul>

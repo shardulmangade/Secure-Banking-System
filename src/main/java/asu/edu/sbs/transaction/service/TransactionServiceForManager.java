@@ -6,11 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.db.HrDBConnectionManager;
+import asu.edu.sbs.db.LoginDBConnectionManager;
 import asu.edu.sbs.db.SalesDBConnectionManager;
 import asu.edu.sbs.db.TransactionDBManager;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.Transaction;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankStorageException;
 
 @Service
 public class TransactionServiceForManager {
@@ -18,12 +21,13 @@ public class TransactionServiceForManager {
 	@Autowired
 	private TransactionDBManager transDBManager;
 	
-	
+	@Autowired
+	private LoginDBConnectionManager loginmanager;
 	
 	public List<Transaction> getManagerTransactions() throws Exception
 	{
 		//transactionDBManager = new TransactionDBManager();
-		return transDBManager.getRegEmpTransactions(); 
+		return transDBManager.getTransactionsForManager(); 
 	}
 	
 	public void  saveNewEmployeeRequest(String UserName,String firstName,String lastName ,String emailId,String department) throws Exception
@@ -37,12 +41,12 @@ public class TransactionServiceForManager {
 			transDBManager.deleteEmployeeRequest(UserName);
 	}
 	
-	public void addNewHrEmployee(SignUpEmployee employee)  throws Exception
+	public void addNewTransEmployee(SignUpEmployee employee)  throws Exception
 	{
 			transDBManager.addNewTransEmployee(employee);
 	}
 	
-	public void deleteHrEmployee(String username) throws Exception
+	public void deleteTransEmployee(String username) throws Exception
 	{
 			transDBManager.deleteTransEmployee(username);
 	}
@@ -60,6 +64,21 @@ public class TransactionServiceForManager {
 	public int getDeleteApprovalStatus (String userName,String department) throws Exception 
 	{
 		return transDBManager.getDeleteApprovalStatus(userName,department);
+	}
+	
+	public String getRoleTobechanged(String department, String role) {
+		
+		return (loginmanager.getRoleTobechanged( department,  role));
+	}
+	
+	public void updateUserRole(String role,String olddepartment, String department, String username,String changedby) throws BankStorageException, BankAccessException {
+		// TODO Auto-generated method stub
+		loginmanager.updateUserRole(role,olddepartment, department,username ,changedby);
+	}
+	
+	public int insertValidUser(User user, String password, String createdBy) throws BankStorageException, BankAccessException
+	{		
+			return (loginmanager.insertValidUser(user, password, createdBy));	
 	}
 	
 }
