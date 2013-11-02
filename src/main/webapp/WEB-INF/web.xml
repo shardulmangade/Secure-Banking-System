@@ -9,6 +9,13 @@
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
   
+  <!-- Concurrent session management -->
+  <listener>
+    <listener-class>
+      org.springframework.security.web.session.HttpSessionEventPublisher
+    </listener-class>
+  </listener>
+  
   <!-- Spring Security -->
 	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
@@ -49,4 +56,9 @@
     <error-code>500</error-code>
     <location>/errors/404.html</location>
 	</error-page>
+	
+	<session-config>
+  	<session-timeout>5</session-timeout>
+	</session-config>
+	
 </web-app>

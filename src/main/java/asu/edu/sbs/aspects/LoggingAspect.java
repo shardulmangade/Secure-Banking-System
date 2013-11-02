@@ -26,7 +26,6 @@ public class LoggingAspect {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		String dbLoginRole = dbconnection.getLoginRole(username);
-		System.out.println("Role fetched from db: "+dbLoginRole);
 		
 		if(dbLoginRole == null || dbLoginRole.equals(IBankRoles.ROLE_INVALID_USER) || dbLoginRole.equals("null"))
 		{

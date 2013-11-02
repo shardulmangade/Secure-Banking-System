@@ -10,7 +10,7 @@
 <body>
 	Want to leave ${username}?
 	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 
 <div class="container ">
@@ -20,7 +20,7 @@
 	<div class = "row" id="main-content">
 		<div class = "span4 hero-unit" id="sidebar">
 			<div class="well" style="width:300px; margin:0 auto;">
-				<form class="form-signin" action = "/sundevilbank/signupemployee/deletehremployee" method = "post" >
+				<form class="form-signin" action = "/sundevilbank/it/manager/deleteitemployee" method = "post" >
 				  						  			    
         <label for = "textboxuser"> Enter username of IT employee to be deleted</label> 
         <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                

@@ -21,6 +21,17 @@ public class SignUpEmployee {
 	@Email @NotBlank
 	private String emailId;
 	
+	private String createdBy;
+	
+	public void setCreatedBy(String createdby)
+	{
+		createdBy=createdby;
+	}
+	
+	public String getCreatedBy() {
+		return createdBy;
+	}
+	
 	private String role;
 	
 	private String department;

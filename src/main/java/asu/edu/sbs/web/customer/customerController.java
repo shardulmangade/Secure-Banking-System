@@ -9,7 +9,11 @@ import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+
+import java.util.ArrayList;
+
 import java.security.Signature;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -24,7 +28,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import asu.edu.sbs.customer.service.CustomerManager;
 import asu.edu.sbs.domain.Credit;
+
+import asu.edu.sbs.domain.Notification;
+
 import asu.edu.sbs.domain.MerchantCredit;
+
 
 @Scope(value="session")
 @Controller
@@ -36,9 +44,34 @@ public class customerController {
 	private PrivateKey privateKey ;
 	private PublicKey publicKey ;
 	
+
+	
+	@RequestMapping(value = "/customer/notifications", method = RequestMethod.POST)
+	public String getNotifications(Locale locale, Model model, Principal principal) 
+	{
+		List<Notification> notifications = customerManager.getNotifications(principal.getName());
+		model.addAttribute("notifications", notifications);
+		return "/customer/notifications";
+	}
+	
+	
+	@RequestMapping(value = "/customers/grantaccess", method = RequestMethod.POST)
+	public String grantAccess(Locale locale, Model model, HttpServletRequest request, Principal principal) throws Exception
+	{
+		List<String> iusers = new ArrayList<String>();
+		for(String iuser:request.getParameterValues("iuser"))
+			iusers.add(iuser);
+		customerManager.grantAccess(iusers, principal.getName());
+	//	transactionManager.makeUsersActive(users, principal.getName());
+		
+		return "redirect:/customer/mainpage";
+	}
+	
+	
 	/**
 	 * This method generates the private key and public key per session for a user
 	 */
+
 	@RequestMapping(value = "/customer/firstlogin", method = RequestMethod.GET)
 	public String firstLogin(Locale locale, Model model) {
 		try{

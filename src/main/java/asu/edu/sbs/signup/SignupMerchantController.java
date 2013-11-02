@@ -104,6 +104,7 @@ public class SignupMerchantController {
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
+		mav.getModelMap().addAttribute("username", principal.getName());
 		try{				
 			System.out.println("\n Inside Employee signup post controller -- ashwin 4");
 			user.setLastName("merchant last");

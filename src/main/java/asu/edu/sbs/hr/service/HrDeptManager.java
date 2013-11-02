@@ -76,4 +76,8 @@ public class HrDeptManager {
 	public User getUser(String username) throws Exception {
 		return (loginmanager.getUser(username));
 	}
+	
+	public User IsUserExists(String username,String department) throws Exception {
+		return (loginmanager.getUser(username));
+	}
 }

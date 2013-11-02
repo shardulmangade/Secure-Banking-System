@@ -9,10 +9,12 @@
 <link rel="stylesheet" href="/sundevilbank/resources/css/custom.css"
 	type="text/css" />
 </head>
+
 <body>
 	Want to leave ${username}?
 	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 	<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
+
 	<script src="/sundevilbank/resources/js/bootstrap.js"></script>
 	<script src="/sundevilbank/resources/js/custom.js"></script>
 	<div class="container">
@@ -33,19 +35,31 @@
 											my transactions </a></li>
 									<li><a style="cursor: pointer;"
 										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/newtransaction')">
-											Make new Transfer </a></li>
+									Make new Transfer </a></li>
+											
+									<li><a style="cursor: pointer;"
+										onclick= "changeContent(1, '${pageContext.request.contextPath}/customer/notifications')">
+										Grant Permission for Transactions </a></li>
+											
+											
 									<li><a style="cursor: pointer;"
 										onclick="changeContent(1, '${pageContext.request.contextPath}/customer/newMerchantTransaction')">
 											Pay to Merchant </a></li>
 									<li><a style="cursor: pointer;"
 										onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')">
 											Change Password </a></li>
+
 								</ul>
 							</div>
 						</div>
 					</td>
 					<td width="15%"></td>
 					<td width="70%">
+						<div class="hero-unit" id = 56> 
+						
+						
+						
+						</div>
 						<div class="hero-unit" id="1"></div>
 					</td>
 				</tr>

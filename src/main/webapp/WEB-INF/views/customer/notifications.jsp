@@ -1,3 +1,4 @@
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
 <html>
@@ -11,35 +12,30 @@
 <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
-
-
-
 <div class="container">
-	<h2>Transactions</h2>
-	
+	<h2>Notifications</h2>
+	<form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/customers/grantaccess">
 	<c:choose>
-		<c:when test="${not empty transactions}">
+		<c:when test="${not empty notifications}">
 			<table border="1">
 			<tr>
-				<th> From </th>
-				<th> To </th>
-				<th> Amount </th>
-				<th> TimeStamp </th>
+				<th> Requested By </th>
+				<th> Action </th>
 			</tr>
-			<c:forEach var="request" items="${transactions}">
+			<c:forEach var="request" items="${notifications}">
 				<tr>
-					<td>${request.fromuser}</td>
-					<td>${request.touser}</td>
-					<td>${request.amount}</td>
-					<td>${request.timestamp}</td>
+					<td>${request.requestedBy}</td>
+					<td> <input type="checkbox" name="iuser" value="${request.requestedBy}"> </td>
 				<tr>
 				</c:forEach>
 			</table>
+			<button class="btn btn-large btn-primary" name="action" type="submit" value="approve">Grant Permission</button>
 		</c:when>
 		<c:otherwise>
-			No transactions so far...
+			No notifications so far...
 		</c:otherwise>
 	</c:choose>
+	</form:form>
 	
 	
 	
