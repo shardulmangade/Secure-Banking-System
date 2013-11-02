@@ -20,7 +20,7 @@ public class BankExceptionHandler {
 		modelAndView.setViewName("exceptions/storageissue");
 		modelAndView.addObject("ex_name", ex.getClass().getName());
 		modelAndView.addObject("ex_message", ex.getMessage());
-		logger.error(ex.getMessage(), ex);
+//		logger.error(ex.getMessage(), ex);
 		return modelAndView;
 	}
 
@@ -31,7 +31,7 @@ public class BankExceptionHandler {
 		modelAndView.setViewName("exceptions/accessissue");
 		modelAndView.addObject("ex_name", ex.getClass().getName());
 		modelAndView.addObject("ex_message", ex.getMessage());
-		logger.error(ex.getMessage(), ex);
+//		logger.error(ex.getMessage(), ex);
 		return modelAndView;
 	}
 	
@@ -40,7 +40,9 @@ public class BankExceptionHandler {
 		
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("exceptions/accountdeactivated");
-		logger.error(ex.getMessage(), ex);
+		modelAndView.addObject("ex_name", ex.getClass().getName());
+		modelAndView.addObject("ex_message", ex.getMessage());
+//		logger.error(ex.getMessage(), ex);
 		return modelAndView;
 	}
 	
