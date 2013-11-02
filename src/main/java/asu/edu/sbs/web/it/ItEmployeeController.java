@@ -19,6 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+
+
+
+//import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
@@ -71,65 +75,112 @@ public class ItEmployeeController {
 		System.out.println("Inside employee Controller for it.............");
 		String name = principal.getName();
 		model.addAttribute("username", name);
-		itEmployee.deleteUser(request.getParameter("userNametext"), name);
+		try {
+			itEmployee.deleteUser(request.getParameter("userNametext"), name);
+		} catch (BankStorageException e) {
+			// TODO Auto-generated catch block
+			throw new BankStorageException(e);
+		} catch (BankAccessException e) {
+			// TODO Auto-generated catch block
+			throw new BankAccessException(e);
+		}
 ;		return "it/employee/employee";
 	}
 	
 	@RequestMapping(value = "it/handlePendingRequestsResponse.html", method = RequestMethod.POST)
-	public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) {
+	public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) throws BankAccessException, BankStorageException {
 	
 		System.out.println("Inside employee Controller for it.............");
 		String name = principal.getName();
+		String message = null;
 		model.addAttribute("username", name);
+		//ToDo: Handle This case
 		if(request.getParameterValues("selected")==null)
 		{
 			List<User> userRequests = itEmployee.getAllPendingUserRequests();
 			System.out.println(userRequests.get(0).getFirstName());
 			model.addAttribute("username", name);
-			String message = "Please select an option";
+			message = "Error:No Option Selected.Please select atleast one option!.Press Home to return to main page";
 			model.addAttribute("message", message);
 			model.addAttribute("userRequests", userRequests);
-			return "it/employee/ItApprovePendingRequests";
+			return "it/employee/resultItPendingUser";
 		}
 		if(request.getParameter("action")==null)
 		{
 			//ToDo:ToHandle 
-			return "it/op1";
+			throw new BankAccessException("Oops!! You seem to be lost because of some Bad Operation. Please press the Home button to return to your mainpage or Logout.");
 		}
-		System.out.println(request.getParameter("action"));
 		if(request.getParameter("action").equals("approve"))
 		{
 			//ToDo:Make one DB call for all the selected requests
 			for(String username: request.getParameterValues("selected"))
 			{
-				System.out.println(username);
 				
 				// Delete from the tbl_it_pending
-				try {
-					//ToDo: Add customer to customer tables
-					User user=itEmployee.getPendingUserRequest(username);
-					OneTimePassword otpInstance = new OneTimePassword();
-					String password = otpInstance.getPassword();
-					Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-				    String hashedPass = encoder.encodePassword(password, null);
-				    // Insert into customers table
-					itEmployee.insertValidUser(user, password, name);
-					Random randomGenerator = new Random();
+			
+					User user = null;
+					try {
+						if(username==null)
+							throw new BankAccessException();
+						
+						user = itEmployee.getPendingUserRequest(username);
+						OneTimePassword otpInstance = new OneTimePassword();
+						String password = otpInstance.getPassword();
+						Md5PasswordEncoder encoder = new Md5PasswordEncoder();
+				    	String hashedPass = encoder.encodePassword(password, null);
+				    	// Insert into customers table
+/*				    	System.out.println("The user who will be added is :" + user.getUsername());*/
+						user.setRole(user.getDepartment());
+						try{
+							itEmployee.deleteItPendingRequest(username);
+						}
+						catch(Exception e)
+						{
+							String errorMsg = e.getMessage();
+							System.out.println(errorMsg);					
+							if(errorMsg!=null && errorMsg.equals("No such user exists. This action has been logged. Please don't try to hack into the system !!!"))
+							{
+								//ToDo: Shardul Should this be BankAccess?!
+								throw new BankAccessException("No such user exists!!.The request might have been processesed by another IT employee.  Please press the Home button to return to your mainpage or Logout.");
+							}
+							throw new BankAccessException();
+							
+						}
+/*						System.out.println("The user who will be added is :" + user.getUsername());*/
+						itEmployee.insertValidUser(user, password, name);
+/*						System.out.println("The user who will be added is :" + user.getUsername());*/
+						long min = 1l;
+						long max = 999999999l;
+						Long random = max + (long)(Math.random()*((max - min) + 1));	
+						String accountNo = random.toString();
+						//Shardul Critical ToDo: Integrate initial amount in form or add Debit/Credit , setting initial amount to 250
+						//Shardul Critical ToDo: Check if accountNo collision will occur and handle if required
+						itEmployee.insertCustomerAccNo(user.getUsername(), accountNo, 500.0, name);
+						//send email
+						enManager.sendPasswordCustomer(user, otpInstance.getPassword());
+						// ToDo: Shardul On basis of above output
+					}
+					catch (Exception e) {
+						String errorMsg = e.getMessage();
+						System.out.println(errorMsg);					
+						if(errorMsg!=null && errorMsg.equals("No such user exists. This action has been logged. Please don't try to hack into the system !!!"))
+						{
+							try {
+								itEmployee.saveNewEmployeeRequest(user, name);
+							 } catch (Exception e1) {
+								 throw new BankAccessException(e1);
+							 }
+								//ToDo: Shardul Should this be BankAccess?!
+							throw new BankStorageException();
+						}
+						throw new BankAccessException();
+					}
 					
-					String accountNo = Integer.toString(randomGenerator.nextInt());
-					//Shardul Critical ToDo: Integrate initial amount in form or add Debit/Credit , setting initial amount to 250
-					//Shardul Critical ToDo: Check if accountNo collision will occur and handle if required
-					itEmployee.insertCustomerAccNo(user.getUsername(), accountNo, 500.0, name);
-					//send email
-					enManager.sendPasswordCustomer(user, otpInstance.getPassword());
-					itEmployee.deleteItPendingRequest(username);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
 			}
-			return "it/employee/requestsApproved";
+			message = "The selected customers were added to the system. Temporary password is sent to the email provided by the user";
+			model.addAttribute("message", message);
+			return "it/employee/resultItPendingUser";
+/*			return "it/employee/requestsApproved";*/
 		}
 		if(request.getParameter("action").equals("deny"))
 		{
@@ -139,13 +190,21 @@ public class ItEmployeeController {
 				try {
 					itEmployee.deleteItPendingRequest(username);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
+
+					String errorMsg = e.getMessage();
+					System.out.println(errorMsg);					
+					if(errorMsg!=null && errorMsg.equals("No such user exists. This action has been logged. Please don't try to hack into the system !!!"))
+					{
+						throw new BankAccessException("No such user exists!!.The request might have been processesed by another IT employee.  Please press the Home button to return to your mainpage or Logout.");
+					}
 					e.printStackTrace();
 				}
 				// Optional Insert into customers_deny table table
 				
 			}
-			return "it/employee/requestsDenied";
+			message = "The requests of selected customers was denied! Please press the Home button to return to your mainpage or Logout";
+			model.addAttribute("message", message);
+			return "it/employee/resultItPendingUser";
 			
 		}	
 		return "it/op1";
