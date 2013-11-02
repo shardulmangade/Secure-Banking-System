@@ -35,4 +35,13 @@ public class BankExceptionHandler {
 		return modelAndView;
 	}
 	
+	@ExceptionHandler(value ={ BankDeactivatedException.class})
+	public ModelAndView handleUserDeactivateException(BankDeactivatedException ex) {
+		
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("exceptions/accountdeactivated");
+		logger.error(ex.getMessage(), ex);
+		return modelAndView;
+	}
+	
 	}
