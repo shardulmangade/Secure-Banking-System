@@ -1,11 +1,19 @@
 package asu.edu.sbs.domain;
 
-public class Credit {
+import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotBlank;
+
+public class Credit {
+	
 	private String fromaccount ;
+	@NotBlank @Size(min = 10, max= 10)
 	private String toacccount ;
+
 	private String fromCustomer;
+	@NotBlank
 	private String toCustomer;
+	@NotBlank 
 	private Double amount;
 	private byte[] signedRequest;
 	private String publicKey;

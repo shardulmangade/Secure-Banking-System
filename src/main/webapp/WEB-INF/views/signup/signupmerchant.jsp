@@ -29,6 +29,7 @@ font-style: italic;
         <td><form:label path="email">email</form:label></td>
         <td><form:input path="email" /></td>
         <td><form:errors path="email" cssClass="error" /></td>
+
     </tr>
     <tr>
     <td colspan="2">
