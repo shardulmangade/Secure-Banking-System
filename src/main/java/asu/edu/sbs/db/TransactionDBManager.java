@@ -160,18 +160,7 @@ public class TransactionDBManager {
 					tran.setAmount(result.getString(3).toString());
 					tran.setCertificate(result.getString(5));
 					//tran.setTimestamp("this moment");
-					SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-					
-					try {
-						tran.setTimestamp(format.parse(result.getString(4).substring(0, 19)).toString());
-					} catch (ParseException e) {
-						//This catch should never be executed. Application logic should make sure of that
-						// TODO Auto-generated catch block
-						tran.setTimestamp("2013-11-02 03:44:34");
-						e.printStackTrace();
-					}
-					
+					tran.setTimestamp(result.getString(4));
 					
 					
 					
