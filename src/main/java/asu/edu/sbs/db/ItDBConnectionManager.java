@@ -186,7 +186,7 @@ public class ItDBConnectionManager {
 		Connection connection = null;
 		try {
 			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.DELETE_CUSTOMER_ACC_NO + "(?,?,?)";
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.DELETE_CUSTOMER_ACC_NO + "(?,?)";
 			CallableStatement sqlstatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlstatement.setString(1,userName);			
 			sqlstatement.registerOutParameter(2, Types.VARCHAR);
