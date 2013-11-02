@@ -69,6 +69,8 @@ public interface DBConstants
 	public static final String IT_PENDING_USER_REQUEST = "sp_getAllItPendingUserRequests";
 	public static final String INSERT_CUSTOMER_ACC_NO = "sp_insertCustomerAccNo";
 	public static final String DELETE_CUSTOMER_ACC_NO = "sp_deleteCustomerAccNo";
+	public static final String INSERT_MERCHANT_TRANSACTION = "sp_insertMerchantTransaction";
+	public static final String DELETE_PENDING_TRANSACTION_MERCHANT = "sp_deletePendingTransactionMerchant";
 
 	
 }

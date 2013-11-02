@@ -15,8 +15,8 @@ public class Credit {
 	private String toCustomer;
 	@NotBlank 
 	private Double amount;
-	private byte[] signedRequest;
-	private String publicKey;
+	private String signedRequest;
+	private byte[] publicKey;
 
 	public Double getAmount() {
 		return amount;
@@ -54,17 +54,17 @@ public class Credit {
 		return result;
 	}
 	
-	public byte[] getSignedRequest() {
+	public String getSignedRequest() {
 		return signedRequest;
 	}
 	
-	public void setSignedRequest(byte[] signedRequest) {
+	public void setSignedRequest(String signedRequest) {
 		this.signedRequest = signedRequest;
 	}
-	public String getPublicKey() {
+	public byte[] getPublicKey() {
 		return publicKey;
 	}
-	public void setPublicKey(String publicKey) {
+	public void setPublicKey(byte[] publicKey) {
 		this.publicKey = publicKey;
 	}
 	

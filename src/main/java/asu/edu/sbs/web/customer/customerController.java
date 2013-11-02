@@ -57,19 +57,6 @@ public class customerController {
 		return "redirect:/customer/mainpage";
 	}
 	
-	/**
-	 * dummy method delete this later while cleaning. This basically tests the private key and public key generation per user per session
-	 * @param locale
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = "/customer/print", method = RequestMethod.GET)
-	public String printOTP(Locale locale, Model model) {
-		System.out.println("PRIVATE KEY  " + this.privateKey);
-		System.out.println("PUBLIC KEY  " + this.publicKey);
-				
-		return "redirect:/customer/mainpage";
-	}
 	
 	@RequestMapping(value = "/customer/mainpage", method = RequestMethod.GET)
 	public String customerMainPage(Locale locale, Model model,Principal principal) {
@@ -122,7 +109,8 @@ public class customerController {
 					String buffer = customerManager.getSignedRequest(this.privateKey, credit);			
 					boolean verify = customerManager.verifyRequest(credit, buffer, publicKey);
 					//set the public key concerned to the user for the transaction
-					//credit.setPublicKey(this.publicKey.);
+					credit.setSignedRequest(buffer);
+					credit.setPublicKey(this.publicKey.getEncoded());
 					//store to db
 					if(verify){
 						customerManager.insertNewTransaction(credit);
@@ -162,21 +150,18 @@ public class customerController {
 				//sign the request
 				if (customerManager.validateMerchant(userName)){
 					credit.setFromusername(principal.getName());
-					credit.setFromaccount(customerManager.getAccountNumberForMerchant(principal.getName()));	
+					credit.setFromaccount(customerManager.getAccountNumberForCustomer(principal.getName()));	
+					credit.setTomerchantname(userName);
+					credit.setTomerchantaccount(customerManager.getAccountNumberForMerchant(userName));
 					credit.setAmount(amount);
-					credit.setTomerchantaccount(userName);
-					
 					//sign with private key
 					String buffer = customerManager.getSignedRequest(this.privateKey, credit);			
 					//save the signed request to merchants table and the public key
-					//credit.setSignedRequest(buffer);
-					//credit.setPublicKey(publicKey.getEncoded());
-					//customerManager.saveManagerTransaction();
-					credit.setSignedRequest(buffer); //sest signed request as string
-					credit.setPublicKey(this.publicKey.getEncoded()); //sest public key as bytes
-					
+					credit.setSignedRequest(buffer); //set signed request as string
+					credit.setPublicKey(this.publicKey.getEncoded()); //set public key as bytes
+					//Insert this request into merchants db
+					customerManager.insertTransactionMerchant(credit);
 				}
-				//store the transaction in db
 			}
 			
 		}catch(Exception ex){
