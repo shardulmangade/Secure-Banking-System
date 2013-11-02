@@ -27,14 +27,14 @@ font-style: italic;
         <td><form:errors path="lastName" cssClass="error" /></td>
     </tr>
     <tr>
-        <td><form:label path="userName">userName</form:label></td>
-        <td><form:input class = "form-control" path="userName" /></td>
-        <td><form:errors path="userName" cssClass="error" /></td>
+        <td><form:label path="username">userName</form:label></td>
+        <td><form:input class = "form-control" path="username" /></td>
+        <td><form:errors path="username" cssClass="error" /></td>
     </tr>
     <tr>
-        <td><form:label path="emailId">emailId</form:label></td>
-        <td><form:input class = "form-control" path="emailId" /></td>
-        <td><form:errors path="emailId" cssClass="error" /></td>
+        <td><form:label path="email">emailId</form:label></td>
+        <td><form:input class = "form-control" path="email" /></td>
+        <td><form:errors path="email" cssClass="error" /></td>
     </tr>
     <tr>   	    
    	    <td><b> Department : </b></td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
@@ -44,7 +44,22 @@ font-style: italic;
    	     </form:select>  	    
    	     <td><form:errors path="department" cssClass="error" /></td>
        
+    </tr>   
+     <tr>   	    
+   	    <td> Select Role which you want to give  : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
+   	    <td> <form:select path = "role">
+        <form:option value="NONE" label="--- Select ---" />
+        <form:options items="${roleList}"/>
+        </form:select>  	    
+        <td><form:errors path="role" cssClass="error" /></td>
+       
     </tr>
+   <tr>
+        <td><form:label path="ssn">SSN(10 digit)</form:label></td>
+        <td><form:input class = "form-control" path="ssn" /></td>
+        <td><form:errors path="ssn" cssClass="error" /></td>
+    </tr>
+      
    
     <tr>
 	    <td colspan="2">
