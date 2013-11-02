@@ -8,7 +8,9 @@
 	<link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" type="text/css" />
 </head>
 <body>
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+	Want to leave ${username}?
+	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
 <div class="container">
@@ -21,9 +23,10 @@
     				<div class="sidebar-nav-fixed">
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
-								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '../../signupemployee/newsalesemployee')">Add a new Sales employee  </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '../../signupemployee/deletesalesemployee/op1')"> Delete an employee </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '../../signupemployee/transfersalesemployee')"> Transfer Sales employee</a></li>
+								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '${pageContext.request.contextPath}/sales/salesmanager/newsalesemployee')">Add a new Sales employee  </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/sales/salesmanager/deletesalesemployee/op1')"> Delete an employee </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/sales/salesmanager/transfersalesemployee')"> Transfer Sales employee</a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>

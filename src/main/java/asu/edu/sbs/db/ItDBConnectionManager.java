@@ -4,6 +4,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import com.mysql.jdbc.PreparedStatement;
 
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankStorageException;
 
 @Service
 public class ItDBConnectionManager {
@@ -56,11 +58,12 @@ public class ItDBConnectionManager {
 				while(result.next())
 				{
 					user = new User();
-					user.setUsername(result.getString(1));
-					user.setAccountType(result.getString(2));
-					user.setFirstName(result.getString(3));
-					user.setLastName(result.getString(4));
-					user.setEmail(result.getString(5));
+					user.setUsername(result.getString("username"));
+					user.setDepartment(result.getString("department"));
+					user.setFirstName(result.getString("firstname"));
+					user.setLastName(result.getString("lastname"));
+					user.setEmail(result.getString("emailid"));
+					user.setSsn(result.getString("ssn"));
 					//user.setDateOfBirth(result.getString(6));
 					listUsers.add(user);
 				}
@@ -93,7 +96,7 @@ public class ItDBConnectionManager {
 		User user = null;
 		try {
 			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.IT_ALL_PENDING_USER_REQUESTS + "(?)";
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.IT_PENDING_USER_REQUEST + "(?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,userName );
 			sqlStatement.execute();
@@ -103,11 +106,12 @@ public class ItDBConnectionManager {
 			if(result.isBeforeFirst())
 			{
 				user = new User();
-				user.setUsername(result.getString(1));
-				user.setAccountType(result.getString(2));
-				user.setFirstName(result.getString(3));
-				user.setLastName(result.getString(4));
-				user.setEmail(result.getString(5));
+				user.setUsername(result.getString("username"));
+				user.setDepartment(result.getString("department"));
+				user.setFirstName(result.getString("firstname"));
+				user.setLastName(result.getString("lastname"));
+				user.setEmail(result.getString("emailid"));
+				user.setSsn(result.getString("ssn"));
 				//ToDo Fetch SSN
 			}	
 		} catch (SQLException e) {
@@ -144,6 +148,25 @@ public class ItDBConnectionManager {
 			throw new InvalidActivityException();
 	}
 
+	public void insertCustomerAccNo(String UserName,String accountNo,Double balance,String createdBy) throws Exception
+	{
+		String dbCommand;
+		Connection connection =null;
+		connection = dataSource.getConnection();
+		
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.INSERT_CUSTOMER_ACC_NO + "(?,?,?,?,?)");
+		System.out.println("\n"+sqlstatement);
+		sqlstatement.setString(1,UserName );
+		sqlstatement.setString(2,accountNo );
+		sqlstatement.setDouble(3,balance);
+		sqlstatement.setString(4,createdBy);
+		sqlstatement.execute();
+		if(connection!=null)
+			connection.close();
+		if (sqlstatement.getUpdateCount()==0)
+			throw new InvalidActivityException();
+	}	
+	
 	public void deleteItEmployee(String UserName) throws Exception 
 	{
 		Connection connection =null;
@@ -156,6 +179,43 @@ public class ItDBConnectionManager {
 		if (sqlstatement.getUpdateCount()==0)
 			throw new InvalidActivityException();
 	}
+	
+	public int deleteCustomerAccNo(String userName) throws BankStorageException
+	{
+		String dbCommand;
+		Connection connection = null;
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.DELETE_CUSTOMER_ACC_NO + "(?,?)";
+			CallableStatement sqlstatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlstatement.setString(1,userName);			
+			sqlstatement.registerOutParameter(2, Types.VARCHAR);
+			sqlstatement.execute();
+			
+			String output = sqlstatement.getString(2);
+			if(output == null)
+				return SUCCESS;		
+			else
+				throw new BankStorageException(output);
+			
+		} catch (SQLException e) {
+			// TODO Use our application specific custom exception
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+			{
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 
 	public void updateDepartmentOfEmployee(String UserName,String department) throws Exception 
 	{

@@ -180,6 +180,8 @@ public class CustomerDBConnection {
 		sqlstatement.setString(3,credit.getFromaccount() );
 		sqlstatement.setString(4,credit.getToacccount() );
 		sqlstatement.setDouble(5, credit.getAmount());
+		//saving the encrypted request
+		sqlstatement.setBytes(6, credit.getSignedRequest());
 		sqlstatement.execute();
 		int updateCount = sqlstatement.getUpdateCount();
 		if (connection!=null)
@@ -246,6 +248,41 @@ public class CustomerDBConnection {
 		if (connection!=null)
 			connection.close();		
 		return (accountNumber);
+	}
+
+	/**
+	 * Checks if the merchant is merchant and if he/she is present in the database
+	 * 
+	 */
+	public boolean validateMerchant(String userName) throws Exception {
+		
+		Connection connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.VALIDATE_RECIPIENT_MERCHANT + "(?)" );
+		System.out.println("\n"+sqlstatement);
+		sqlstatement.setString(1,userName);
+		ResultSet rs =sqlstatement.executeQuery();
+		
+		boolean flag = rs.next();
+		if (connection!=null)
+			connection.close();
+		return flag;
+	}
+
+	/**
+	 * Database handler for getting the account number for merchant
+	 * @param name
+	 * @return
+	 */
+	public String getAccountNumberForMerchant(String name) throws Exception {
+		Connection connection = dataSource.getConnection();
+		PreparedStatement sqlstatement = (PreparedStatement) connection.prepareStatement(DBConstants.SP_CALL + " " + DBConstants.GET_ACCOUNT_NUMBER_CUSTOMER + "(?)" );		
+		sqlstatement.setString(1,name);
+		ResultSet rs =sqlstatement.executeQuery();
+		rs.next();
+		String accountNumber = rs.getString("accountno");
+		if (connection!=null)
+			connection.close();		
+		return accountNumber;
 	}
 }
 

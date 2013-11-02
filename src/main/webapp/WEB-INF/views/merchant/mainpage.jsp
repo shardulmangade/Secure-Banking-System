@@ -37,7 +37,10 @@
 											Make new Transfer Transaction </a></li>
 									<li><a style="cursor: pointer;"
 										onclick="changeContent(1, '../../merchant/merchant/clearCustomerPendingTransactions')">
-											Pay Customer Transactions </a></li>									
+											Pay Customer Transactions </a></li>
+									<li><a style="cursor: pointer;"
+										onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')">
+											Change Password </a></li>
 								</ul>
 							</div>
 						</div>

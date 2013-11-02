@@ -12,8 +12,6 @@ font-style: italic;
 
 </head>
 <body>
-Want to leave ${username}?
-	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 <P> HR Employee Transfer Form </P>
 <form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/hr/hrmanager/transferemployee/op1.html" >
 
@@ -30,7 +28,17 @@ Want to leave ${username}?
    	     <td><form:errors path="department" cssClass="error" /></td>
        
     </tr>
-      
+
+   <tr>   	    
+   	    <td> Select Role which you want to give  : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
+   	    <td> <form:select path = "role">
+        <form:option value="NONE" label="--- Select ---" />
+        <form:options items="${roleList}"/>
+        </form:select>  	    
+        <td><form:errors path="role" cssClass="error" /></td>
+       
+    </tr>
+        
     <tr>
 	    <td colspan="2">
 	    	<div class ="pull-right">

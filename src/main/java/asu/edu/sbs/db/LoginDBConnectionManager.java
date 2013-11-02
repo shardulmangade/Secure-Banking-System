@@ -142,6 +142,45 @@ public class LoginDBConnectionManager {
 		}
 		return SUCCESS;
 	}
+	
+	public int changePassword(String username, String password) throws BankStorageException
+	{
+		//Insert the password for the user in the database
+		String dbCommand, sOutErrorValue;
+		Connection connection = null;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_PASSWORD + "(?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,username);
+			sqlStatement.setString(2,password);	
+			sqlStatement.registerOutParameter(3, Types.VARCHAR);
+
+			sqlStatement.execute();
+
+			sOutErrorValue = sqlStatement.getString(3);
+
+			//SQL exception has occurred			
+			if(sOutErrorValue != null)
+			{
+				throw new BankStorageException(sOutErrorValue);
+			}
+
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}
+		return SUCCESS;
+	}
 
 	public String getRole(String username) throws BankStorageException
 	{
@@ -302,7 +341,7 @@ public class LoginDBConnectionManager {
 	 * @throws BankStorageException
 	 * @throws BankAccessException 
 	 */
-	public int updateUserRole(String newRole, String newDepartmentName, String username, String updatedbyName) throws BankStorageException, BankAccessException
+	public int updateUserRole(String newRole,String olddepartment, String newDepartmentName, String username, String updatedbyName) throws BankStorageException, BankAccessException
 	{
 		if(newRole == null || newDepartmentName == null)
 			throw new BankAccessException();
@@ -312,16 +351,17 @@ public class LoginDBConnectionManager {
 
 		try {
 			connection = dataSource.getConnection();
-			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_ROLE + "(?,?,?,?,?)";
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.UPDATE_USER_ROLE + "(?,?,?,?,?,?)";
 			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
 			sqlStatement.setString(1,username);
-			sqlStatement.setString(2,newDepartmentName);
-			sqlStatement.setString(3,newRole);
-			sqlStatement.setString(4,updatedbyName);
-			sqlStatement.registerOutParameter(5, Types.VARCHAR);
+			sqlStatement.setString(2,olddepartment);
+			sqlStatement.setString(3,newDepartmentName);
+			sqlStatement.setString(4,newRole);
+			sqlStatement.setString(5,updatedbyName);
+			sqlStatement.registerOutParameter(6, Types.VARCHAR);
 
 			sqlStatement.execute();
-			String output = sqlStatement.getString(5);
+			String output = sqlStatement.getString(6);
 			if(output == null)
 				return SUCCESS;		
 			else
@@ -349,8 +389,9 @@ public class LoginDBConnectionManager {
 	 * @param insertedbyUsername
 	 * @return
 	 * @throws BankStorageException
+	 * @throws BankAccessException 
 	 */
-	public int insertValidUser(User user, String firstTimePassword, String insertedbyUsername) throws BankStorageException
+	public int insertValidUser(User user, String firstTimePassword, String insertedbyUsername) throws BankStorageException, BankAccessException
 	{
 		String dbCommand;
 		Connection connection = null;
@@ -396,6 +437,64 @@ public class LoginDBConnectionManager {
 			if(output == null)
 				return SUCCESS;		
 			else
+				throw new BankAccessException(output);
+		} catch (SQLException e) {
+			throw new BankStorageException(e);
+		}
+		finally
+		{
+			if(connection != null)
+				try {
+					connection.close();
+				} catch (SQLException e) {
+
+				}
+		}	
+	}
+
+	public int insertValidCustomer(User user, String insertedbyUsername) throws BankStorageException
+	{
+		String dbCommand;
+		Connection connection = null;
+
+		try {
+			connection = dataSource.getConnection();
+			dbCommand = DBConstants.SP_CALL + " " + DBConstants.SALES_ALL_CUSTOMER_REQUESTS + "(?,?,?,?,?,?,?,?)";
+			CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+			sqlStatement.setString(1,user.getUsername());
+			if(user.getFirstName() != null)
+				sqlStatement.setString(2,user.getFirstName());
+			else
+				sqlStatement.setString(2,"Not provided");
+
+			if(user.getLastName() != null)
+				sqlStatement.setString(3,user.getLastName());
+			else
+				sqlStatement.setString(3,"Not provided");
+
+			if(user.getEmail() != null)
+				sqlStatement.setString(4,user.getEmail());
+			else
+				sqlStatement.setString(4,"diging.momo@gmail.com");
+
+			if(user.getDepartment() != null)
+				sqlStatement.setString(5,user.getDepartment());
+			else
+				sqlStatement.setString(5,null);
+
+			if(user.getSsn() != null)
+				sqlStatement.setString(6,user.getSsn());
+			else
+				sqlStatement.setString(6,null);
+			
+			sqlStatement.setString(7,insertedbyUsername);
+			sqlStatement.registerOutParameter(8, Types.VARCHAR);
+
+			sqlStatement.execute();
+			String output = sqlStatement.getString(8);
+			if(output == null)
+				return SUCCESS;		
+			else
 				throw new BankStorageException(output);
 		} catch (SQLException e) {
 			throw new BankStorageException(e);
@@ -410,5 +509,47 @@ public class LoginDBConnectionManager {
 				}
 		}	
 	}
+
+	public String getRoleTobechanged(String department, String role) {
+		
+		System.out.println("newrole "+role);
+		System.out.println("dept "+department);
+		
+		if (department.equals("TM"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_TRANSACTION_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_TRANSACTION_EMPLOYEE";
+		} else if (department.equals("HR"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_HR_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_HR_EMPLOYEE";
+		} else if (department.equals("IT"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_IT_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_IT_EMPLOYEE";
+		} else if (department.equals("CM"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_COPRPORATE_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_COPRPORATE_EMPLOYEE";
+		} else if (department.equals("sales"))
+		{
+			if(role.equals("manager"))
+				return "ROLE_SALES_MANAGER";
+			else if (role.equals("employee"))
+				return "ROLE_SALES_EMPLOYEE";
+		}
+		
+		return null;
+	}
+
+	
 
 }

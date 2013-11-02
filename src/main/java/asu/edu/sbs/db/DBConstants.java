@@ -3,20 +3,38 @@ package asu.edu.sbs.db;
 public interface DBConstants 
 {
 	public final static String SP_CALL = "call";
+	public final static String ceo1 = "corporate";
+	public final static String ceo2 = "corporate2";
+	public final static String ceo3 = "corporate3";
+	
 	
 	//Sales Stored Procedures
 	public final static String SALES_ALL_USER_REQUESTS = "sp_getAllSalesUserRequests";
+	//public final static String SALES_ALL_CUSTOMER_REQUESTS = "sp_getAllSalesCustomerRequests";
+	public final static String SALES_ALL_CUSTOMER_REQUESTS = "sp_insertValidCustomer";
+	
 	
 	//Login Stored Procedures
 	public final static String LOGIN_GET_USER_ROLE = "sp_getUserRole";
 	public final static String GET_OTP = "sp_getOTP";
 	public final static String UPDATE_OTP = "sp_updateOTP";
+	public final static String UPDATE_PASSWORD = "sp_updatePassowrd";
 	
 	//All users Stored Procedures
 	public final static String GET_USER_FROM_ALL_USERS_TABLE = "sp_getUser";
 	public final static String UPDATE_USER_LOGIN_ROLE = "sp_updateUserLoginRights";
 	public final static String UPDATE_USER_ROLE = "sp_updateUserRoles";
 	public final static String INSERT_TO_ALL_USERS_TABLE = "sp_insertValidUser";
+	
+	//Corporate 
+	public final static String CORPORATE_GET_ALL_ACTIVE_MANAGERS = "sp_getAllActiveManagers";
+	public final static String CORPORATE_DEACTIVATE_MANAGER_BY_CEO1 = "sp_deactivateManagerCEO1";
+	public final static String CORPORATE_DEACTIVATE_MANAGER_BY_CEO2 = "sp_deactivateManagerCEO2";
+	public final static String CORPORATE_DEACTIVATE_MANAGER_BY_CEO3 = "sp_deactivateManagerCEO3";
+	public final static String CORPORATE_GET_PENDING_MANAGER_DEACTIVATE_REQUESTS_CEO1 = "sp_getDeactivateRequestsCEO1";
+	public final static String CORPORATE_GET_PENDING_MANAGER_DEACTIVATE_REQUESTS_CEO2 = "sp_getDeactivateRequestsCEO2";
+	public final static String CORPORATE_GET_PENDING_MANAGER_DEACTIVATE_REQUESTS_CEO3 = "sp_getDeactivateRequestsCEO3";
+	public final static String CORPORATE_DENY_DEACTIVATION_OF_MANAGER = "sp_denyDeactivationOfManager";
 	
 	public final static String ALL_NEW_EMPLOYEE_REQUESTS = "sp_insertAllnewEmployeeRequests";
 	public final static String ALL_NEW_EMPLOYEE_PASSWORD_REQUESTS = "sp_insertAllnewEmployeePasswordRequests";
@@ -32,6 +50,7 @@ public interface DBConstants
 	public final static String IT_ALL_PENDING_USER_REQUESTS = "sp_getAllItPendingUserRequests";
 	public final static String INSERT_CUSTOMER_NEW_TRANSACTIONS = "sp_insertCustomerTransactions";
 	public final static String VALIDATE_RECIPIENT_USER = "sp_validateRecepientUser";
+	public final static String VALIDATE_RECIPIENT_MERCHANT = "sp_validateRecepientMerchant";
 	public final static String GET_BALANCE_OF_CUSTOMER = "sp_getbalanceofCustomer";
 	public final static String UPDATE_BALANCE_OF_CUSTOMER = "sp_updatebalanceofCustomer";
 	public final static String DELETE_IT_PENDING_REQUESTS = "sp_deleteItPendingRequests";
@@ -46,10 +65,16 @@ public interface DBConstants
 	public final static String INSERT_TRANSACTION_PERMISSION_REQUESTS = "sp_insertTransactionPermissionRequests";
 	public final static String GET_USERS_FOR_REQUESTING_TRANSACTION_PERMISSION = "sp_getUsersForRequestingTransactionPermission";
 	public final static String GET_TRANSACTIONS_OF_PERMITTED_USERS = "sp_getTransactionsOfPermittedUsers";
+
 	public final static String GET_TRANSACTIONS_FOR_MANAGER = "sp_getTransactionsForManager";
 	public final static String GET_TRANSACTION_NOTIFICATIONS="sp_getTransactionNotifications";
 	public final static String GRANT_TRANSACTION_PERMISSION = "sp_grantTransactionPermission";
 	
+
+	public static final String IT_PENDING_USER_REQUEST = "sp_getAllItPendingUserRequests";
+	public static final String INSERT_CUSTOMER_ACC_NO = "sp_insertCustomerAccNo";
+	public static final String DELETE_CUSTOMER_ACC_NO = "sp_deleteCustomerAccNo";
+
 
 	
 }

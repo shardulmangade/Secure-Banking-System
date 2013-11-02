@@ -25,6 +25,12 @@ public class ForbiddenController {
 		for (GrantedAuthority ga : authorities) {
 			if (ga.getAuthority().equals(IBankRoles.ROLE_VALID_USER))
 				return "redirect:/auth/otpcheck";
+			else if(ga.getAuthority().equals(IBankRoles.ROLE_INVALID_USER))
+			{
+				//Automatically logout the user
+				SecurityContextHolder.clearContext();
+				return "exceptions/accountdeactivated";
+			}
 		}
 		return "exceptions/accessissue";
 	}

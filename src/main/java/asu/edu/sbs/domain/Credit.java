@@ -8,6 +8,7 @@ public class Credit {
 	private String toCustomer;
 	private Double amount;
 	private byte[] signedRequest;
+	private String publicKey;
 
 	public Double getAmount() {
 		return amount;
@@ -40,9 +41,8 @@ public class Credit {
 		this.toCustomer = toCustomer;
 	}
 	
-	@Override
-	public String toString(){
-		String result = this.fromCustomer + this.toCustomer;
+	public String getStringForEncryption(){
+		String result = this.fromCustomer;
 		return result;
 	}
 	
@@ -52,6 +52,12 @@ public class Credit {
 	
 	public void setSignedRequest(byte[] signedRequest) {
 		this.signedRequest = signedRequest;
+	}
+	public String getPublicKey() {
+		return publicKey;
+	}
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
 	}
 	
 }

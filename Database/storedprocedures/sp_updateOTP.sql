@@ -17,11 +17,10 @@ CREATE PROCEDURE sp_updateOTP(
 IN inusername VARCHAR(100),
 IN inotp VARCHAR(100),
 IN inotpvalidity timestamp,
-OUT errorMessage      VARCHAR(50)
+OUT errorMessage      VARCHAR(100)
 )
 BEGIN
      
- -- check if the workspace exists
 	 IF EXISTS(SELECT 1 FROM tbl_all_users WHERE username = inusername)
 	 
 		THEN 

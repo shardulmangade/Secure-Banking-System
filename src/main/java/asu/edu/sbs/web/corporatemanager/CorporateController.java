@@ -129,33 +129,37 @@ public class CorporateController {
 		 }	
 	 }	
 	
-	@RequestMapping(value = "/corporate/corporatedelete" ,method = RequestMethod.POST)
-	public String deleteEmployeePost(Model model,HttpServletRequest request)
-	{
-		System.out.println("\n Inside corporate delete empployee post controller");
-		String message = null, userName;
-		userName = request.getParameter("userNametext");
-		try{
-			crManager.deleteEmployee(userName);
-			message = "User deleted successfully";
-			model.addAttribute("message", message);							
-			return ("corporate/saveData");			
-		}catch(Exception e){
-			if(e instanceof InvalidActivityException )
-			{
-				e.printStackTrace();		
-				message = "Error occured in deleting employee .Please use valid username";
-				model.addAttribute("message", message);							
-				return ("corporate/saveData");
-			} else {
-				// TODO Auto-generated catch block
-				e.printStackTrace();						
-				message = "Error occured in sending delete request";
-				model.addAttribute("message", message);				
-				return ("corporate/saveData");
-			}
-		}
-	}
+	/**
+	 * Functionality replaced by deactivate
+	 * 
+	 */
+//	@RequestMapping(value = "/corporate/corporatedelete" ,method = RequestMethod.POST)
+//	public String deleteEmployeePost(Model model,HttpServletRequest request)
+//	{
+//		System.out.println("\n Inside corporate delete empployee post controller");
+//		String message = null, userName;
+//		userName = request.getParameter("userNametext");
+//		try{
+//			crManager.deleteEmployee(userName);
+//			message = "User deleted successfully";
+//			model.addAttribute("message", message);							
+//			return ("corporate/saveData");			
+//		}catch(Exception e){
+//			if(e instanceof InvalidActivityException )
+//			{
+//				e.printStackTrace();		
+//				message = "Error occured in deleting employee .Please use valid username";
+//				model.addAttribute("message", message);							
+//				return ("corporate/saveData");
+//			} else {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();						
+//				message = "Error occured in sending delete request";
+//				model.addAttribute("message", message);				
+//				return ("corporate/saveData");
+//			}
+//		}
+//	}
 	
 	@RequestMapping(value = "/corporate/corporateUpdate" ,method = RequestMethod.POST)
 	public String transferUserCorporate(SignUpEmployee employee,Model model,HttpServletRequest request)

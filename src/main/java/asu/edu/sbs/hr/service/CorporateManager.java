@@ -28,12 +28,14 @@ public class CorporateManager {
 			//generate otp
 			OneTimePassword otpInstance = new OneTimePassword();
 			Md5PasswordEncoder encoder = new Md5PasswordEncoder();
-		    String hashedPass = encoder.encodePassword("admin", null);//change this
+		    String hashedPass = encoder.encodePassword(otpInstance.getPassword(), null);//change this
 			employee.setPassword(hashedPass);
 			System.out.println(hashedPass);
 			corporateDbconnection.saveNewEmployeeRequest(employee);
 			//send email
-			enManager.sendPassword(employee, otpInstance.getPassword());
+			
+			//TO BE CHNAGED BY APURV LATER
+			//enManager.sendPassword(employee, otpInstance.getPassword());
 	}
 	
 	public void deleteEmployeeRequest(String UserName)  throws Exception

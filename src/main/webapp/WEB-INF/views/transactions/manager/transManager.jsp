@@ -29,6 +29,7 @@
 								<li><a style="cursor: pointer;"  onclick="changeContent(1, 'newTransEmployee')">Add New Transactions Employee  </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, 'deletetransemployee/op1')"> Delete Transactions Employee </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, 'transferTransEmployee')"> Transfer Transactions Employee</a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>

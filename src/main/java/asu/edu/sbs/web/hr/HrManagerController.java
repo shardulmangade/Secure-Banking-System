@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,7 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import asu.edu.sbs.domain.SignUpEmployee;
+import asu.edu.sbs.domain.User;
+import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.hr.service.HrDeptManager;
+import asu.edu.sbs.login.service.OneTimePassword;
 
 @Controller
 @RequestMapping(value= "/hr/hrmanager")
@@ -28,7 +32,9 @@ public class HrManagerController {
 	
 	@Autowired
 	HrDeptManager hrmanager;
-	ModelAndView savedMav;
+	
+	@Autowired
+	private EmailNotificationManager enManager;
 		
 		@RequestMapping(value = "manager/op1", method = RequestMethod.GET)
 		public String addnewHrEmployee(Locale locale, Model model,Principal principal) {
@@ -48,16 +54,17 @@ public class HrManagerController {
 		
 		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST)
 		public ModelAndView newHrEmployeeGet(Locale locale, Model model,Principal principal) {
+			ModelAndView savedMav;
 			System.out.println("Inside hr manager get Controller .............");							
-			savedMav = new ModelAndView("hr/newhremployee", "signupemployee", new SignUpEmployee());
+			savedMav = new ModelAndView("hr/newhremployee", "signupemployee", new User());
 			model.addAttribute("username", principal.getName());
 			return savedMav;
 		}
 		
 		@RequestMapping(value = "/newhremployee/op1", method = RequestMethod.POST)
-		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes,Principal principal) {
+		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes,Principal principal) {
 			System.out.println("INSIDE hr manager post Controller .............");
-			
+			OneTimePassword otp = new OneTimePassword() ;
 			String message ;
 			ModelAndView mav = new ModelAndView();
 			try{				
@@ -66,14 +73,25 @@ public class HrManagerController {
 				{
 					//return new ModelAndView("hr/newhremployee", "signupemployee",employee);
 					//return savedMav;
-					return new ModelAndView("hr/manager/manager","signupemployee",employee);
+					//return new ModelAndView("hr/manager/manager","signupemployee",user);
+					message = "Validation Errors observed.Please go back and fill valid information";
+					mav.addObject("message", message);
+					mav.setViewName("signup/saveData");
+					return mav;
+					//return new ModelAndView("signup/saveData", "signupemployee",user);
 				}		 
 						
 				mav.setViewName("signup/saveData");
 				message= "Your request has been submitted for approval";
-				employee.setDepartment("HR");
-				employee.setPassword("temppassword");
-				hrmanager.addNewHrEmployee(employee);
+				user.setDepartment("HR");
+				user.setRole("ROLE_HR_EMPLOYEE");				
+				user.setCreatedBy(principal.getName());				
+				Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
+				String password = otp.getPassword();
+				String hashedPassword = passwordEncoder.encodePassword(otp.getPassword(), null);
+				
+				hrmanager.insertValidUser(user,hashedPassword,principal.getName());
+				enManager.sendPassword(user, password);
 				mav.addObject("message", message);								
 				mav.addObject("username", principal.getName());
 				return mav;
@@ -86,8 +104,7 @@ public class HrManagerController {
 				message = "Username already Exists.Choose a different username";
 				mav.addObject("message", message);
 				mav.setViewName("signup/saveData");
-				mav.addObject("username",principal.getName() );
-				//model.addAttribute("username", principal.getName());				
+				mav.addObject("username",principal.getName() );			
 				return mav;
 			} else
 			{
@@ -95,7 +112,6 @@ public class HrManagerController {
 				mav.addObject("message", message);
 				mav.setViewName("signup/saveData");
 				mav.addObject("username",principal.getName() );
-				//model.addAttribute("username", principal.getName());
 				return mav;					
 			}
 		  } 
@@ -123,7 +139,8 @@ public class HrManagerController {
 				{					
 					message = "Employee "+ userName+ " has been deleted after approval of corporate level manager";
 					hrmanager.deleteHrEmployee(userName);					
-				} else  if (status==0){
+				} else  if (status==0)
+				{
 					message= "Employee "+ userName+ " delete request has not beeen approved by corporate level manager yet";											
 				} else if (status==-1)
 				{
@@ -164,22 +181,30 @@ public class HrManagerController {
 			department.put("CM", "Company Managment department");
 			model.addAttribute("departmentList", department);		
 			model.addAttribute("username", principal.getName());
-			return new ModelAndView("hr/transferhremployee", "signupemployee", new SignUpEmployee());
+			
+			Map <String,String> roleList = new LinkedHashMap<String,String>();			
+			roleList.put("manager", "manager");
+			roleList.put("employee", "employee");
+			model.addAttribute("roleList", roleList);					
+						
+			return new ModelAndView("hr/transferhremployee", "signupemployee", new User());
 		}
 		
 		@RequestMapping(value = "/transferemployee/op1" ,method = RequestMethod.POST)
-		public String transferHrEmployee( SignUpEmployee employee,Model model,HttpServletRequest request,Principal principal)
+		public String transferHrEmployee( User user,Model model,HttpServletRequest request,Principal principal)
 		{
 			System.out.println("\n Inside delete empployee post controller");
-			String message,department = null ;
+			String message,department = null,username=null ;
+			String roleToBeupdated =null;
+			username=request.getParameter("userNametext");
 									
 			try{												
-				message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";					
-				hrmanager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
+				message= "Employee "+ username+ " has been transfered";																	
+				roleToBeupdated = hrmanager.getRoleTobechanged(user.getDepartment(),user.getRole());
+				hrmanager.updateUserRole(roleToBeupdated,"HR",user.getDepartment(),username ,principal.getName());
 				model.addAttribute("message", message);
 				model.addAttribute("username", principal.getName());
-				return ("signup/saveData");
-				
+				return ("signup/saveData");								
 				
 			} catch (Exception e) {
 				

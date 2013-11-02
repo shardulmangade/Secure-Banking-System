@@ -1,15 +1,31 @@
 package asu.edu.sbs.domain;
 
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class User {
 
+	@NotBlank
 	private String username;
-	private String accountType;  
+	@NotBlank
 	private String firstName;
+	@NotBlank
 	private String lastName;
+	
 	private String role;
+	@Email
+	@Size(max=50)
+	@NotBlank
 	private String email;
+	
 	private String department;
+	
+	@NotBlank @Size(min = 10, max= 10)
 	private String ssn;
+	
 	private String createdBy;
 	private String createdDate;
 
@@ -51,14 +67,6 @@ public class User {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public String getAccountType() {
-		return accountType;
-	}
-
-	public void setAccountType(String accountType) {
-		this.accountType = accountType;
 	}
 
 	public String getEmail() {

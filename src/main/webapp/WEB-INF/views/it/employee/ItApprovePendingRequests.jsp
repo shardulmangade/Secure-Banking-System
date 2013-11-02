@@ -14,7 +14,7 @@ font-style: italic;
 
 </head>
 <body>
-
+<P> ${message}</P>
 <form:form method="POST" commandName="signupuser"  action="${pageContext.request.contextPath}/it/handlePendingRequestsResponse.html" >
 <c:choose>
 <c:when test="${not empty userRequests}">

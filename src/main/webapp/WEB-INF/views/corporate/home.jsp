@@ -12,6 +12,8 @@
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
 <div class="container">
+Want to leave ${username}?
+	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 	<header class="page-header"><!-- We can add navigation bar here--><h1>Welcome Manager</h1>	</header>
 	<!-- End of header -->
 	<div class = "row" id="main-content">	
@@ -22,9 +24,9 @@
 		        		<div class="well">         
 				            <ul class="nav nav-list">				
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '/sundevilbank/corporate/op1/')"> Add </a></li>
-								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op2')"> Delete </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op3')"> Transfer </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/op4')"> View Pending Request </a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '/sundevilbank/corporate/allactivemanagers')"> Deactivate Manager </a></li>
 							</ul>
 						</div>
 					</div>

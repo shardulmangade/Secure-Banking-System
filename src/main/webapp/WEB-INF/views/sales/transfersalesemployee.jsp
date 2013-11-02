@@ -13,7 +13,7 @@ font-style: italic;
 </head>
 <body>
 <P> Sales Employee Transfer Form </P>
-<form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/signupemployee/transfersalesemployee/op1.html" >
+<form:form method="POST"  commandName="signupemployee"  action="${pageContext.request.contextPath}/sales/salesmanager/transfersalesemployee/op1.html" >
 
      <label for = "textboxuser"> Enter username of Sales employee to be transfered</label> 
         <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                
@@ -29,6 +29,16 @@ font-style: italic;
        
     </tr>
       
+     <tr>   	    
+   	    <td> Select Role which you want to give  : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
+   	    <td> <form:select path = "role">
+        <form:option value="NONE" label="--- Select ---" />
+        <form:options items="${roleList}"/>
+        </form:select>  	    
+        <td><form:errors path="role" cssClass="error" /></td>
+       
+    </tr>
+    
     <tr>
 	    <td colspan="2">
 	    	<div class ="pull-right">

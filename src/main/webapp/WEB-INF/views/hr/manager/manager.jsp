@@ -8,6 +8,8 @@
 	<link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" type="text/css" />
 </head>
 <body>
+	Want to leave ${username}?
+	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 <script src="/sundevilbank/resources/js/custom.js"></script>
@@ -24,6 +26,7 @@
 								<li><a  class= "active" style="cursor: pointer;"  onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hrmanager/newhremployee')">Add a new HR employee  </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hrmanager/deletehremployee/op1')"> Delete an employee </a></li>
 								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/hr/hrmanager/transferemployee')"> Transfer HR employee</a></li>
+								<li><a style="cursor: pointer;" onclick="changeContent(1, '${pageContext.request.contextPath}/pwd')"> Change Password </a></li>
 							</ul>
 						</div>
 					</div>
