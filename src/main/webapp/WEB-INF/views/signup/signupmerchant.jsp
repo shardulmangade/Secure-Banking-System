@@ -12,38 +12,23 @@ font-style: italic;
 </head>
 <body>
 <P>  Registration Form for External Merchants </P>
-<form:form method="POST" commandName="signupusermerchant"  action="${pageContext.request.contextPath}/signupuser/signupPost.html" >
+<form:form method="POST" commandName="signupusermerchant"  action="${pageContext.request.contextPath}/signupusermerchant/SignupEmployeePost.html" >
 
  <table>
     <tr>
-        <td><form:label path="MerchantName">Merchant Name</form:label></td>
-        <td><form:input path="MerchantName"/></td>
-        <td><form:errors path="MerchantName" cssClass="error" /></td>
+        <td><form:label path="firstName">Merchant Name</form:label></td>
+        <td><form:input path="firstName"/></td>
+        <td><form:errors path="firstName" cssClass="error" /></td>
     </tr>
     <tr>
-        <td><form:label path="userName">userName</form:label></td>
-        <td><form:input path="userName" /></td>
-        <td><form:errors path="userName" cssClass="error" /></td>
+        <td><form:label path="username">username</form:label></td>
+        <td><form:input path="username" /></td>
+        <td><form:errors path="username" cssClass="error" /></td>
     </tr>
     <tr>
-        <td><form:label path="emailId">EmailId</form:label></td>
-        <td><form:input path="emailId" /></td>
-        <td><form:errors path="emailId" cssClass="error" /></td>
-    </tr>
-    <tr>
-        <td><form:label path="ssn">SSN</form:label></td>
-        <td><form:input class = "form-control" path="ssn" /></td>
-        <td><form:errors path="ssn" cssClass="error" /></td>
-    </tr> 
-    
-    <tr>   	    
-   	    <td> Department : </td> <%-- SHOULD THERE NOT BE A <FORM:LABEL> TAG, IT LOOKS DIFF IN UI --%>
-   	    <td> <form:select path = "department">
-   	     <form:option value="NONE" label="--- Select ---" />
-   	     <form:options items="${departmentList}"/>
-   	     </form:select>  	    
-   	     <td><form:errors path="department" cssClass="error" /></td>
-       
+        <td><form:label path="email">email</form:label></td>
+        <td><form:input path="email" /></td>
+        <td><form:errors path="email" cssClass="error" /></td>
     </tr>
     <tr>
     <td colspan="2">
