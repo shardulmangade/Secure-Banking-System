@@ -9,7 +9,7 @@
 </head>
 <body>
 	
-<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 
 <div class="container ">
@@ -22,7 +22,8 @@
 				<form class="form-signin" action = "${pageContext.request.contextPath}/customer/performTransaction.html" method = "post" >
 				  						  			    
         <label for = "textboxuser"> Enter username to whom  you want to transfer money</label> 
-        <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />                
+        <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />      
+                 
 
 		<label for = "textboxuser"> Enter account number to which you want to send money</label> 
         <input id = "textboxuser" class="form-control" type="text"  name = "accountNumbertext" />    

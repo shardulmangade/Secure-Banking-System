@@ -1,5 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+
 <html>
 <head>
 <title>Sun Devil Bank</title>
@@ -11,7 +15,11 @@
 </head>
 
 <body>
-	Want to leave ${username}?
+
+<sec:authorize access="hasAnyRole('ROLE_VALID_USER','ROLE_CORPORATE_MANAGER','ROLE_IT_EMPLOYEE','ROLE_IT_MANAGER','ROLE_HR_EMPLOYEE','ROLE_HR_MANAGER','ROLE_SALES_EMPLOYEE','ROLE_SALES_MANAGER','ROLE_EXTERNAL_USER','ROLE_TRANSACTION_EMPLOYEE','ROLE_TRANSACTION_MANAGER','ROLE_EXTERNAL_MERCHANT')">
+<a href="${pageContext.request.contextPath}/home"> Home </a>| Want to leave ${username}?<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
+</sec:authorize>
+
 	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 	<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 
