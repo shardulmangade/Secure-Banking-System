@@ -76,8 +76,12 @@ public class EmailNotificationManager{
 			if(user.getUsername() != null)
 				name = user.getUsername();
 			
+			String accno = "NA";
+			if(user.getAccountnumber() != null)
+				accno = user.getAccountnumber()+" (Your friend needs this to make a transfer)";
+			
 			StringBuilder message = new StringBuilder();
-			message.append("Dear "+name+",\n\nYour temporary password is: \""+   password +"\"(without the quotes).\n Please change the password once you log in\n");
+			message.append("Dear "+name+",\n\nYour Account number is: "+accno+" .\nYour temporary password is: \""+   password +"\"(without the quotes).\n Please change the password once you log in\n");
 			
 //			emailSender.sendNotificationEmail(user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());
 			EmailNotificationSender emailSender = new EmailNotificationSender(mailSender, user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());

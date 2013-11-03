@@ -51,6 +51,7 @@ public class customerController {
 	{
 		List<Notification> notifications = customerManager.getNotifications(principal.getName());
 		model.addAttribute("notifications", notifications);
+		model.addAttribute("username", principal.getName());
 		return "/customer/notifications";
 	}
 	
@@ -63,7 +64,7 @@ public class customerController {
 			iusers.add(iuser);
 		customerManager.grantAccess(iusers, principal.getName());
 	//	transactionManager.makeUsersActive(users, principal.getName());
-		
+		model.addAttribute("username", principal.getName());
 		return "redirect:/customer/mainpage";
 	}
 	
@@ -73,7 +74,7 @@ public class customerController {
 	 */
 
 	@RequestMapping(value = "/customer/firstlogin", method = RequestMethod.GET)
-	public String firstLogin(Locale locale, Model model) {
+	public String firstLogin(Locale locale, Model model, Principal principal) {
 		try{
 			System.out.println("Inside first login Controller .............");
 			//generate private and public keys here
@@ -94,7 +95,7 @@ public class customerController {
 	@RequestMapping(value = "/customer/mainpage", method = RequestMethod.GET)
 	public String customerMainPage(Locale locale, Model model,Principal principal) {
 		System.out.println("Inside customer post Controller .............");
-		model.addAttribute("message", principal.getName());
+		model.addAttribute("username", principal.getName());
 		return "customer/mainpage";
 	}
 	
@@ -107,13 +108,15 @@ public class customerController {
 		List<Credit> listTransactions=  customerManager.getAllTransaction(principle.getName());
 		
 		model.addAttribute("listTransactions", listTransactions);
+		model.addAttribute("username", principle.getName());
 		return "customer/viewtransaction";
 	}
 	
 	
 	@RequestMapping(value = "/customer/newtransaction", method = RequestMethod.POST)
 	public String newCustomerTransaction(Locale locale, Model model, Principal principle) {
-		System.out.println("Inside new transaction Controller .............");						
+		System.out.println("Inside new transaction Controller .............");	
+		model.addAttribute("username", principle.getName());
 		return "customer/maketransaction";
 	}
 	
@@ -160,6 +163,7 @@ public class customerController {
 			message = "Sorry .we are unable to process your transaction right now";			
 		}
 		model.addAttribute("message", message);
+		model.addAttribute("username", principal.getName());
 		return "customer/performTransaction";
 	}
 	
@@ -203,6 +207,7 @@ public class customerController {
 			message = "Sorry .we are unable to process your transaction for merchant now";		
 		}
 		model.addAttribute("message", message);
+		model.addAttribute("username", principal.getName());
 		return "customer/performTransaction";
 	}
 	/**

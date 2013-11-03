@@ -9,6 +9,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class User {
 
+	private String accountnumber;
+	
 	@NotBlank
 	private String username;
 	@NotBlank
@@ -30,6 +32,14 @@ public class User {
 	
 	private String createdBy;
 	private String createdDate;
+
+	public String getAccountnumber() {
+		return accountnumber;
+	}
+
+	public void setAccountnumber(String accountnumber) {
+		this.accountnumber = accountnumber;
+	}
 
 	public String getRole() {
 		return role;

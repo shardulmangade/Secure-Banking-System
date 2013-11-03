@@ -180,6 +180,7 @@ public class ItEmployeeController {
 						//Shardul Critical ToDo: Check if accountNo collision will occur and handle if required
 						itEmployee.insertCustomerAccNo(user.getUsername(), accountNo, 500.0, name);
 						System.out.println("Inserted into customer acct no................................................");
+						user.setAccountnumber(accountNo);
 						//send email
 						enManager.sendPasswordCustomer(user, otpInstance.getPassword());
 						// ToDo: Shardul On basis of above output

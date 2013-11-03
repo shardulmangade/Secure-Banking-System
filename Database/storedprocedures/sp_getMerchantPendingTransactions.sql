@@ -18,7 +18,7 @@ DELIMITER $$
 CREATE PROCEDURE sp_getMerchantPendingTransactions(IN inmerchantName VARCHAR(100))
 BEGIN
 
- SELECT fromusername, fromaccount, certificate, amount
+ SELECT fromusername, fromaccount, signedrequest, amount
 	FROM tbl_merchant_pending_transactions WHERE tbl_merchant_pending_transactions.tomerchantname = inmerchantName;  
 
 END$$
