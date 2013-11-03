@@ -194,13 +194,13 @@ public class customerController {
 					credit.setPublicKey(this.publicKey.getEncoded()); //set public key as bytes
 					//Insert this request into merchants db
 					customerManager.insertTransactionMerchant(credit);
-					message = "Payment is processed. Your balance will be updated once bank verifies your transaction using PKI";		
+					message = "Payment is processed. Your balance will be updated once bank verifies your transaction using PKI. You will be redirected to home page in 10 seconds";		
 				}
 			}
 			
 		}catch(Exception ex){
 			ex.printStackTrace();
-			message = "Sorry .we are unable to process your transaction for merchant now";		
+			message = "Sorry .we are unable to process your transaction for merchant now, may be you provided bad values.  You will be redirected to home page in 10 seconds";		
 		}
 		model.addAttribute("message", message);
 		return "customer/performTransaction";
