@@ -15,11 +15,11 @@ Note: Should we use merchantName or merchantAccount to retrieve?!
 DROP PROCEDURE IF EXISTS sp_getMerchantPendingTransactions;
 
 DELIMITER $$
-CREATE PROCEDURE sp_getMerchantPendingTransactions(IN merchantName VARCHAR(100))
+CREATE PROCEDURE sp_getMerchantPendingTransactions(IN inmerchantName VARCHAR(100))
 BEGIN
 
  SELECT fromusername, fromaccount, certificate, amount
-	FROM tbl_merchant_pending_transactions WHERE tbl_merchant_pending_transactions.tomerchantname = merchantName;  
+	FROM tbl_merchant_pending_transactions WHERE tbl_merchant_pending_transactions.tomerchantname = inmerchantName;  
 
 END$$
 DELIMITER ;

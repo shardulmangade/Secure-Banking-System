@@ -20,7 +20,6 @@
 <a href="${pageContext.request.contextPath}/home"> Home </a>| Want to leave ${username}?<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 </sec:authorize>
 
-	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 	<script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 
 	<script src="/sundevilbank/resources/js/bootstrap.js"></script>

@@ -23,4 +23,4 @@ tomerchantaccount varchar(100) not null,
 amount DOUBLE not null,
 createdby varchar(100) not null,
 createddate timestamp not null
-)
+);
