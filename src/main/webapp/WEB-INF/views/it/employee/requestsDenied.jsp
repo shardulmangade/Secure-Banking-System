@@ -7,6 +7,7 @@
 <title>Pending Request denied</title>
 </head>
 <body>
-Requests\Denied
+Requests Denied
+<% response.setHeader("Refresh", "8;/sundevilbank"); %>
 </body>
 </html>

@@ -10,5 +10,6 @@
 	Want to leave ${username}?
 	<a href="<c:url value="/j_spring_security_logout" />"> Logout</a>
 Requests Approved
+<% response.setHeader("Refresh", "8;/sundevilbank"); %>
 </body>
 </html>
