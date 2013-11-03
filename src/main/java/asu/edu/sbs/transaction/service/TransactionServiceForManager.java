@@ -80,5 +80,10 @@ public class TransactionServiceForManager {
 	{		
 			return (loginmanager.insertValidUser(user, password, createdBy));	
 	}
+	public User getUser(String username) throws BankStorageException, BankAccessException
+	{		
+			User user= loginmanager.getUser(username);
+			return user;
+	}		
 	
 }
