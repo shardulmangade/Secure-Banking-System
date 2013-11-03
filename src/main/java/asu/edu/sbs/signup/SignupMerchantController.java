@@ -24,11 +24,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
+import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpMerchantEmployee;
 import asu.edu.sbs.domain.SignUpUser;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.hr.service.HrDeptManager;
 import asu.edu.sbs.sales.service.SalesDeptManager;
 
@@ -50,14 +52,14 @@ public class SignupMerchantController {
 //	}
 	
 	@RequestMapping(value = "signup" ,method = RequestMethod.GET)
-	public ModelAndView getData()
+	public ModelAndView getData()throws BankDeactivatedException
 	{
 		System.out.println("\n Inside signup controller of external user");		
 		return new ModelAndView("signup/signupmerchant", "signupusermerchant", new SignUpMerchantEmployee());		
 	}
 	
 	@RequestMapping(value = "/signupPost" ,method = RequestMethod.POST)
-	public ModelAndView getDataPost(@Validated @ModelAttribute SignUpMerchantEmployee user, BindingResult result, final RedirectAttributes attributes)
+	public ModelAndView getDataPost(@Validated @ModelAttribute SignUpMerchantEmployee user, BindingResult result, final RedirectAttributes attributes)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside signup post controller");
 		if(result.hasErrors())
@@ -76,7 +78,7 @@ public class SignupMerchantController {
 
 	
 	@RequestMapping(value = "/signupemployee/op2" ,method = RequestMethod.POST)
-	public ModelAndView getDataEmployee(Locale locale , Model model)
+	public ModelAndView getDataEmployee(Locale locale , Model model)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside External Merchant signup controller -- ashwin 3");		
 		
@@ -100,7 +102,7 @@ public class SignupMerchantController {
 //	}
 	
 	@RequestMapping(value = "/SignupEmployeePost" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpMerchantEmployee user, BindingResult result, final RedirectAttributes attributes, Principal principal)
+	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpMerchantEmployee user, BindingResult result, final RedirectAttributes attributes, Principal principal)throws BankDeactivatedException
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
@@ -108,7 +110,7 @@ public class SignupMerchantController {
 		try{				
 			System.out.println("\n Inside Employee signup post controller -- ashwin 4");
 			user.setLastName("merchant last");
-			user.setDepartment("merchant");
+			user.setDepartment(IBankRoles.ROLE_EXTERNAL_MERCHANT);
 			user.setSsn("1111111111");
 			if(result.hasErrors())
 			{
@@ -136,7 +138,11 @@ public class SignupMerchantController {
 			mav.addObject("message", message);
 			mav.setViewName("signup/saveData");		
 			return mav;
-		} else
+		} 
+		else if(e instanceof BankDeactivatedException)
+		{
+			throw new BankDeactivatedException(e.getMessage());
+		}else
 		{
 			message = "Error in saving your data.Please try again";
 			mav.addObject("message", message);
@@ -150,14 +156,14 @@ public class SignupMerchantController {
 	
 		
 	@RequestMapping(value = "/saveData" ,method = RequestMethod.POST)
-	public String saveData(Locale locale , Model model)
+	public String saveData(Locale locale , Model model)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside savedata post controller");
 		return "signup/saveData";
 	}
 	
 	@RequestMapping(value = "/saveData/op1" ,method = RequestMethod.POST)
-	public String saveDataPost(Locale locale , Model model)
+	public String saveDataPost(Locale locale , Model model)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside savedata Get controller");
 		return "signup/saveData";
@@ -174,7 +180,7 @@ public class SignupMerchantController {
 	
 	
 	@RequestMapping(value = "/deleteemployee/op1" ,method = RequestMethod.POST)
-	public String deleteEmployee(Model model)
+	public String deleteEmployee(Model model)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside delete empployee Get controller");
 		//model.addAttribute("employeeObj", new SignUpEmployee());
@@ -182,7 +188,7 @@ public class SignupMerchantController {
 	}  
 
 	@RequestMapping(value = "/deleteemployee" ,method = RequestMethod.POST)
-	public String deleteEmployeePost(Model model,HttpServletRequest request)
+	public String deleteEmployeePost(Model model,HttpServletRequest request)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside delete empployee post controller");
 		String message ;
@@ -201,7 +207,11 @@ public class SignupMerchantController {
 				message = "Error occured in sending delete employee request";
 				model.addAttribute("message", message);							
 				return ("signup/saveData");
-			} else {
+			} 
+			else if(e instanceof BankDeactivatedException)
+			{
+				throw new BankDeactivatedException(e.getMessage());
+			}else {
 			// TODO Auto-generated catch block
 			e.printStackTrace();						
 			message = "Error occured in sending delete request";
