@@ -24,6 +24,7 @@
 		<div class = "span4 hero-unit" id="sidebar">
 			<div class="well" style="width:300px; margin:0 auto;">
 				 <P> ${message}</P>
+				 <p>you will be auto directed to home in 10 seconds</p>
 			</div>
 		</div>
 	</div> 	
@@ -33,5 +34,6 @@
 	</footer>
 	<!--  end of footer -->
 </div>
+<% response.setHeader("Refresh", "10;/sundevilbank/home"); %>
 </body>
 </html>

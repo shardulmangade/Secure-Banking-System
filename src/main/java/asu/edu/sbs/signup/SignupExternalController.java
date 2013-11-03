@@ -24,11 +24,12 @@ import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.SignUpUser;
 import asu.edu.sbs.domain.User;
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.sales.service.SalesDeptManager;
 
 
 @Controller
-@RequestMapping(value= "/signupuserexternal")
+@RequestMapping(value= "/sales/salesemployee/signupuserexternal")
 public class SignupExternalController {
 
 	@Autowired
@@ -50,7 +51,7 @@ public class SignupExternalController {
 	}
 	
 	@RequestMapping(value = "/signupPost" ,method = RequestMethod.POST)
-	public ModelAndView getDataPost(@Validated @ModelAttribute SignUpUser user, BindingResult result, final RedirectAttributes attributes)
+	public ModelAndView getDataPost(@Validated @ModelAttribute SignUpUser user, BindingResult result, final RedirectAttributes attributes)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside signup post controller");
 		if(result.hasErrors())

@@ -120,13 +120,14 @@ public class CorporateController {
 			System.out.println("\n Inside Employee signup post controller");
 			if(result.hasErrors())
 			{
-				return new ModelAndView("corporate/add", "signupuser",employee);
+				message= "Please fill form properly, validation erros observed";
+				mav.addObject("message", message);	
+				mav.addObject("username", principal.getName());
+				mav.setViewName("corporate/saveData");
+				return mav;
 			}		 
 					
-			mav.setViewName("signup/saveData"); // need getter methods for setView. Using saveData in signup.
-//			employee.setDepartment(employee.getDepartment());
-//			employee.setRole(employee.getRole());				
-//			employee.setCreatedBy(principal.getName());	
+			mav.setViewName("corporate/saveData"); 
 			message= "Your request has been submitted for approval";
 			
 			employee.setCreatedBy(principal.getName());				
@@ -149,7 +150,7 @@ public class CorporateController {
 			{
 				message = "Username already Exists.Choose a different username";
 				mav.addObject("message", message);
-				mav.setViewName("signup/saveData");		
+				mav.setViewName("corporate/saveData");		
 				return mav;
 			}else if (e instanceof BankDeactivatedException)
 			{
@@ -159,7 +160,7 @@ public class CorporateController {
 			{
 				message = "Error in saving your data.Please try again";
 				mav.addObject("message", message);
-				mav.setViewName("signup/saveData");		
+				mav.setViewName("corporate/saveData");		
 				return mav;
 					
 			}
@@ -175,7 +176,14 @@ public class CorporateController {
 		String tobeReplaced = "";				
 		username=request.getParameter("userNametext");
 		try{												
-			message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";	
+			message= "Employee "+ request.getParameter("userNametext")+ " has been transfered";
+			if(employee.getDepartment().equals("NONE") || employee.getRole().equals("NONE"))
+			{
+				message="Oops!! You seem to be lost because of some Bad Operation. Please press the Home button to return to your mainpage or Logout.";
+				model.addAttribute("message", message);
+				model.addAttribute("username", principal.getName());
+				return ("corporate/saveData");	
+			}
 			tobeReplaced = crManager.getRoleTobechanged(employee.getDepartment(),employee.getRole());
 			crManager.updateUserRole(tobeReplaced,employee.getDepartment(),username ,principal.getName());
 			model.addAttribute("message", message);							
