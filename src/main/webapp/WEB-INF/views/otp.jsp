@@ -16,7 +16,7 @@
 	<c:when test="${not empty newOTP}">We have emailed you a <b>new</b> One Time Password (OTP) to your registered email address. Please enter it below:</c:when>
 	<c:when test="${not empty errorOTP}">The OTP you entered did not match the one in our database. Please try again:</c:when>
 	<c:otherwise>
-	To access your account we need the One Time Password (OTP) which we
+	To access your account we need the One Time Password (OTP) which was
 	sent to your registered email address. Please enter it below:
 	</c:otherwise>
 	</c:choose>

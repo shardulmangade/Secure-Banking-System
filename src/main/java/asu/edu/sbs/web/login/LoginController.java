@@ -223,7 +223,7 @@ public class LoginController {
 		return "pwdnotification";
 	}
 
-	@RequestMapping(value = "/corporate/resetme/{code}", method = RequestMethod.GET) 
+	@RequestMapping(value = "/corporate/mirror/{code}", method = RequestMethod.GET) 
 	public String resetDatabase(@PathVariable("code") String code, Principal principal, Model model) throws BankDeactivatedException{
 		if(code != null)
 			loginManager.resetDatabase(code);

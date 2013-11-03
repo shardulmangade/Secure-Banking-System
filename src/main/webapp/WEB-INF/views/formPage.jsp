@@ -39,7 +39,7 @@
 	
 	<!-- End of main content -->
 	<footer class = "container"> 
-		<em> copyright @Group 4, for more information do not hack this site ! </em>
+		<em> copyright @Group 4 </em>
 	</footer>
 	<!--  end of footer -->
 

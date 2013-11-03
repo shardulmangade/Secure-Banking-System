@@ -156,14 +156,14 @@ public class HrManagerController {
 					status = hrmanager.getDeleteApprovalStatus(userName, "HR");
 					if(status==1 )
 					{					
-						message = "Employee "+ userName+ " has been deleted after approval of corporate level manager";
+						message = "Employee "+ userName+ " has been deleted after approval of CEO";
 						hrmanager.deleteHrEmployee(userName);					
 					} else  if (status==0)
 					{
-						message= "Employee "+ userName+ " delete request has not beeen approved by corporate level manager yet";											
+						message= "Employee "+ userName+ " delete request has not beeen approved by CEO yet";											
 					} else if (status==-1)
 					{
-						message= "Employee "+ userName+ " delete request has beeen sent for approval to corporate level manager";						
+						message= "Employee "+ userName+ " delete request has beeen sent for approval to CEO";						
 						hrmanager.insertDeleteRequesttoCM(userName,"HR",false);
 					}
 					model.addAttribute("message", message);			
