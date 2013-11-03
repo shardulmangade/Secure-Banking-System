@@ -21,16 +21,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import asu.edu.sbs.domain.IBankRoles;
-import asu.edu.sbs.domain.IDepartments;
-import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.exception.BankDeactivatedException;
-import asu.edu.sbs.sales.service.SalesDeptManager;
-import asu.edu.sbs.service.TrialUserManager;
 import asu.edu.sbs.login.service.OneTimePassword;
+import asu.edu.sbs.sales.service.SalesDeptManager;
 
 @Controller
 @RequestMapping(value= "/sales/salesmanager")
