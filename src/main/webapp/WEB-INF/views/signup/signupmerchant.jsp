@@ -12,7 +12,7 @@ font-style: italic;
 </head>
 <body>
 <P>  Registration Form for External Merchants </P>
-<form:form method="POST" commandName="signupusermerchant"  action="${pageContext.request.contextPath}/signupusermerchant/SignupEmployeePost.html" >
+<form:form method="POST" commandName="signupusermerchant"  action="${pageContext.request.contextPath}/sales/salesemployee/signupusermerchant/SignupEmployeePost.html" >
 
  <table>
     <tr>

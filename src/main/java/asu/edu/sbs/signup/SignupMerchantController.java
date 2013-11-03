@@ -34,7 +34,7 @@ import asu.edu.sbs.sales.service.SalesDeptManager;
 
 
 @Controller
-@RequestMapping(value= "/signupusermerchant")
+@RequestMapping(value= "/sales/salesemployee/signupusermerchant")
 public class SignupMerchantController {
 
 	@Autowired
