@@ -27,6 +27,8 @@ import asu.edu.sbs.domain.Transaction;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankDeactivatedException;
+import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.hr.service.HrDeptManager;
 import asu.edu.sbs.login.service.OneTimePassword;
 import asu.edu.sbs.transaction.service.TransactionServiceForManager;
@@ -45,16 +47,25 @@ public class TransactionControllerForManager {
 	ModelAndView savedMav;
 		
 		@RequestMapping(value = "home", method = RequestMethod.GET)
-		public String addnewTransEmployee(Locale locale, Model model) {
+		public String addnewTransEmployee(Locale locale, Model model) throws BankDeactivatedException
+		{
 			System.out.println("Inside trans manager Controller .............");				
 			return "transactions/manager/transManager";
 		} 
 		
 		@RequestMapping(value = "transactionsForManager", method = RequestMethod.POST)
-		public String getTransactions(Locale locale, Model model) throws Exception
+		public String getTransactions(Locale locale, Model model) throws BankDeactivatedException
 		{
 //			transactionManager = new TransactionManager();
-			List<Transaction> transactions =  transManager.getManagerTransactions();
+			List<Transaction> transactions =null;
+			try {
+				transactions = transManager.getManagerTransactions();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				
+				e.printStackTrace();
+				throw new BankDeactivatedException(e.getMessage());
+			}
 			model.addAttribute("transactionsM", transactions);
 			return "transactions/manager/transactionsForManager";
 		}
@@ -70,14 +81,16 @@ public class TransactionControllerForManager {
 		
 		
 		@RequestMapping(value = "newTransEmployee", method = RequestMethod.POST)
-		public ModelAndView newTransEmployeeGet(Locale locale, Model model) {
+		public ModelAndView newTransEmployeeGet(Locale locale, Model model) throws BankDeactivatedException
+		{
 			System.out.println("Inside trans manager get Controller .............");							
 			savedMav = new ModelAndView("transactions/manager/newTransEmployee", "signupemployee", new User());
 			return savedMav;
 		}
 		
 		@RequestMapping(value = "/newtransemployee/op1", method = RequestMethod.POST)
-		public ModelAndView newTransEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes,Principal principal) {
+		public ModelAndView newTransEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes,Principal principal) throws BankDeactivatedException 
+		{
 			System.out.println("INSIDE trans manager post Controller for new employee .............");
 			OneTimePassword otp = new OneTimePassword() ;
 			String message ;
@@ -121,7 +134,12 @@ public class TransactionControllerForManager {
 				mav.setViewName("signup/saveData");
 				mav.addObject("username",principal.getName() );			
 				return mav;
-			} else
+			}
+			else if (e instanceof BankDeactivatedException)
+			{
+				throw new BankDeactivatedException(e.getMessage());
+			}
+			else
 			{
 				message = "Error in saving your data.Please try again";
 				mav.addObject("message", message);
@@ -130,61 +148,19 @@ public class TransactionControllerForManager {
 				return mav;					
 			}
 		  }
-			/*System.out.println("INSIDE trans manager post Controller .............");
-			OneTimePassword otp = new OneTimePassword() ;
-			String message ;
-			ModelAndView mav = new ModelAndView();
-			try{				
-				System.out.println("\n Inside Employee signup post controller");
-				if(result.hasErrors())
-				{
-					//return new ModelAndView("hr/newhremployee", "signupemployee",employee);
-					//return savedMav;
-					
-					message = "Validation Errors observed.Please go back and fill valid information";
-					mav.addObject("message", message);
-					mav.setViewName("signup/saveData");
-					return mav;
-					//return new ModelAndView("transactions/manager/manager","signupemployee",employee);
-				}		 
-						
-				mav.setViewName("signup/saveData");
-				message= "Your request has been submitted for approval";
-				employee.setDepartment("TM");
-				employee.setPassword("temppassword");
-				transManager.addNewHrEmployee(employee);
-				mav.addObject("message", message);				
-				return mav;
-			}
-		 catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			if(e instanceof com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException )
-			{
-				message = "Username already Exists.Choose a different username";
-				mav.addObject("message", message);
-				mav.setViewName("signup/saveData");		
-				return mav;
-			} else
-			{
-				message = "Error in saving your data.Please try again";
-				mav.addObject("message", message);
-				mav.setViewName("signup/saveData");		
-				return mav;					
-			}
-		  }*/ 
+			
 		}
 
 		
 		@RequestMapping(value = "/deletetransemployee/op1" ,method = RequestMethod.POST)
-		public String deleteEmployeeGet(Model model,HttpServletRequest request)
+		public String deleteEmployeeGet(Model model,HttpServletRequest request) throws BankDeactivatedException
 		{
 			return  ("transactions/manager/deleteTransEmployee");
 		}
 			
 		
 		@RequestMapping(value = "deleteTransEmployee" ,method = RequestMethod.POST)
-		public String deleteEmployeePost(Model model,HttpServletRequest request)
+		public String deleteEmployeePost(Model model,HttpServletRequest request) throws BankDeactivatedException
 		{
 			System.out.println("\n Inside delete empployee post controller");
 			String message = null ,userName;
@@ -218,7 +194,12 @@ public class TransactionControllerForManager {
 					message = "Error occured in deleting employee .Please use valid username";
 					model.addAttribute("message", message);							
 					return ("signup/saveData");
-				} else {
+				}
+				else if (e instanceof BankDeactivatedException)
+				{
+					throw new BankDeactivatedException();
+				}
+				else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending delete request";
@@ -230,7 +211,7 @@ public class TransactionControllerForManager {
 		
 		
 		@RequestMapping(value = "transferTransEmployee" ,method = RequestMethod.POST)
-		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request, Principal principal)
+		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request, Principal principal) throws BankDeactivatedException
 		{								
 			Map <String,String> department = new LinkedHashMap<String,String>();			
 			department.put("sales", "Sales department");
@@ -250,7 +231,7 @@ public class TransactionControllerForManager {
 		}
 		
 		@RequestMapping(value = "/transfertransemployee/op1" ,method = RequestMethod.POST)
-		public String transferTransEmployee( User user,Model model,HttpServletRequest request, Principal principal)
+		public String transferTransEmployee( User user,Model model,HttpServletRequest request, Principal principal) throws BankDeactivatedException
 		{
 			System.out.println("\n Inside delete empployee post controller");
 			String message,department = null, username=null ;
@@ -292,6 +273,4 @@ public class TransactionControllerForManager {
 				}
 			 }		
 		}
-		
-		
 }

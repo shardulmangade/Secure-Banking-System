@@ -19,6 +19,7 @@ import asu.edu.sbs.customer.service.CustomerManager;
 import asu.edu.sbs.domain.Credit;
 import asu.edu.sbs.domain.MerchantCredit;
 import asu.edu.sbs.domain.MerchantTransaction;
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.merchant.service.MerchantManager;
 import asu.edu.sbs.sales.service.SalesDeptManager;
 
@@ -29,8 +30,8 @@ public class merchantController {
 	@Autowired
 	private MerchantManager merchantManager;
 
-	@RequestMapping(value = "merchant/mainpage", method = RequestMethod.GET)
-	public String customerMainPage(Locale locale, Model model, Principal principal) {
+	@RequestMapping(value = "merchant/mainpage", method = RequestMethod.GET) 
+	public String customerMainPage(Locale locale, Model model, Principal principal) throws BankDeactivatedException {
 		System.out.println("Inside merchant post Controller .............");
 		String name = principal.getName();
 		model.addAttribute("username",name);
@@ -39,7 +40,7 @@ public class merchantController {
 	
 	
 	@RequestMapping(value = "merchant/transaction", method = RequestMethod.POST)
-	public String customerTransaction(Locale locale, Model model, Principal principal) {
+	public String customerTransaction(Locale locale, Model model, Principal principal) throws BankDeactivatedException {
 		System.out.println("Inside merchant transaction Controller .............");
 		String name = principal.getName();
 		
@@ -51,7 +52,7 @@ public class merchantController {
 	}
 
 	@RequestMapping(value = "merchant/clearCustomerPendingTransactions", method = RequestMethod.POST)
-	public String clearPendingTransaction(Locale locale, Model model, Principal principal) {
+	public String clearPendingTransaction(Locale locale, Model model, Principal principal) throws BankDeactivatedException {
 		System.out.println("Inside merchant transaction Controller .............");
 		String name = principal.getName();
 		List<MerchantCredit> listTransactions=  merchantManager.getPendingRequest(name);		
@@ -61,7 +62,7 @@ public class merchantController {
 	}
 	
 	@RequestMapping(value = "merchant/newtransaction", method = RequestMethod.POST)
-	public String newCustomerTransaction(Locale locale, Model model, Principal principal) {
+	public String newCustomerTransaction(Locale locale, Model model, Principal principal) throws BankDeactivatedException {
 		System.out.println("Inside new transaction Controller .............");
 		String name = principal.getName();
 		model.addAttribute("username",name);
@@ -69,7 +70,7 @@ public class merchantController {
 	}
 	
 	@RequestMapping(value = "merchant/performTransaction", method = RequestMethod.POST)
-	public String performTransaction( Locale locale, Model model, Principal principal,HttpServletRequest request) {
+	public String performTransaction( Locale locale, Model model, Principal principal,HttpServletRequest request) throws BankDeactivatedException {
 		System.out.println("Inside new transaction Controller .............");
 		String name = principal.getName();
 		String message = null;
@@ -96,6 +97,8 @@ public class merchantController {
 		}		
 		} catch (Exception e)
 		{
+			if ( e instanceof BankDeactivatedException)
+				throw new BankDeactivatedException(e.getMessage());
 			e.printStackTrace();
 			message = "Sorry .we are unable to process your transaction right now";
 			
@@ -107,9 +110,10 @@ public class merchantController {
 	
 	/**
 	 * This method handles the pending request 
+	 * @throws BankDeactivatedException 
 	 */
 	@RequestMapping(value = "/merchant/handlePendingRequestsResponse", method = RequestMethod.POST)
-	public String approvePendingReq( Locale locale, Model model, Principal principal,HttpServletRequest request) {	
+	public String approvePendingReq( Locale locale, Model model, Principal principal,HttpServletRequest request) throws BankDeactivatedException {	
 		System.out.println("Inside aprove transaction Controller .............");
 		String userName = principal.getName();
 		String message = null;				
@@ -120,6 +124,8 @@ public class merchantController {
 			//add transaction to customer table
 			//change account balance
 		} catch (Exception e){
+			if ( e instanceof BankDeactivatedException)
+				throw new BankDeactivatedException(e.getMessage());
 			e.printStackTrace();
 			message = "Sorry .we are unable to process your transaction right now";			
 		}

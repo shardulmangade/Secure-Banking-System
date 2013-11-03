@@ -216,15 +216,6 @@ public class TransactionDBManager {
 					//SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 					tran.setTimestamp(result.getString(4));
 					
-//					try {
-//						System.out.println(result.getString(4));
-//						tran.setTimestamp(format.parse(result.getString(4).toString()));
-//					} catch (ParseException e) {
-//						//This catch should never be executed. Application logic should make sure of that
-//						tran.setTimestamp("2013-11-02 03:44:34");
-//						e.printStackTrace();
-//					}
-					
 					
 					
 					
