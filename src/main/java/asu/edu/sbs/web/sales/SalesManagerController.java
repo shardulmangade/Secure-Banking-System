@@ -27,6 +27,7 @@ import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.sales.service.SalesDeptManager;
 import asu.edu.sbs.service.TrialUserManager;
 import asu.edu.sbs.login.service.OneTimePassword;
@@ -44,14 +45,14 @@ public class SalesManagerController {
 	private EmailNotificationManager enManager;
 		
 		@RequestMapping(value = "/manager", method = RequestMethod.GET)
-		public String addnewSalesEmployee(Locale locale, Model model,Principal principal) {
+		public String addnewSalesEmployee(Locale locale, Model model,Principal principal)throws BankDeactivatedException {
 			System.out.println("Inside Sales manager Controller .............");
 			model.addAttribute("username", principal.getName());
 			return "sales/manager/manager";
 		} 
 		
 		@RequestMapping(value = "sales/salesmanager", method = RequestMethod.POST)
-		public String addnewsalesEmployeePost(Locale locale, Model model,Principal principal) {
+		public String addnewsalesEmployeePost(Locale locale, Model model,Principal principal) throws BankDeactivatedException{
 			System.out.println("Inside sales manager post Controller .............");				
 			model.addAttribute("username", principal.getName());	
 			return "sales/manager/salesmanager";
@@ -59,7 +60,7 @@ public class SalesManagerController {
 		
 		
 		@RequestMapping(value = "/newsalesemployee", method = RequestMethod.POST)
-		public ModelAndView newSalesEmployeeGet(Locale locale, Model model, Principal principal) {
+		public ModelAndView newSalesEmployeeGet(Locale locale, Model model, Principal principal) throws BankDeactivatedException {
 			System.out.println("Inside Sales manager get Controller .............");
 //			model.addAttribute("username", principal.getName());
 			savedMav = new ModelAndView("sales/newsalesemployee", "signupemployee", new User());
@@ -68,7 +69,7 @@ public class SalesManagerController {
 		}
 		
 		@RequestMapping(value = "/newsalesexternalemployee", method = RequestMethod.POST)
-		public ModelAndView newSalesExternalEmployeeGet(Locale locale, Model model, Principal principal) {
+		public ModelAndView newSalesExternalEmployeeGet(Locale locale, Model model, Principal principal) throws BankDeactivatedException {
 			System.out.println("Inside Sales employee get Controller .............");					
 			model.addAttribute("username", principal.getName());
 			savedMav1 = new ModelAndView("sales/newsalesexternalemployee", "signupexternalemployee", new SignUpExternalEmployee());
@@ -77,7 +78,7 @@ public class SalesManagerController {
 		}
 		
 		@RequestMapping(value = "/newsalesemployee/op1", method = RequestMethod.POST)
-		public ModelAndView newSalesEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes, Principal principal) {
+		public ModelAndView newSalesEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes, Principal principal) throws BankDeactivatedException {
 			System.out.println("INSIDE Sales manager post Controller .............");
 			OneTimePassword otp = new OneTimePassword() ;
 			String message ;
@@ -120,7 +121,12 @@ public class SalesManagerController {
 				mav.setViewName("signup/saveData");
 				mav.addObject("username",principal.getName() );
 				return mav;
-			} else
+			} 
+			else if(e instanceof BankDeactivatedException)
+			{
+				throw new BankDeactivatedException(e.getMessage());
+			}
+			else
 			{
 				message = "Error in saving your data.Please try again";
 				mav.addObject("message", message);
@@ -132,7 +138,7 @@ public class SalesManagerController {
 		}
 		
 		@RequestMapping(value = "/deletesalesemployee/op1" ,method = RequestMethod.POST)
-		public String deleteEmployeeGet(Model model,HttpServletRequest request, Principal principal)
+		public String deleteEmployeeGet(Model model,HttpServletRequest request, Principal principal)throws BankDeactivatedException
 		{
 			model.addAttribute("username", principal.getName());
 			return  ("sales/deletesalesemployee");
@@ -140,7 +146,7 @@ public class SalesManagerController {
 			
 		
 		@RequestMapping(value = "/deletesalesemployee" ,method = RequestMethod.POST)
-		public String deleteEmployeePost(Model model,HttpServletRequest request, Principal principal)
+		public String deleteEmployeePost(Model model,HttpServletRequest request, Principal principal) throws BankDeactivatedException
 		{
 			System.out.println("\n Inside delete employee post controller");
 			String message = null ,userName;
@@ -180,7 +186,11 @@ public class SalesManagerController {
 					model.addAttribute("message", message);		
 					model.addAttribute("username", principal.getName());
 					return ("signup/saveData");
-				} else {
+				} 
+				else if(e instanceof BankDeactivatedException)
+				{
+					throw new BankDeactivatedException(e.getMessage());
+				}else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending delete request";
@@ -193,7 +203,7 @@ public class SalesManagerController {
 		
 		
 		@RequestMapping(value = "/transfersalesemployee" ,method = RequestMethod.POST)
-		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request, Principal principal)
+		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request, Principal principal)throws BankDeactivatedException
 		{								
 			Map <String,String> department = new LinkedHashMap<String,String>();			
 			department.put("HR", "HR department");
@@ -212,7 +222,7 @@ public class SalesManagerController {
 		}
 		
 		@RequestMapping(value = "/transfersalesemployee/op1" ,method = RequestMethod.POST)
-		public String transferSalesEmployee(User user,Model model,HttpServletRequest request, Principal principal)
+		public String transferSalesEmployee(User user,Model model,HttpServletRequest request, Principal principal) throws BankDeactivatedException
 		{
 			System.out.println("\n Inside delete empployee post controller");
 			String message,department = null ,username = null;
@@ -243,7 +253,11 @@ public class SalesManagerController {
 					model.addAttribute("message", message);	
 					model.addAttribute("username", principal.getName());
 					return ("signup/saveData");
-				} else {
+				} 
+				else if(e instanceof BankDeactivatedException)
+				{
+					throw new BankDeactivatedException(e.getMessage());
+				}else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
 				message = "Error occured in sending transfer request";

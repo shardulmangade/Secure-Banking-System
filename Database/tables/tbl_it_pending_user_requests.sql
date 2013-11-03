@@ -11,10 +11,10 @@ createddate timestamp not null
 )
 
 insert into tbl_it_pending_user_requests 
-values("anu","Ashwin", "krishna", "kitkat","n.ashwinkrishna@gmail.com","customer","1234563212",substring_index(user(),'@',1), curdate());
+values("anu","Ashwin", "krishna","n.ashwinkrishna@gmail.com","customer","1234563212",substring_index(user(),'@',1), curdate());
 
 insert into tbl_it_pending_user_requests 
-values("apu","ash", "ram", "lad","n.ashwinkrishna@gmail.com","customer","1234563212",substring_index(user(),'@',1), curdate());
+values("apu","ash", "ram","n.ashwinkrishna@gmail.com","customer","1234563212",substring_index(user(),'@',1), curdate());
 
 insert into tbl_it_pending_user_requests 
-values("alu","kit", "shyam", "merchantlast","n.ashwinkrishna@gmail.com","merchant","1111111111",substring_index(user(),'@',1), curdate());
+values("alu","kit", "merchantlast","n.ashwinkrishna@gmail.com","merchant","1111111111",substring_index(user(),'@',1), curdate());
