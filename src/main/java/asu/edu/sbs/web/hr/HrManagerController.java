@@ -25,6 +25,7 @@ import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.hr.service.HrDeptManager;
 import asu.edu.sbs.login.service.OneTimePassword;
@@ -40,7 +41,7 @@ public class HrManagerController {
 	private EmailNotificationManager enManager;
 		
 		@RequestMapping(value = "manager/op1", method = RequestMethod.GET)
-		public String addnewHrEmployee(Locale locale, Model model,Principal principal) {
+		public String addnewHrEmployee(Locale locale, Model model,Principal principal) throws BankDeactivatedException {
 			System.out.println("Inside hr manager Controller .............");
 			model.addAttribute("username", principal.getName());
 			return "hr/manager/manager";
@@ -48,15 +49,15 @@ public class HrManagerController {
 		
 		
 		@RequestMapping(value = "hr/manager", method = RequestMethod.POST)
-		public String addnewHrEmployeePost(Locale locale, Model model,Principal principal) {
+		public String addnewHrEmployeePost(Locale locale, Model model,Principal principal) throws BankDeactivatedException {
 			System.out.println("Inside hr manager post Controller .............");	
 			model.addAttribute("username", principal.getName());
 			return "hr/manager/hrmanager";
 		}
 		
 		
-		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST)
-		public ModelAndView newHrEmployeeGet(Locale locale, Model model,Principal principal) {
+		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST) 
+		public ModelAndView newHrEmployeeGet(Locale locale, Model model,Principal principal) throws BankDeactivatedException {
 			ModelAndView savedMav;
 			System.out.println("Inside hr manager get Controller .............");							
 			savedMav = new ModelAndView("hr/newhremployee", "signupemployee", new User());
@@ -65,7 +66,7 @@ public class HrManagerController {
 		}
 		
 		@RequestMapping(value = "/newhremployee/op1", method = RequestMethod.POST)
-		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes,Principal principal) {
+		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes,Principal principal) throws BankDeactivatedException{
 			System.out.println("INSIDE hr manager post Controller .............");
 			OneTimePassword otp = new OneTimePassword() ;
 			String message ;
@@ -109,7 +110,11 @@ public class HrManagerController {
 				mav.setViewName("signup/saveData");
 				mav.addObject("username",principal.getName() );			
 				return mav;
-			} else
+			}else if(e instanceof BankDeactivatedException)
+			{
+				throw new BankDeactivatedException(e.getMessage());
+			} 
+			else
 			{
 				message = "Error in saving your data.Please try again";
 				mav.addObject("message", message);
@@ -130,7 +135,7 @@ public class HrManagerController {
 			
 		
 		@RequestMapping(value = "/deletehremployee" ,method = RequestMethod.POST)
-		public String deleteEmployeePost(Model model,HttpServletRequest request,Principal principal)
+		public String deleteEmployeePost(Model model,HttpServletRequest request,Principal principal) throws BankDeactivatedException
 		{
 			System.out.println("\n Inside delete empployee post controller");
 			String message = null ,userName;
@@ -180,6 +185,9 @@ public class HrManagerController {
 					model.addAttribute("message", message);			
 					model.addAttribute("username", principal.getName());
 					return ("signup/saveData");
+				} else if(e instanceof BankDeactivatedException)
+				{
+					throw new BankDeactivatedException(e.getMessage());
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
@@ -193,7 +201,7 @@ public class HrManagerController {
 		
 		
 		@RequestMapping(value = "/transferemployee" ,method = RequestMethod.POST)
-		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request,Principal principal)
+		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request,Principal principal) throws BankDeactivatedException
 		{								
 			Map <String,String> department = new LinkedHashMap<String,String>();			
 			department.put("sales", "Sales department");
@@ -212,7 +220,7 @@ public class HrManagerController {
 		}
 		
 		@RequestMapping(value = "/transferemployee/op1" ,method = RequestMethod.POST)
-		public String transferHrEmployee( User user,Model model,HttpServletRequest request,Principal principal)
+		public String transferHrEmployee( User user,Model model,HttpServletRequest request,Principal principal) throws BankDeactivatedException
 		{			
 			String message,department = null,username=null ;
 			String roleToBeupdated =null;
@@ -242,6 +250,9 @@ public class HrManagerController {
 					model.addAttribute("message", message);			
 					model.addAttribute("username", principal.getName());
 					return ("signup/saveData");
+				} else if(e instanceof BankDeactivatedException)
+				{
+					throw new BankDeactivatedException(e.getMessage());
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						

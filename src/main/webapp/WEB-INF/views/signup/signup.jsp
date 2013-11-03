@@ -16,24 +16,9 @@ font-style: italic;
 
  <table>
     <tr>
-        <td><form:label path="firstName">firstName</form:label></td>
-        <td><form:input path="firstName"/></td>
-        <td><form:errors path="firstName" cssClass="error" /></td>
-    </tr>
-    <tr>
-        <td><form:label path="lastName">lastName</form:label></td>
-        <td><form:input path="lastName" /></td>
-        <td><form:errors path="lastName" cssClass="error" /></td>
-    </tr>
-    <tr>
         <td><form:label path="userName">userName</form:label></td>
         <td><form:input path="userName" /></td>
         <td><form:errors path="userName" cssClass="error" /></td>
-    </tr>
-    <tr>
-        <td><form:label path="emailId">emailId</form:label></td>
-        <td><form:input path="emailId" /></td>
-        <td><form:errors path="emailId" cssClass="error" /></td>
     </tr>
    
     <tr>
