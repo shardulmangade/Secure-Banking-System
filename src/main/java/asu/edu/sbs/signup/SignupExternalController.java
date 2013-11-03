@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.SignUpUser;
@@ -44,7 +45,7 @@ public class SignupExternalController {
 //	}
 	
 	@RequestMapping(value = "signup" ,method = RequestMethod.GET)
-	public ModelAndView getData()
+	public ModelAndView getData()throws BankDeactivatedException
 	{
 		System.out.println("\n Inside signup controller of external user");		
 		return new ModelAndView("signup/signupexternal", "signupuserexternal", new User());		
@@ -70,7 +71,7 @@ public class SignupExternalController {
 
 	
 	@RequestMapping(value = "/signupemployee/op1" ,method = RequestMethod.POST)
-	public ModelAndView getDataEmployee(Locale locale , Model model)
+	public ModelAndView getDataEmployee(Locale locale , Model model)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside External user signup controller -- ashwin 1");		
 		
@@ -89,14 +90,14 @@ public class SignupExternalController {
 
 	
 	@RequestMapping(value = "/SignupEmployeePost" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes, Principal principal)
+	public ModelAndView postDataEmployee(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes, Principal principal)throws BankDeactivatedException
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
 		mav.getModelMap().addAttribute("username", principal.getName());	
 		try{				
 			System.out.println("\n Inside Employee signup post controller --- ashwin 2");
-			user.setDepartment("customer");
+			user.setDepartment(IBankRoles.ROLE_EXTERNAL_USER);
 			if(result.hasErrors())
 			{
 				message = "**ERRORS** observed in validating.Please go back and enter valid information";
@@ -123,7 +124,11 @@ public class SignupExternalController {
 			mav.addObject("message", message);
 			mav.setViewName("signup/saveData");		
 			return mav;
-		} else
+		}
+		else if(e instanceof BankDeactivatedException)
+		{
+			throw new BankDeactivatedException(e.getMessage());
+		}else
 		{
 			message = "Error in saving your data.Please try again";
 			mav.addObject("message", message);
@@ -137,14 +142,14 @@ public class SignupExternalController {
 	
 		
 	@RequestMapping(value = "/saveData" ,method = RequestMethod.POST)
-	public String saveData(Locale locale , Model model)
+	public String saveData(Locale locale , Model model)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside savedata post controller");
 		return "signup/saveData";
 	}
 	
 	@RequestMapping(value = "/saveData/op1" ,method = RequestMethod.POST)
-	public String saveDataPost(Locale locale , Model model)
+	public String saveDataPost(Locale locale , Model model)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside savedata Get controller");
 		return "signup/saveData";
@@ -161,7 +166,7 @@ public class SignupExternalController {
 	
 	
 	@RequestMapping(value = "/deleteemployee/op1" ,method = RequestMethod.POST)
-	public String deleteEmployee(Model model)
+	public String deleteEmployee(Model model)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside delete empployee Get controller");
 		//model.addAttribute("employeeObj", new SignUpEmployee());
@@ -169,7 +174,7 @@ public class SignupExternalController {
 	}  
 
 	@RequestMapping(value = "/deleteemployee" ,method = RequestMethod.POST)
-	public String deleteEmployeePost(Model model,HttpServletRequest request)
+	public String deleteEmployeePost(Model model,HttpServletRequest request)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside delete empployee post controller");
 		String message ;
@@ -188,7 +193,11 @@ public class SignupExternalController {
 				message = "Error occured in sending delete employee request";
 				model.addAttribute("message", message);							
 				return ("signup/saveData");
-			} else {
+			} 
+			else if(e instanceof BankDeactivatedException)
+			{
+				throw new BankDeactivatedException(e.getMessage());
+			}else {
 			// TODO Auto-generated catch block
 			e.printStackTrace();						
 			message = "Error occured in sending delete request";
