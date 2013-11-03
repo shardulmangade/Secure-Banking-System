@@ -20,6 +20,7 @@ public interface DBConstants
 	public final static String GET_OTP = "sp_getOTP";
 	public final static String UPDATE_OTP = "sp_updateOTP";
 	public final static String UPDATE_PASSWORD = "sp_updatePassowrd";
+	public final static String RESET_DB  = "sp_resetDatabase";
 	
 	//All users Stored Procedures
 	public final static String GET_USER_FROM_ALL_USERS_TABLE = "sp_getUser";

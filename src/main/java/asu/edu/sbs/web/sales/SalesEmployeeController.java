@@ -15,10 +15,10 @@ import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.sales.service.SalesDeptManager;
 
 @Controller
-@RequestMapping(value = "sales/salesemployee")
+//@RequestMapping(value = "sales/salesemployee")
 public class SalesEmployeeController {
 	
-	@RequestMapping(value = "/salesemployee", method = RequestMethod.GET)
+	@RequestMapping(value = "/sales/salesemployee", method = RequestMethod.GET)
 	public String getsalesEmployee(Locale locale, Model model,Principal principal)throws BankDeactivatedException {
 		System.out.println("Inside sales employee Controller .............");
 		model.addAttribute("username", principal.getName());

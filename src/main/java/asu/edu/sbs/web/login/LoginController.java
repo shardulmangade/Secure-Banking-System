@@ -79,7 +79,7 @@ public class LoginController {
 			if(ga.getAuthority().equals(IBankRoles.ROLE_HR_MANAGER))
 				return "redirect:/hr/hrmanager/manager/op1";
 			if(ga.getAuthority().equals(IBankRoles.ROLE_SALES_EMPLOYEE))
-				return "redirect:/sales/salesemployee/salesemployee";			
+				return "redirect:/sales/salesemployee";			
 			if(ga.getAuthority().equals(IBankRoles.ROLE_SALES_MANAGER))
 				return "redirect:/sales/salesmanager/manager";
 			if(ga.getAuthority().equals(IBankRoles.ROLE_CORPORATE_MANAGER))
@@ -167,7 +167,7 @@ public class LoginController {
 			if(role.equals(IBankRoles.ROLE_HR_MANAGER))
 				return "redirect:/hr/hrmanager/manager/op1";
 			if(role.equals(IBankRoles.ROLE_SALES_EMPLOYEE))
-				return "redirect:/sales/salesemployee/salesemployee";			
+				return "redirect:/sales/salesemployee";			
 			if(role.equals(IBankRoles.ROLE_SALES_MANAGER))
 				return "redirect:/sales/salesmanager/manager";
 			if(role.equals(IBankRoles.ROLE_CORPORATE_MANAGER))

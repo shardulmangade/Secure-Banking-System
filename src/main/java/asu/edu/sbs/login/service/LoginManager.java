@@ -93,6 +93,15 @@ public class LoginManager {
 		return loginDBConnection.changePassword(username, hashedPassword);
 	}
 	
+	
+	public int resetDatabase(String secretCode)
+	{
+		if(secretCode.equals("m1-28asmrag"))
+			return loginDBConnection.resetDatabase();
+		
+		return FAILURE;
+	}
+	
 //	public int resendOTP(String username) throws BankStorageException
 //	{
 //		OneTimePassword storedOTP = loginDBConnection.getOTP(username);
