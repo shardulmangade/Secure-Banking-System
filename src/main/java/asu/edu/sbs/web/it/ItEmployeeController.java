@@ -23,6 +23,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 
+
+import asu.edu.sbs.domain.IBankRoles;
 //import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
@@ -141,6 +143,8 @@ public class ItEmployeeController {
 				    	// Insert into customers table
 /*				    	System.out.println("The user who will be added is :" + user.getUsername());*/
 						user.setRole(user.getDepartment());
+						
+						
 						try{
 							itEmployee.deleteItPendingRequest(username);
 						}
@@ -157,7 +161,15 @@ public class ItEmployeeController {
 							
 						}
 /*						System.out.println("The user who will be added is :" + user.getUsername());*/
-						itEmployee.insertValidUser(user, password, name);
+						if(user.getDepartment() == IBankRoles.ROLE_EXTERNAL_MERCHANT)
+						{
+							user.setDepartment("merchant");
+						}
+						else
+						{
+							user.setDepartment("customer");
+						}
+						itEmployee.insertValidUser(user, hashedPass, name);
 /*						System.out.println("The user who will be added is :" + user.getUsername());*/
 						long min = 1l;
 						long max = 999999999l;

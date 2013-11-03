@@ -12,7 +12,7 @@ IN userName VARCHAR(100),
 IN accountno varchar(10),
 IN balance DOUBLE,
 IN createdby VARCHAR(100),
-OUT errorMessage      VARCHAR(50)
+OUT errorMessage      VARCHAR(500)
 )
 BEGIN
      
