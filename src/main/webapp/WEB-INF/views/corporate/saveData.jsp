@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="/sundevilbank/resources/css/custom.css" />
 </head>
 <body>
+
 <script src="https://code.jquery.com/jquery-1.10.1.min.js"></script>
 <script src="/sundevilbank/resources/js/bootstrap.js"></script>
 
@@ -29,7 +30,9 @@
 	</footer>
 	<!--  end of footer -->
 </div>
-<% response.setHeader("Refresh", "8;/sundevilbank"); %>
+
+<% response.setHeader("Refresh", "10;/sundevilbank/home"); %>
+
 </body>
 </html>
 

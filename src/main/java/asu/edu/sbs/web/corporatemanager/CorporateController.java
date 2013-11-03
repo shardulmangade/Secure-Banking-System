@@ -119,13 +119,13 @@ public class CorporateController {
 			System.out.println("\n Inside Employee signup post controller");
 			if(result.hasErrors())
 			{
-				return new ModelAndView("corporate/add", "signupuser",employee);
+				message= "Please fill form properly, validation erros observed";
+				mav.addObject("message", message);	
+				mav.setViewName("corporate/saveData");
+				return mav;
 			}		 
 					
-			mav.setViewName("signup/saveData"); // need getter methods for setView. Using saveData in signup.
-//			employee.setDepartment(employee.getDepartment());
-//			employee.setRole(employee.getRole());				
-//			employee.setCreatedBy(principal.getName());	
+			mav.setViewName("corporate/saveData"); 
 			message= "Your request has been submitted for approval";
 			
 			employee.setCreatedBy(principal.getName());				
@@ -148,13 +148,13 @@ public class CorporateController {
 			{
 				message = "Username already Exists.Choose a different username";
 				mav.addObject("message", message);
-				mav.setViewName("signup/saveData");		
+				mav.setViewName("corporate/saveData");		
 				return mav;
 			} else
 			{
 				message = "Error in saving your data.Please try again";
 				mav.addObject("message", message);
-				mav.setViewName("signup/saveData");		
+				mav.setViewName("corporate/saveData");		
 				return mav;
 					
 			}
