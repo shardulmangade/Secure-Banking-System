@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import asu.edu.sbs.domain.IDepartments;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.Transaction;
 import asu.edu.sbs.domain.User;
@@ -169,6 +170,9 @@ public class TransactionControllerForManager {
 				if(userName.equals(null))
 					throw new BankAccessException("Please enter the username...");
 				status = transManager.getDeleteApprovalStatus(userName, "TRANSACTIONS");
+				User user = transManager.getUser(userName);
+				if(!user.getDepartment().equals("TM"))
+					throw new BankAccessException("The employee may not belong to this Department!!");
 				if(status==1 )
 				{					
 					message = "Employee "+ userName+ " has been deleted after approval of corporate level manager";
@@ -235,7 +239,14 @@ public class TransactionControllerForManager {
 			username=request.getParameter("userNametext");
 									
 			try{												
-				message= "Employee "+ username + " has been transfered";					
+				message= "Employee "+ username + " has been transfered";
+				if(user.getDepartment().equals("NONE") || user.getRole().equals("NONE"))
+				{
+					message="Oops!! You seem to be lost because of some Bad Operation. Please press the Home button to return to your mainpage or Logout.";
+					model.addAttribute("message", message);
+					model.addAttribute("username", principal.getName());
+					return ("it/manager/saveData");	
+				}
 				roleToBeupdated = transManager.getRoleTobechanged(user.getDepartment(),user.getRole());
 				//transManager.updateDepartmentOfEmployee(request.getParameter("userNametext"), employee.getDepartment());
 				transManager.updateUserRole(roleToBeupdated,"TM",user.getDepartment(),username ,principal.getName());

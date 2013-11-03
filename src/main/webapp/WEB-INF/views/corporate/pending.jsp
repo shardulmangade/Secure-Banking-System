@@ -14,7 +14,6 @@ font-style: italic;
 
 </head>
 <body>
-
 <form:form method="POST" commandName="signupemployee"  action="${pageContext.request.contextPath}/corporate/pending" >
 <c:choose>
 <c:when test="${not empty userRequests}">

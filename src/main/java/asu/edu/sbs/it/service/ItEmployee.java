@@ -37,8 +37,13 @@ public class ItEmployee {
 	{
 		itdbconnection.insertCustomerAccNo(UserName, accountNo, balance, createdBy);		
 	}
+	public void saveNewEmployeeRequest(User user,String insertedBy)throws Exception
+	{
+		itdbconnection.saveNewEmployeeRequest(user, insertedBy);	
+	}
 	public User getPendingUserRequest(String userName)throws BankStorageException
 	{
+		System.out.println("Request made for:" + userName);
 		return itdbconnection.getPendingUserRequest(userName);		
 	}
 	public void deleteUser(String username, String name) throws BankStorageException, BankAccessException 

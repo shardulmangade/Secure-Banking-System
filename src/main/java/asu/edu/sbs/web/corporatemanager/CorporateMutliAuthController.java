@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.hr.service.CorporateMutliAuthManager;
 
@@ -23,14 +24,14 @@ public class CorporateMutliAuthController {
 	
 
 	@RequestMapping(value = "/corporate/allactivemanagers", method = RequestMethod.POST)
-	public String getAllActiveManagers(Locale locale, Model model, Principal principal) throws BankStorageException {	
+	public String getAllActiveManagers(Locale locale, Model model, Principal principal) throws BankDeactivatedException, BankStorageException {	
 		model.addAttribute("managersList",corporateManager.getAllActiveManagers());
 		model.addAttribute("managersPendingList",corporateManager.getAllPendingDeactivateManagerRequests(principal.getName()));
 		return "corporate/allmanagers";
 	}
 	
 	@RequestMapping(value = "/corporate/deactivate/{username}", method = RequestMethod.GET)
-	public String deactivateManager(@PathVariable("username") String managerUsername, Model model, Principal principal) throws BankStorageException {	
+	public String deactivateManager(@PathVariable("username") String managerUsername, Model model, Principal principal) throws BankDeactivatedException, BankStorageException {	
 
 		corporateManager.deactivateManager(managerUsername, principal.getName());
 
@@ -38,7 +39,7 @@ public class CorporateMutliAuthController {
 	}
 	
 	@RequestMapping(value = "/corporate/denydeactivation/{username}", method = RequestMethod.GET)
-	public String denyDeactivationOfManager(@PathVariable("username") String managerUsername, Model model, Principal principal) throws BankStorageException {	
+	public String denyDeactivationOfManager(@PathVariable("username") String managerUsername, Model model, Principal principal) throws BankDeactivatedException, BankStorageException {	
 
 		corporateManager.denyDeactivationOfManager(managerUsername, principal.getName());
 		

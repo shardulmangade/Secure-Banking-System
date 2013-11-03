@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import asu.edu.sbs.domain.IDepartments;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.hr.service.HrDeptManager;
 import asu.edu.sbs.login.service.OneTimePassword;
@@ -39,7 +41,7 @@ public class HrManagerController {
 	private EmailNotificationManager enManager;
 		
 		@RequestMapping(value = "manager/op1", method = RequestMethod.GET)
-		public String addnewHrEmployee(Locale locale, Model model,Principal principal) {
+		public String addnewHrEmployee(Locale locale, Model model,Principal principal) throws BankDeactivatedException {
 			System.out.println("Inside hr manager Controller .............");
 			model.addAttribute("username", principal.getName());
 			return "hr/manager/manager";
@@ -47,15 +49,15 @@ public class HrManagerController {
 		
 		
 		@RequestMapping(value = "hr/manager", method = RequestMethod.POST)
-		public String addnewHrEmployeePost(Locale locale, Model model,Principal principal) {
+		public String addnewHrEmployeePost(Locale locale, Model model,Principal principal) throws BankDeactivatedException {
 			System.out.println("Inside hr manager post Controller .............");	
 			model.addAttribute("username", principal.getName());
 			return "hr/manager/hrmanager";
 		}
 		
 		
-		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST)
-		public ModelAndView newHrEmployeeGet(Locale locale, Model model,Principal principal) {
+		@RequestMapping(value = "/newhremployee", method = RequestMethod.POST) 
+		public ModelAndView newHrEmployeeGet(Locale locale, Model model,Principal principal) throws BankDeactivatedException {
 			ModelAndView savedMav;
 			System.out.println("Inside hr manager get Controller .............");							
 			savedMav = new ModelAndView("hr/newhremployee", "signupemployee", new User());
@@ -64,7 +66,7 @@ public class HrManagerController {
 		}
 		
 		@RequestMapping(value = "/newhremployee/op1", method = RequestMethod.POST)
-		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes,Principal principal) {
+		public ModelAndView newHrEmployeePost(@ModelAttribute @Valid User user, BindingResult result, final RedirectAttributes attributes,Principal principal) throws BankDeactivatedException{
 			System.out.println("INSIDE hr manager post Controller .............");
 			OneTimePassword otp = new OneTimePassword() ;
 			String message ;
@@ -108,7 +110,11 @@ public class HrManagerController {
 				mav.setViewName("signup/saveData");
 				mav.addObject("username",principal.getName() );			
 				return mav;
-			} else
+			}else if(e instanceof BankDeactivatedException)
+			{
+				throw new BankDeactivatedException(e.getMessage());
+			} 
+			else
 			{
 				message = "Error in saving your data.Please try again";
 				mav.addObject("message", message);
@@ -129,7 +135,7 @@ public class HrManagerController {
 			
 		
 		@RequestMapping(value = "/deletehremployee" ,method = RequestMethod.POST)
-		public String deleteEmployeePost(Model model,HttpServletRequest request,Principal principal)
+		public String deleteEmployeePost(Model model,HttpServletRequest request,Principal principal) throws BankDeactivatedException
 		{
 			System.out.println("\n Inside delete empployee post controller");
 			String message = null ,userName;
@@ -141,8 +147,10 @@ public class HrManagerController {
 					{
 						throw new BankAccessException("Username is not valid .Please enter valid user");
 					}
-				
 					User user = hrmanager.getUser(userName);
+					if(!user.getDepartment().equals("HR"))
+						throw new BankAccessException("The employee may not belong to this Department!!");
+					//Need to check
 					if (user.getDepartment().equals("HR"))
 					{
 					status = hrmanager.getDeleteApprovalStatus(userName, "HR");
@@ -177,6 +185,9 @@ public class HrManagerController {
 					model.addAttribute("message", message);			
 					model.addAttribute("username", principal.getName());
 					return ("signup/saveData");
+				} else if(e instanceof BankDeactivatedException)
+				{
+					throw new BankDeactivatedException(e.getMessage());
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						
@@ -190,7 +201,7 @@ public class HrManagerController {
 		
 		
 		@RequestMapping(value = "/transferemployee" ,method = RequestMethod.POST)
-		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request,Principal principal)
+		public ModelAndView transferEmployeeGet(Model model,HttpServletRequest request,Principal principal) throws BankDeactivatedException
 		{								
 			Map <String,String> department = new LinkedHashMap<String,String>();			
 			department.put("sales", "Sales department");
@@ -209,14 +220,21 @@ public class HrManagerController {
 		}
 		
 		@RequestMapping(value = "/transferemployee/op1" ,method = RequestMethod.POST)
-		public String transferHrEmployee( User user,Model model,HttpServletRequest request,Principal principal)
+		public String transferHrEmployee( User user,Model model,HttpServletRequest request,Principal principal) throws BankDeactivatedException
 		{			
 			String message,department = null,username=null ;
 			String roleToBeupdated =null;
 			username=request.getParameter("userNametext");
 									
 			try{												
-				message= "Employee "+ username+ " has been transfered";																	
+				message= "Employee "+ username+ " has been transfered";
+				if(user.getDepartment().equals("NONE") || user.getRole().equals("NONE"))
+				{
+					message="Oops!! You seem to be lost because of some Bad Operation. Please press the Home button to return to your mainpage or Logout.";
+					model.addAttribute("message", message);
+					model.addAttribute("username", principal.getName());
+					return ("it/manager/saveData");	
+				}				
 				roleToBeupdated = hrmanager.getRoleTobechanged(user.getDepartment(),user.getRole());
 				hrmanager.updateUserRole(roleToBeupdated,"HR",user.getDepartment(),username ,principal.getName());
 				model.addAttribute("message", message);
@@ -232,6 +250,9 @@ public class HrManagerController {
 					model.addAttribute("message", message);			
 					model.addAttribute("username", principal.getName());
 					return ("signup/saveData");
+				} else if(e instanceof BankDeactivatedException)
+				{
+					throw new BankDeactivatedException(e.getMessage());
 				} else {
 				// TODO Auto-generated catch block
 				e.printStackTrace();						

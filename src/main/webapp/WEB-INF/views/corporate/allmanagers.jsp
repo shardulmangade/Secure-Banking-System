@@ -14,7 +14,6 @@ font-style: italic;
 
 </head>
 <body>
-
 <c:choose>
 <c:when test="${not empty managersList}">
 List of active managers:<br>
