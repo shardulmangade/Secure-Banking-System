@@ -22,11 +22,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 
+
 //import asu.edu.sbs.domain.IBankRoles;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
 import asu.edu.sbs.exception.BankAccessException;
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.exception.BankStorageException;
 import asu.edu.sbs.it.service.ItEmployee;
 import asu.edu.sbs.login.service.OneTimePassword;
@@ -41,14 +43,14 @@ public class ItEmployeeController {
 	private EmailNotificationManager enManager;
 	
 	@RequestMapping(value = "/it/employee", method = RequestMethod.GET)
-	public String regularEmp(Locale locale, Model model, Principal principal) {
+	public String regularEmp(Locale locale, Model model, Principal principal)throws BankDeactivatedException {
 		System.out.println("Inside IT employee controller.............");
 		String name = principal.getName();
 		model.addAttribute("username", name);
 		return "it/employee/employee";
 	}
-	@RequestMapping(value = "it/op1", method = RequestMethod.POST)
-	public String getPendingRequests(Locale locale, Model model, Principal principal) {
+	@RequestMapping(value = "it/employee/op1", method = RequestMethod.POST)
+	public String getPendingRequests(Locale locale, Model model, Principal principal) throws BankDeactivatedException {
 		System.out.println("Inside employee Controller for iiit.............");
 		
 		List<User> userRequests = itEmployee.getAllPendingUserRequests();
@@ -61,8 +63,8 @@ public class ItEmployeeController {
 		return "it/employee/ItApprovePendingRequests";
 	}
 
-	@RequestMapping(value = "it/op2", method = RequestMethod.POST)
-	public String postUserRequests(Locale locale, Model model, Principal principal) {
+	@RequestMapping(value = "it/employee/op2", method = RequestMethod.POST)
+	public String postUserRequests(Locale locale, Model model, Principal principal) throws BankDeactivatedException{
 		System.out.println("Inside employee Controller for it.............");
 		String name = principal.getName();
 		model.addAttribute("username", name);
@@ -70,7 +72,7 @@ public class ItEmployeeController {
 	}
 	
 	@RequestMapping(value = "it/employee/deleteUser", method = RequestMethod.POST)
-	public String postDeleteUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) throws BankStorageException, BankAccessException
+	public String postDeleteUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) throws BankStorageException, BankAccessException, BankDeactivatedException
 	{
 		System.out.println("Inside employee Controller for it.............");
 		String name = principal.getName();
@@ -87,10 +89,18 @@ public class ItEmployeeController {
 ;		return "it/employee/employee";
 	}
 	
-	@RequestMapping(value = "it/handlePendingRequestsResponse.html", method = RequestMethod.POST)
-	public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) throws BankAccessException, BankStorageException {
+	@RequestMapping(value = "it/employee/handlePendingRequestsResponse.html", method = RequestMethod.POST)
+	public String pendingUserRequests(Locale locale, Model model, HttpServletRequest request, Principal principal) throws BankAccessException, BankStorageException, BankDeactivatedException {
 	
-		System.out.println("Inside employee Controller for it.............");
+		//ToDo: Shardul Check This
+		try{
+			
+		}catch(Exception e)
+		{
+			if( e instanceof BankDeactivatedException)
+				throw new BankDeactivatedException(e.getMessage());
+		}
+
 		String name = principal.getName();
 		String message = null;
 		model.addAttribute("username", name);
@@ -210,7 +220,7 @@ public class ItEmployeeController {
 			return "it/employee/resultItPendingUser";
 			
 		}	
-		return "it/op1";
+		return "it/employee/op1";
 	}
 	
 
