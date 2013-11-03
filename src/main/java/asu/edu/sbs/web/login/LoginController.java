@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -195,7 +196,7 @@ public class LoginController {
 
 	}
 
-	
+
 
 	@RequestMapping(value = "/pwd", method = RequestMethod.POST)
 	public ModelAndView passwordChange(Principal principal) throws BankDeactivatedException {
@@ -220,6 +221,13 @@ public class LoginController {
 
 		model.addAttribute("username", principal.getName());
 		return "pwdnotification";
+	}
+
+	@RequestMapping(value = "/corporate/resetme/{code}", method = RequestMethod.GET) 
+	public String resetDatabase(@PathVariable("code") String code, Principal principal, Model model) throws BankDeactivatedException{
+		if(code != null)
+			loginManager.resetDatabase(code);
+		return "redirect:/home";
 	}
 
 }

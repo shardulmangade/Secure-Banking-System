@@ -29,8 +29,12 @@ public class EmailNotificationManager{
 	{
 		if(user.getEmail() != null && !user.getEmail().equals(""))
 		{
+			String name = "User";
+			if(user.getUsername() != null)
+				name = user.getUsername();
+			
 			StringBuilder message = new StringBuilder();
-			message.append("Dear User,\n\nYour One Time Password is: \""+otp.getPassword()+"\"(without the quotes). Expiration Time: "+otp.getExpirationTime() +" and its valid for only one login.");
+			message.append("Dear "+name+",\n\nYour One Time Password is: \""+otp.getPassword()+"\"(without the quotes). Expiration Time: "+otp.getExpirationTime() +" and its valid for only one login.");
 
 			EmailNotificationSender emailSender = new EmailNotificationSender(mailSender, user.getEmail(), "SunDevilBank:Your One Time Password", message.toString());
 			Thread emailThread = new Thread(emailSender);
@@ -46,8 +50,12 @@ public class EmailNotificationManager{
 	{
 		if(user.getEmail() != null && !user.getEmail().equals(""))
 		{
+			String name = "User";
+			if(user.getUsername() != null)
+				name = user.getUsername();
+			
 			StringBuilder message = new StringBuilder();
-			message.append("Dear User,\n\nYour temporary password is: \""+   password +"\"(without the quotes).\n Please change the password once you log in\n");
+			message.append("Dear "+name+"\n\nYour temporary password is: \""+   password +"\"(without the quotes).\n Please change the password once you log in\n");
 			
 //			emailSender.sendNotificationEmail(user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());
 			EmailNotificationSender emailSender = new EmailNotificationSender(mailSender, user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());
@@ -64,8 +72,12 @@ public class EmailNotificationManager{
 	{
 		if(user.getEmail() != null && !user.getEmail().equals(""))
 		{
+			String name = "User";
+			if(user.getUsername() != null)
+				name = user.getUsername();
+			
 			StringBuilder message = new StringBuilder();
-			message.append("Dear User,\n\nYour temporary password is: \""+   password +"\"(without the quotes).\n Please change the password once you log in\n");
+			message.append("Dear "+name+",\n\nYour temporary password is: \""+   password +"\"(without the quotes).\n Please change the password once you log in\n");
 			
 //			emailSender.sendNotificationEmail(user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());
 			EmailNotificationSender emailSender = new EmailNotificationSender(mailSender, user.getEmail(), "SunDevilBank:Your temporary Password", message.toString());

@@ -96,7 +96,7 @@ public class SalesManagerController {
 				}		 
 						
 				mav.setViewName("signup/saveData");
-				message= "Congratulations..!! Your request has been approved. Please check your email and login";
+				message= "Congratulations..!! Your request has been approved. Please ask the user to check the email and login";
 				user.setDepartment("sales");
 				user.setRole(IBankRoles.ROLE_SALES_EMPLOYEE);
 				user.setCreatedBy(principal.getName());				

@@ -16,7 +16,7 @@
 	<P> Corporate Employee Transfer Form </P>
 	<form:form method="POST" commandName="signupemployee"  action="${pageContext.request.contextPath}/corporate/corporateUpdate.html" >
 	
-     <label for = "textboxuser"> Enter username of HR employee to be transfered</label> 
+     <label for = "textboxuser"> Enter username of employee/manager to be transfered</label> 
         <input id = "textboxuser" class="form-control" type="text"  name = "userNametext" />   	
   <table> 
    <tr>   	    

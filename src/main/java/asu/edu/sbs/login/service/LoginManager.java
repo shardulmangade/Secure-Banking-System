@@ -102,6 +102,7 @@ public class LoginManager {
 		return FAILURE;
 	}
 	
+	
 //	public int resendOTP(String username) throws BankStorageException
 //	{
 //		OneTimePassword storedOTP = loginDBConnection.getOTP(username);

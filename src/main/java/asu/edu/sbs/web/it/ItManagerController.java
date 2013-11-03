@@ -77,7 +77,7 @@ public class ItManagerController {
 				}		 
 						
 				mav.setViewName("it/manager/saveData");
-				message= "Your request has been submitted for approval";
+				message= "Congratulations..!! Your request has been approved. Please ask the user to check the email and login";
 				user.setDepartment("IT");
 				user.setRole("ROLE_IT_EMPLOYEE");				
 				user.setCreatedBy(principal.getName());				

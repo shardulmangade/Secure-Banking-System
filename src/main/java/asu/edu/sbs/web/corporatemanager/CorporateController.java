@@ -71,6 +71,7 @@ public class CorporateController {
 		department.put("TM", "Transaction Management department");
 		department.put("IT", "IT & Tech Support department");
 		department.put("CM", "Company Managment department");
+		department.put("HR", "Human Resource department");
 		model.addAttribute("departmentList", department);		
 		Map <String,String> roleList = new LinkedHashMap<String,String>();			
 		roleList.put("manager", "manager");
@@ -128,7 +129,7 @@ public class CorporateController {
 			}		 
 					
 			mav.setViewName("corporate/saveData"); 
-			message= "Your request has been submitted for approval";
+			message= "The user has been added to the system.";
 			
 			employee.setCreatedBy(principal.getName());				
 			Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();

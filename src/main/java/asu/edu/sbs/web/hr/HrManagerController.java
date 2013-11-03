@@ -86,7 +86,7 @@ public class HrManagerController {
 				}		 
 						
 				mav.setViewName("signup/saveData");
-				message= "Your request has been submitted for approval";
+				message= "Congratulations..!! Your request has been approved. Please ask the user to check the email and login";
 				user.setDepartment("HR");
 				user.setRole("ROLE_HR_EMPLOYEE");				
 				user.setCreatedBy(principal.getName());				

@@ -97,7 +97,7 @@ public class TransactionControllerForManager {
 				}		 
 						
 				mav.setViewName("signup/saveData");
-				message= "Your request has been submitted for approval";
+				message= "Congratulations..!! Your request has been approved. Please ask the user to check the email and login";
 				user.setDepartment("TM");
 				user.setRole("ROLE_TRANSACTION_EMPLOYEE");				
 				user.setCreatedBy(principal.getName());				
