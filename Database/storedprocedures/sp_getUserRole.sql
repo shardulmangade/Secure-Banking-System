@@ -15,7 +15,7 @@ DROP PROCEDURE IF EXISTS sp_getUserRole;
 DELIMITER $$
 CREATE PROCEDURE sp_getUserRole(
 IN inusername VARCHAR(100),
-OUT errorMessage      VARCHAR(50)
+OUT errorMessage      VARCHAR(100)
 )
 BEGIN
      
