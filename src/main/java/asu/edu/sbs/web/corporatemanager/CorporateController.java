@@ -121,6 +121,7 @@ public class CorporateController {
 			{
 				message= "Please fill form properly, validation erros observed";
 				mav.addObject("message", message);	
+				mav.addObject("username", principal.getName());
 				mav.setViewName("corporate/saveData");
 				return mav;
 			}		 
@@ -176,7 +177,7 @@ public class CorporateController {
 				message="Oops!! You seem to be lost because of some Bad Operation. Please press the Home button to return to your mainpage or Logout.";
 				model.addAttribute("message", message);
 				model.addAttribute("username", principal.getName());
-				return ("it/manager/saveData");	
+				return ("corporate/saveData");	
 			}
 			tobeReplaced = crManager.getRoleTobechanged(employee.getDepartment(),employee.getRole());
 			crManager.updateUserRole(tobeReplaced,employee.getDepartment(),username ,principal.getName());

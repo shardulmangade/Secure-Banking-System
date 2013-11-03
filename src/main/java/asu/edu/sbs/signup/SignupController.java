@@ -1,5 +1,6 @@
 package asu.edu.sbs.signup;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Locale;
@@ -84,7 +85,7 @@ public class SignupController {
 //	}
 	
 	@RequestMapping(value = "/SignupEmployeePost" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes)
+	public ModelAndView postDataEmployee(@ModelAttribute @Valid SignUpEmployee employee, BindingResult result, final RedirectAttributes attributes,Principal principal)
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
@@ -92,7 +93,11 @@ public class SignupController {
 			System.out.println("\n Inside Employee signup post controller");
 			if(result.hasErrors())
 			{
-				return new ModelAndView("signup/signupemployee", "signupuser",employee);
+				message= "Please fill form properly, validation erros observed";
+				mav.addObject("message", message);	
+				mav.addObject("username", principal.getName());
+				mav.setViewName("signup/saveData");
+				return mav;
 				//return new ModelAndView("hr/employee/hrEmployee","signupuser",employee);
 			}		 
 					
