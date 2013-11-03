@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import asu.edu.sbs.domain.IDepartments;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
@@ -141,8 +142,10 @@ public class HrManagerController {
 					{
 						throw new BankAccessException("Username is not valid .Please enter valid user");
 					}
-				
 					User user = hrmanager.getUser(userName);
+					if(!user.getDepartment().equals("HR"))
+						throw new BankAccessException("The employee may not belong to this Department!!");
+					//Need to check
 					if (user.getDepartment().equals("HR"))
 					{
 					status = hrmanager.getDeleteApprovalStatus(userName, "HR");

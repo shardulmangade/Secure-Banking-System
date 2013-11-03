@@ -82,5 +82,10 @@ public class SalesDeptManager {
 		// TODO Auto-generated method stub
 		loginmanager.updateUserRole(role,olddepartment, department,username ,changedby);
 	}
+	public User getUser(String username) throws BankStorageException, BankAccessException
+	{		
+			User user= loginmanager.getUser(username);
+			return user;
+	}		
 	
 }

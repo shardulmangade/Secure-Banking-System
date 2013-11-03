@@ -140,6 +140,10 @@ public class ItManagerController {
 			try{
 				if(userName.equals(""))
 					throw new InvalidActivityException();
+				User user = itmanager.getUser(userName);
+				System.out.println("Department is " + user.getDepartment());
+				if(!user.getDepartment().equals("IT"))
+					throw new BankAccessException("The employee may not belong to this Department!!");
 				status = itmanager.getDeleteApprovalStatus(userName, "IT");
 				if(status==1 )
 				{					
@@ -207,8 +211,8 @@ public class ItManagerController {
 									
 			try{												
 				message= "Employee "+ username+ " has been transfered";	
-				System.out.println("Check: " + user.getDepartment() + "   " + user.getRole());
-				if(user.getDepartment().equals("NONE") || user.getRole().equals("NONE"))
+/*				System.out.println("Check: " + user.getDepartment() + "   " + user.getRole());
+*/				if(user.getDepartment().equals("NONE") || user.getRole().equals("NONE"))
 				{
 					message="Oops!! You seem to be lost because of some Bad Operation. Please press the Home button to return to your mainpage or Logout.";
 					model.addAttribute("message", message);

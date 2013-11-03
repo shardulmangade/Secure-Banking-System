@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import asu.edu.sbs.domain.IDepartments;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.Transaction;
 import asu.edu.sbs.domain.User;
@@ -193,6 +194,9 @@ public class TransactionControllerForManager {
 				if(userName.equals(null))
 					throw new BankAccessException("Please enter the username...");
 				status = transManager.getDeleteApprovalStatus(userName, "TRANSACTIONS");
+				User user = transManager.getUser(userName);
+				if(!user.getDepartment().equals("TM"))
+					throw new BankAccessException("The employee may not belong to this Department!!");
 				if(status==1 )
 				{					
 					message = "Employee "+ userName+ " has been deleted after approval of corporate level manager";

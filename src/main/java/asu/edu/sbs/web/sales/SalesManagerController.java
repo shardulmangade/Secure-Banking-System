@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import asu.edu.sbs.domain.IBankRoles;
+import asu.edu.sbs.domain.IDepartments;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.SignUpExternalEmployee;
 import asu.edu.sbs.domain.User;
@@ -152,6 +153,9 @@ public class SalesManagerController {
 				{
 					throw new BankAccessException("Username is not valid. please enter a valid user");
 				}
+				User user = salesmanager.getUser(userName);
+				if(!user.getDepartment().equals("sales"))
+					throw new BankAccessException("The employee may not belong to this Department!!");
 				status = salesmanager.getDeleteApprovalStatus(userName, "Sales");
 				if(status==1 )
 				{					

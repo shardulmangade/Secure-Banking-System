@@ -33,6 +33,11 @@ public class ItDeptManager {
 			return (loginmanager.insertValidUser(user, password, createdBy));	
 	}	
 	
+	public User getUser(String username) throws BankStorageException, BankAccessException
+	{		
+			User user= loginmanager.getUser(username);
+			return user;
+	}		
 	public void insertDeleteRequesttoCM (String userName,String department, boolean deleteApprove) throws Exception 
 	{
 		itdbconnection.insertDeleteRequesttoCM(userName,department,deleteApprove);
