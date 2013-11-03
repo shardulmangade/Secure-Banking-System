@@ -26,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import asu.edu.sbs.domain.SignUpEmployee;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.email.EmailNotificationManager;
+import asu.edu.sbs.exception.BankDeactivatedException;
 import asu.edu.sbs.hr.service.CorporateManager;
 import asu.edu.sbs.login.service.OneTimePassword;
 import asu.edu.sbs.web.login.LoginController;
@@ -48,7 +49,7 @@ public class CorporateController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/corporate", method = RequestMethod.GET)
-	public String home(Locale locale, Model model, Principal principal) {
+	public String home(Locale locale, Model model, Principal principal) throws BankDeactivatedException {
 		logger.info("Welcome to corporate page, locale is {}.", locale);
 		model.addAttribute("username", principal.getName());
 		return "corporate/home";
@@ -63,7 +64,7 @@ public class CorporateController {
 	}
 	
 	@RequestMapping(value="/corporate/op3",  method = RequestMethod.POST)
-	public ModelAndView getTest3(Locale locale, Model model) {
+	public ModelAndView getTest3(Locale locale, Model model)throws BankDeactivatedException {
 		
 		Map <String,String> department = new LinkedHashMap<String,String>();			
 		department.put("sales", "Sales department");
@@ -80,7 +81,7 @@ public class CorporateController {
 	}
 	
 	@RequestMapping(value = "/corporate/op4" ,method = RequestMethod.POST)
-	public String getPending(Locale locale, Model model){
+	public String getPending(Locale locale, Model model)throws BankDeactivatedException{
 		
 		System.out.println("Inside corporate controler for pending request");
 		
@@ -91,7 +92,7 @@ public class CorporateController {
 	}
 	
 	@RequestMapping(value = "/corporate/op1" ,method = RequestMethod.POST)
-	public ModelAndView getDataEmployee(Locale locale , Model model)
+	public ModelAndView getDataEmployee(Locale locale , Model model)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside Employee signup controller");		
 		
@@ -110,7 +111,7 @@ public class CorporateController {
 	}	
 	
 	@RequestMapping(value = "/corporate/corporateadduser" ,method = RequestMethod.POST)
-	public ModelAndView postDataEmployee(@ModelAttribute @Valid User employee, BindingResult result, final RedirectAttributes attributes, Principal principal)
+	public ModelAndView postDataEmployee(@ModelAttribute @Valid User employee, BindingResult result, final RedirectAttributes attributes, Principal principal)throws BankDeactivatedException
 	 {
 		String message ;
 		ModelAndView mav = new ModelAndView();
@@ -151,7 +152,11 @@ public class CorporateController {
 				mav.addObject("message", message);
 				mav.setViewName("corporate/saveData");		
 				return mav;
-			} else
+			}else if (e instanceof BankDeactivatedException)
+			{
+				throw new BankDeactivatedException(e.getMessage());
+			}
+			else
 			{
 				message = "Error in saving your data.Please try again";
 				mav.addObject("message", message);
@@ -164,7 +169,7 @@ public class CorporateController {
 
 	
 	@RequestMapping(value = "/corporate/corporateUpdate" ,method = RequestMethod.POST)
-	public String transferUserCorporate(User employee,Model model,HttpServletRequest request,Principal principal)
+	public String transferUserCorporate(User employee,Model model,HttpServletRequest request,Principal principal)throws BankDeactivatedException
 	{
 		System.out.println("\n Inside corporate transfer empployee post controller");
 		String message,department=null,username = null ;
@@ -192,7 +197,12 @@ public class CorporateController {
 				message = "Error occured in transferring employee .Please use valid username";
 				model.addAttribute("message", message);							
 				return ("corporate/saveData");
-			} else {
+			}
+			else if (e instanceof BankDeactivatedException)
+			{
+				throw new BankDeactivatedException(e.getMessage());
+			}
+			else {
 			// TODO Auto-generated catch block
 			e.printStackTrace();						
 			message = "Error occured in sending transfer request";
@@ -203,7 +213,7 @@ public class CorporateController {
 	}
 
 	@RequestMapping(value = "/corporate/pending", method = RequestMethod.POST)
-	public String pendingResponse(Locale locale, Model model, HttpServletRequest request) {
+	public String pendingResponse(Locale locale, Model model, HttpServletRequest request)throws BankDeactivatedException {
 		System.out.println("Inside handle pending request of the corporate user");
 		if(request.getParameterValues("selected")==null)
 		{

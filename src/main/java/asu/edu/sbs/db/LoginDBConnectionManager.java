@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import asu.edu.sbs.domain.IBankRoles;
-import asu.edu.sbs.domain.IDepartments;
 import asu.edu.sbs.domain.User;
 import asu.edu.sbs.exception.BankAccessException;
 import asu.edu.sbs.exception.BankStorageException;
@@ -593,6 +592,38 @@ public int insertValidCustomer(User user, String insertedbyUsername) throws Bank
 
 			}
 	}	
+}
+
+public int resetDatabase()
+{
+	String dbCommand;
+	Connection connection = null;
+
+	try {
+		connection = dataSource.getConnection();
+		dbCommand = DBConstants.SP_CALL + " " + DBConstants.RESET_DB + "()";
+		CallableStatement sqlStatement = connection.prepareCall("{"+dbCommand+"}");
+		
+		sqlStatement.execute();
+		
+		return SUCCESS;
+
+	} catch (SQLException e) {
+		
+	}
+	finally
+	{
+		if(connection != null)
+			try {
+				connection.close();
+			} catch (SQLException e) {
+
+			}
+	}	
+	
+	return FAILURE;
+	
+	
 }
 
 public String getRoleTobechanged(String department, String role) {
