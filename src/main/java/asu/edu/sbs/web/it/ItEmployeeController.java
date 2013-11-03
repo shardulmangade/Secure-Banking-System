@@ -170,6 +170,7 @@ public class ItEmployeeController {
 							user.setDepartment("customer");
 						}
 						itEmployee.insertValidUser(user, hashedPass, name);
+						System.out.println("Inserted into valid user................................................");
 /*						System.out.println("The user who will be added is :" + user.getUsername());*/
 						long min = 1l;
 						long max = 999999999l;
@@ -178,6 +179,7 @@ public class ItEmployeeController {
 						//Shardul Critical ToDo: Integrate initial amount in form or add Debit/Credit , setting initial amount to 250
 						//Shardul Critical ToDo: Check if accountNo collision will occur and handle if required
 						itEmployee.insertCustomerAccNo(user.getUsername(), accountNo, 500.0, name);
+						System.out.println("Inserted into customer acct no................................................");
 						//send email
 						enManager.sendPasswordCustomer(user, otpInstance.getPassword());
 						// ToDo: Shardul On basis of above output
