@@ -8,4 +8,4 @@ department varchar(100) not null,
 ssn varchar(10) null,
 createdby varchar(100) not null,
 createddate timestamp not null
-)
+);
