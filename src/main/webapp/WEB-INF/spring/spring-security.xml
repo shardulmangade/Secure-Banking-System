@@ -7,31 +7,24 @@
         http://www.springframework.org/schema/security
         http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
-        <http auto-config="true" use-expressions="true" access-denied-page="/forbidden" disable-url-rewriting="true">
-        	<session-management>
-        		<concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
-    		</session-management>
+        <http auto-config="true" use-expressions="true" access-denied-page="/forbidden" disable-url-rewriting="true" >
     		<headers />
-                <!-- <intercept-url pattern="/*" access="permitAll" />-->
-                <intercept-url pattern="/logout*" access="permitAll" />
-                <intercept-url pattern="/resources/**" access="permitAll" />
-                <intercept-url pattern="/auth/**" access="hasAnyRole('ROLE_VALID_USER')" />
-                <!-- <intercept-url pattern="/euser/**" access="hasRole('ROLE_EXTERNAL_USER')"/>  -->
-                <!-- <intercept-url pattern="/exceptions/**" access="hasAnyRole('ROLE_VALID_USER','ROLE_EXTERNAL_USER')"/> -->
-                <intercept-url pattern="/corporate/**" access="hasRole('ROLE_CORPORATE_MANAGER')"/>
-                <intercept-url pattern="/it/employee/**" access="hasRole('ROLE_IT_EMPLOYEE')"/>
-            	<intercept-url pattern="/it/manager/**" access="hasRole('ROLE_IT_MANAGER')"/>
-                <intercept-url pattern="/hr/hremployee/**" access="hasRole('ROLE_HR_EMPLOYEE')"/>
-                <intercept-url pattern="/hr/hrmanager/**" access="hasRole('ROLE_HR_MANAGER')"/>                
-                <intercept-url pattern="/sales/salesemployee/**" access="hasRole('ROLE_SALES_EMPLOYEE')"/>
-                <intercept-url pattern="/sales/salesmanager/**" access="hasRole('ROLE_SALES_MANAGER')"/>                 
-                <intercept-url pattern="/customer/**" access="hasRole('ROLE_EXTERNAL_USER')"/>
-            	<intercept-url pattern="/transactions/regularEmployee/**" access="hasRole('ROLE_TRANSACTION_EMPLOYEE')"/>
-				<intercept-url pattern="/transaction/transactionManager/**" access="hasRole('ROLE_TRANSACTION_MANAGER')"/>
-				<intercept-url pattern="/merchant/**" access="hasRole('ROLE_EXTERNAL_MERCHANT')"/>	                
-                <intercept-url pattern="/pwdchange/**" access="hasAnyRole('ROLE_IT_EMPLOYEE','ROLE_IT_MANAGER','ROLE_HR_EMPLOYEE','ROLE_HR_MANAGER','ROLE_SALES_EMPLOYEE','ROLE_SALES_MANAGER','ROLE_EXTERNAL_USER','ROLE_TRANSACTION_EMPLOYEE','ROLE_TRANSACTION_MANAGER','ROLE_EXTERNAL_MERCHANT')"/>
+                <intercept-url pattern="/logout*" access="permitAll"  requires-channel="https"/>
+                <intercept-url pattern="/resources/**" access="permitAll" requires-channel="https"/>
+                <intercept-url pattern="/auth/**" access="hasAnyRole('ROLE_VALID_USER')" requires-channel="https"/>
+                <intercept-url pattern="/corporate/**" access="hasRole('ROLE_CORPORATE_MANAGER')" requires-channel="https"/>
+                <intercept-url pattern="/it/employee/**" access="hasRole('ROLE_IT_EMPLOYEE')" requires-channel="https"/>
+            	<intercept-url pattern="/it/manager/**" access="hasRole('ROLE_IT_MANAGER')" requires-channel="https"/>
+                <intercept-url pattern="/hr/hremployee/**" access="hasRole('ROLE_HR_EMPLOYEE')" requires-channel="https"/>
+                <intercept-url pattern="/hr/hrmanager/**" access="hasRole('ROLE_HR_MANAGER')" requires-channel="https"/>                
+                <intercept-url pattern="/sales/salesemployee/**" access="hasRole('ROLE_SALES_EMPLOYEE')" requires-channel="https"/>
+                <intercept-url pattern="/sales/salesmanager/**" access="hasRole('ROLE_SALES_MANAGER')" requires-channel="https"/>                 
+                <intercept-url pattern="/customer/**" access="hasRole('ROLE_EXTERNAL_USER')" requires-channel="https"/>
+            	<intercept-url pattern="/transactions/regularEmployee/**" access="hasRole('ROLE_TRANSACTION_EMPLOYEE')" requires-channel="https"/>
+				<intercept-url pattern="/transaction/transactionManager/**" access="hasRole('ROLE_TRANSACTION_MANAGER')" requires-channel="https"/>
+				<intercept-url pattern="/merchant/**" access="hasRole('ROLE_EXTERNAL_MERCHANT')" requires-channel="https"/>	                
+                <intercept-url pattern="/pwdchange/**" access="hasAnyRole('ROLE_IT_EMPLOYEE','ROLE_IT_MANAGER','ROLE_HR_EMPLOYEE','ROLE_HR_MANAGER','ROLE_SALES_EMPLOYEE','ROLE_SALES_MANAGER','ROLE_EXTERNAL_USER','ROLE_TRANSACTION_EMPLOYEE','ROLE_TRANSACTION_MANAGER','ROLE_EXTERNAL_MERCHANT')" requires-channel="https"/>
                 
-                <!-- <intercept-url pattern="/**" access="denyAll" />-->
                 
                 <form-login login-page="/" default-target-url="/auth/otpcheck"
                         authentication-failure-url="/loginfailed" />
