@@ -213,7 +213,7 @@ public class CorporateController {
 	}
 
 	@RequestMapping(value = "/corporate/pending", method = RequestMethod.POST)
-	public String pendingResponse(Locale locale, Model model, HttpServletRequest request)throws BankDeactivatedException {
+	public String pendingResponse(Locale locale, Model model, Principal principal, HttpServletRequest request)throws BankDeactivatedException {
 		System.out.println("Inside handle pending request of the corporate user");
 		if(request.getParameterValues("selected")==null)
 		{
@@ -231,7 +231,7 @@ public class CorporateController {
 			{
 				System.out.println(username);
 				try {
-					crManager.deleteEmployee(username);
+					crManager.deleteEmployee(username, principal.getName());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

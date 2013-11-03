@@ -58,9 +58,10 @@ public class CorporateManager {
 		return corporateDbconnection.getAllPendingUserRequests();
 	}
 
-	public void deleteEmployee(String username) throws Exception{
+	public void deleteEmployee(String username, String updatedbyName) throws Exception{
 
-		corporateDbconnection.deleteEmployee(username);
+		loginDbConnectionManager.updateUserLoginRights(false, username, updatedbyName);
+//		corporateDbconnection.deleteEmployee(username);
 	}
 
 	public String getRoleTobechanged(String department, String role) {
